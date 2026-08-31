@@ -134,10 +134,30 @@ button:focus-visible, a:focus-visible {
 
 /* ── Today (Hebrew date pill + panel) ── */
 .today-toggle { position: relative; display: inline-flex; }
-.site-head nav .date-pill { white-space: nowrap; display: inline-flex; align-items: center; }
+.site-head nav .date-pill {
+  white-space: nowrap; display: inline-flex; align-items: center; gap: 5px;
+  font-weight: 600; color: var(--fg);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 5px 11px;
+}
+.site-head nav .date-pill:hover { background: var(--soft); border-color: var(--muted); }
 /* The display rule above outranks the UA's [hidden] — restore it. */
 .site-head nav .date-pill[hidden] { display: none; }
 .date-pill-icon { display: none; }
+/* A faint border tells readers the header controls are clickable. */
+.site-head nav .icon-btn,
+.site-head nav .nav-link { border: 1px solid transparent; }
+.site-head nav .icon-btn:hover,
+.site-head nav .nav-link:hover { border-color: var(--rule); }
+/* Prayer-title date line — the phone header has no room for the text
+   pill, so the date shows under the title there. */
+.reading-date {
+  display: none; margin-top: 6px;
+  font-family: var(--ui); font-size: 13px; color: var(--muted);
+}
+.reading-date[hidden] { display: none; }
+@media (max-width: 640px) {
+  .reading-date:not([hidden]) { display: block; }
+}
 .today-date {
   padding: 7px 9px 4px; font-family: var(--ui); font-size: 13px;
   font-weight: 600; color: var(--fg);

@@ -556,7 +556,10 @@
     var pick = pickSet(result);
     var joined = pick.conds.join(' ');
     if (root.dataset.conds !== joined) {
-      if (userAction || window.scrollY < 120) {
+      // The FIRST application always lands — a page that never filters
+      // is worse than one early reflow. Only later boundary changes
+      // defer while the reader is scrolled into the text.
+      if (userAction || root.dataset.conds == null || window.scrollY < 120) {
         root.dataset.conds = joined;
         // Visibility changed under the scroll-spy: rebuild its passed
         // set, or the label can snap back to a now-hidden section.
@@ -597,12 +600,14 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
-  // Fills the pill AND the panel's date row (same data attributes).
+  // Fills the pill, the panel's date row, and the reading-head date line
+  // (same data attributes).
   function fillDatePill(he, en) {
     var pill = document.querySelector('[data-act="open-today"]');
     if (!pill) return;
     document.querySelectorAll('[data-date-he]').forEach(function (el) { el.textContent = he; });
     document.querySelectorAll('[data-date-en]').forEach(function (el) { el.textContent = en; });
+    document.querySelectorAll('[data-date-wrap]').forEach(function (el) { el.hidden = false; });
     pill.hidden = false;
   }
 
