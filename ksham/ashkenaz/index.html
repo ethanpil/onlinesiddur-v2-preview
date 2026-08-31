@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-theme="light" data-headings="on" data-nikud="on" data-lang="he" data-filter="on" data-daykind="night">
+<head><script>window.__BASE__="../../";window.__DEFAULT_SIZE__=22;window.__DEFAULT_LH__=1.85;window.__FONTS__=["ruehl","noto","cardo","stam","times","arial"];window.__DEFAULT_FONT__="ruehl";</script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <title>Kriat Shema al haMitah Ashkenaz · קריאת שמע על המיטה נוסח אשכנז · OnlineSiddur</title>
+  <meta name="description" content="Kriat Shema al haMitah (bedtime shema) in Nusach Ashkenaz with nikud — full Hebrew text, free, no ads. קריאת שמע על המיטה — קריאת שמע לפני שינה, נוסח אשכנז." />
+  <link rel="canonical" href="https://onlinesiddur.com/ksham/ashkenaz/" />
+  <meta property="og:title" content="Kriat Shema al haMitah Ashkenaz · קריאת שמע על המיטה נוסח אשכנז · OnlineSiddur" />
+  <meta property="og:description" content="Kriat Shema al haMitah (bedtime shema) in Nusach Ashkenaz with nikud — full Hebrew text, free, no ads. קריאת שמע על המיטה — קריאת שמע לפני שינה, נוסח אשכנז." />
+  <meta property="og:url" content="https://onlinesiddur.com/ksham/ashkenaz/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="he_IL" />
+  <meta property="og:site_name" content="OnlineSiddur" />
+  <meta property="og:image" content="https://onlinesiddur.com/og/ksham-ashkenaz.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Kriat Shema al haMitah Ashkenaz · קריאת שמע על המיטה נוסח אשכנז · OnlineSiddur" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Kriat Shema al haMitah Ashkenaz · קריאת שמע על המיטה נוסח אשכנז · OnlineSiddur" />
+  <meta name="twitter:description" content="Kriat Shema al haMitah (bedtime shema) in Nusach Ashkenaz with nikud — full Hebrew text, free, no ads. קריאת שמע על המיטה — קריאת שמע לפני שינה, נוסח אשכנז." />
+  <meta name="twitter:image" content="https://onlinesiddur.com/og/ksham-ashkenaz.png" />
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../fonts.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <script>// Pre-paint bootstrap. Inlined into <head> of every page so the document
+// renders with the user's saved theme/size/lang/headings/nikud immediately
+// — no FOUC, no theme flash. Validates and clamps every value.
+(function () {
+  try {
+    var s = localStorage, root = document.documentElement;
+    var t = s.getItem('ssd:theme');
+    if (t === 'light' || t === 'dark') root.dataset.theme = t;
+    var szRaw = parseInt(s.getItem('ssd:textsize'), 10);
+    if (Number.isFinite(szRaw)) {
+      var sz = Math.max(14, Math.min(40, szRaw));
+      root.style.setProperty('--size', sz + 'px');
+    }
+    var lhRaw = parseFloat(s.getItem('ssd:leading'));
+    if (Number.isFinite(lhRaw)) {
+      var lh = Math.max(1.3, Math.min(2.6, lhRaw));
+      root.style.setProperty('--lh', String(lh));
+    }
+    var h = s.getItem('ssd:headings');
+    if (h === 'on' || h === 'off') root.dataset.headings = h;
+    var n = s.getItem('ssd:nikud');
+    if (n === 'on' || n === 'off') root.dataset.nikud = n;
+    var lang = s.getItem('ssd:lang');
+    if (lang === 'en' || lang === 'he') root.dataset.lang = lang;
+    else if (navigator.language && /^he/i.test(navigator.language)) root.dataset.lang = 'he';
+    // Calendar filter. data-filter ships "on"; restore the saved choice.
+    // Replay the cached condition tokens BEFORE first paint, so a repeat
+    // visit filters with zero content shift. No cache (or an expired one)
+    // leaves data-conds unset — the hide rules stay inert and the page
+    // paints complete; app.js recomputes after load.
+    var dk = root.dataset.daykind;
+    // A ?date= QA view must not first-paint with the REAL day's cache.
+    if (dk && !/[?&]date=/.test(location.search)) {
+      var fl = s.getItem('ssd:filter');
+      if (fl === 'on' || fl === 'off') root.dataset.filter = fl;
+      // Inner try: a corrupt cache entry must not skip the font preload
+      // below.
+      try {
+        var c = JSON.parse(s.getItem('ssd:conds') || 'null');
+        if (c && c.v === 1 && c.exp > Date.now() && c.day && c.night) {
+          var night = dk === 'night'
+            || (dk === 'meal' && Number(s.getItem('ssd:night')) > Date.now());
+          var pick = night ? c.night : c.day;
+          var joined = (pick.conds || []).join(' ');
+          if (/^[a-z0-9 -]+$/.test(joined)) root.dataset.conds = joined;
+        }
+      } catch (e2) {}
+    }
+    // Hebrew face. The roster and default come from manifest.mjs via
+    // build.mjs::relocate, so adding a font needs no edit here.
+    //
+    // This owns the preload for EVERY face, default included — a static
+    // <link> in the template could only ever name the default, and would be
+    // dead weight (~21 KB at high priority, ahead of the face actually in
+    // use) for anyone who picked something else.
+    var fonts = window.__FONTS__ || [];
+    var def = window.__DEFAULT_FONT__;
+    var f = s.getItem('ssd:font');
+    if (!f || fonts.indexOf(f) === -1) f = def;
+    // The default face is the :root --serif-he value, so it needs no
+    // attribute; setting one for it would just add a redundant selector.
+    if (f && f !== def) root.dataset.font = f;
+    if (f) {
+      var link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'font';
+      link.type = 'font/woff2';
+      link.crossOrigin = 'anonymous';
+      link.href = (window.__BASE__ || '/') + 'fonts/he-' + f + '-400.woff2';
+      document.head.appendChild(link);
+    }
+  } catch (e) {}
+})();
+</script>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+  <meta name="theme-color" content="#F0EEE9" data-light="#F0EEE9" data-dark="#0E0E10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <!-- black-translucent lets the page background show through the status bar,
+       so it follows the reader's saved theme instead of pinning glyphs to a
+       colour chosen at build time. iOS offers no media-gated variant. -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="OnlineSiddur" />
+  <meta name="application-name" content="OnlineSiddur" />
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-750x1334.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-1334x750.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1242x2208.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2208x1242.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1125x2436.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2436x1125.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-828x1792.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-1792x828.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1242x2688.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2688x1242.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1170x2532.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2532x1170.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1284x2778.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2778x1284.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1179x2556.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2556x1179.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1290x2796.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2796x1290.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1206x2622.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2622x1206.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1320x2868.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2868x1320.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1488x2266.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2266x1488.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1536x2048.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2048x1536.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1620x2160.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2160x1620.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1640x2360.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2360x1640.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1668x2224.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2224x1668.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1668x2388.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2388x1668.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-2048x2732.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2732x2048.png" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Kriat Shema al haMitah Ashkenaz","alternateName":"קריאת שמע על המיטה נוסח אשכנז","url":"https://onlinesiddur.com/ksham/ashkenaz/","inLanguage":"he","isPartOf":{"@type":"WebSite","name":"OnlineSiddur","url":"https://onlinesiddur.com/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"OnlineSiddur","item":"https://onlinesiddur.com/"},{"@type":"ListItem","position":2,"name":"Kriat Shema al haMitah","item":"https://onlinesiddur.com/ksham/ashkenaz/"},{"@type":"ListItem","position":3,"name":"Ashkenaz"}]}</script>
+</head>
+<body class="page-reading">
+  <header class="site-head">
+    <a class="brand" href="../../" data-lang-attr>
+      <svg class="brand-mark" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.39 20.87a.696.696 0 0 1-.78 0C9.764 19.637 2 14.15 2 8.973c0-6.68 7.85-7.75 10-3.25 2.15-4.5 10-3.43 10 3.25 0 5.178-7.764 10.664-9.61 11.895z"/></svg>
+      <span data-lang-en>OnlineSiddur</span><span data-lang-he lang="he">סידור</span>
+    </a>
+    <nav>
+      <div class="today-toggle" data-today-toggle>
+      <button class="nav-link date-pill" type="button" data-act="open-today" aria-haspopup="dialog" aria-expanded="false" hidden data-tooltip-en="Hebrew date" data-tooltip-he="תאריך עברי" title="Hebrew date">
+        <svg class="date-pill-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4.75" width="18" height="16" rx="2.5"/>
+          <path d="M3 9.5h18M8 2.5v4M16 2.5v4"/>
+        </svg>
+        <span class="date-pill-text"><span data-lang-en data-date-en></span><span data-lang-he lang="he" data-date-he></span></span>
+      </button>
+      <div class="today-menu" data-today-menu hidden role="dialog" aria-label="Today">
+        <div class="today-date"><span data-lang-en data-date-en></span><span data-lang-he lang="he" data-date-he></span></div>
+
+        <button class="today-row" type="button" data-act="filter" role="switch" aria-checked="true">
+          <span data-lang-en>Today's text only</span><span data-lang-he lang="he">רק טקסט של היום</span>
+        </button>
+        <span class="today-menu-label"><span data-lang-en>Location</span><span data-lang-he lang="he">מיקום</span></span>
+        <div role="radiogroup" aria-label="Location">
+        <button class="today-row today-loc" type="button" role="radio" aria-checked="true" tabindex="0" data-act="pick-location" data-location="auto">
+          <span data-lang-en>Automatic</span><span data-lang-he lang="he">אוטומטי</span>
+        </button>
+        <button class="today-row today-loc" type="button" role="radio" aria-checked="false" tabindex="-1" data-act="pick-location" data-location="israel">
+          <span data-lang-en>Israel</span><span data-lang-he lang="he">ארץ ישראל</span>
+        </button>
+        <button class="today-row today-loc" type="button" role="radio" aria-checked="false" tabindex="-1" data-act="pick-location" data-location="diaspora">
+          <span data-lang-en>Diaspora</span><span data-lang-he lang="he">חוץ לארץ</span>
+        </button>
+        </div>
+      </div>
+    </div>
+      <a class="icon-btn" href="../../install/" data-tooltip-en="Add to home screen" data-tooltip-he="הוספה למסך הבית" title="Add to home screen">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="6.75" y="2.25" width="10.5" height="19.5" rx="2.5"/>
+          <path d="M11 18.75h2"/>
+        </svg>
+        <span class="sr-only" data-lang-en>Add to home screen</span><span class="sr-only" data-lang-he lang="he">הוספה למסך הבית</span>
+      </a>
+      <a class="icon-btn" href="../../about/" data-tooltip-en="About" data-tooltip-he="אודות" title="About">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 11v5"/>
+          <path d="M12 7.75h.01"/>
+        </svg>
+        <span class="sr-only" data-lang-en>About</span><span class="sr-only" data-lang-he lang="he">אודות</span>
+      </a>
+      <span class="divider" aria-hidden="true"></span>
+      <button class="nav-link lang-toggle" data-act="lang" aria-label="Toggle language" type="button">
+        <span data-lang-en data-toggle-to="he">עברית</span><span data-lang-he data-toggle-to="en" lang="he">English</span>
+      </button>
+      <button class="icon-btn" data-act="theme" aria-label="Toggle theme" aria-pressed="false" type="button">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 4v2M12 18v2M4 12H2M22 12h-2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>
+        </svg>
+      </button>
+      <button class="nav-link awake-toggle" data-act="awake" aria-label="Keep screen awake" aria-pressed="false" type="button" title="Keep screen awake">
+        <span class="dot" aria-hidden="true"></span>
+        <span data-lang-en>Awake</span><span data-lang-he lang="he">מסך</span>
+      </button>
+    </nav>
+  </header>
+  <main>
+    
+    <div class="section-bar" data-section-bar>
+  <div class="section-bar-title">
+    <a class="title-pill title-pill-prayer" href="../../" title="Choose prayer">
+      <span class="prayer-en" data-lang-en>Kriat Shema al haMitah</span><span class="prayer-he" lang="he">קריאת שמע על המיטה</span>
+    </a>
+    <a class="title-pill title-pill-nusach" href="../../nusach/?from=ksham" title="Choose nusach">
+      <span data-lang-en>Ashkenaz</span><span data-lang-he lang="he">אשכנז</span>
+    </a>
+    <button class="title-pill title-pill-section" data-act="open-sections" type="button" aria-haspopup="listbox" title="Jump to section">
+      <span class="current-name" data-current-section-name lang="he">קריאת שמע על המיטה</span>
+      <span class="title-pill-caret" aria-hidden="true">▾</span>
+    </button>
+  </div>
+  <div class="section-bar-controls" role="toolbar" aria-label="Reading controls">
+    <div class="type-toggle" data-type-toggle>
+      <button class="pill type-btn" type="button" data-act="open-type" aria-haspopup="dialog" aria-expanded="false" data-tooltip-en="Text size and font" data-tooltip-he="גודל טקסט וגופן" title="Text size and font">
+        <span class="type-btn-aa" aria-hidden="true">Aa</span>
+      </button>
+      <div class="type-menu" data-type-menu hidden role="dialog" aria-label="Text size and font">
+        <div class="type-menu-row">
+          <div class="type-menu-col">
+            <span class="type-menu-label"><span data-lang-en>Text size</span><span data-lang-he lang="he">גודל טקסט</span></span>
+            <div class="stepper" role="group" aria-label="Text size">
+              <button data-act="size-down" aria-label="Smaller text" type="button">−</button>
+              <span class="size-num" data-size-display>22</span>
+              <button data-act="size-up" aria-label="Larger text" type="button">+</button>
+            </div>
+          </div>
+          <div class="type-menu-col">
+            <span class="type-menu-label"><span data-lang-en>Line height</span><span data-lang-he lang="he">גובה שורה</span></span>
+            <div class="stepper" role="group" aria-label="Line height">
+              <button data-act="leading-down" aria-label="Tighter lines" type="button">−</button>
+              <span class="size-num" data-leading-display>1.85</span>
+              <button data-act="leading-up" aria-label="Looser lines" type="button">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="type-menu-sep" aria-hidden="true"></div>
+        <span class="type-menu-label"><span data-lang-en>Font</span><span data-lang-he lang="he">גופן</span></span>
+        <ul class="type-font-list" role="radiogroup" aria-label="Hebrew font">
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="true" tabindex="0" data-act="pick-font" data-font="ruehl">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Frank Ruehl</span><span data-lang-he lang="he">פרנק רוהל</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="noto">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Noto Serif</span><span data-lang-he lang="he">נוטו סריף</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="cardo">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Cardo</span><span data-lang-he lang="he">קרדו</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="stam">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Shlomo SemiStam</span><span data-lang-he lang="he">שלמה סמי־סת״ם</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="times">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Times New Roman</span><span data-lang-he lang="he">טיימס</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="arial">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Arial</span><span data-lang-he lang="he">אריאל</span></span>
+        </button></li>
+        </ul>
+      </div>
+    </div>
+    <button class="pill" data-act="headings" aria-pressed="true" type="button" title="Toggle section headings">
+      <span data-lang-en>Headings</span><span data-lang-he lang="he">כותרות</span>
+    </button>
+    <button class="pill" data-act="nikud" aria-pressed="true" type="button" title="Toggle nikud (vowels)">
+      <span data-lang-en>Nikud</span><span data-lang-he lang="he">ניקוד</span>
+    </button>
+    <div class="download-toggle" data-download-toggle>
+      <button class="pill download-btn" type="button" data-act="open-download" aria-haspopup="menu" aria-expanded="false" data-tooltip-en="Download" data-tooltip-he="הורדה" title="Download">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><polyline points="6 12 12 18 18 12"/><line x1="4" y1="20" x2="20" y2="20"/></svg>
+      </button>
+      <div class="download-menu" data-download-menu hidden role="menu">
+        <a href="../../ksham/ashkenaz/index.html" download="ksham-ashkenaz.html" role="menuitem">HTML</a>
+        <a href="../../prayers/ksham-ashkenaz.md" download="ksham-ashkenaz.md" role="menuitem">Markdown</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section-panel" data-section-panel hidden>
+  <div class="section-panel-backdrop" data-act="close-sections" aria-hidden="true"></div>
+  <ul class="section-panel-list" role="listbox" aria-label="Sections">
+      <li><button type="button" class="section-panel-item" data-act="jump" data-jump="sec-0" aria-current="true">קריאת שמע על המיטה</button></li>
+  </ul>
+</div>
+    <header class="reading-head">
+      <h1>קריאת שמע על המיטה</h1>
+      <p class="nusach-label">
+        <span data-lang-en>Nusach Ashkenaz</span><span data-lang-he lang="he">נוסח אשכנז</span>
+      </p>
+    </header>
+    <article class="reading-body"><h3 class="section" id="sec-0"><span>קריאת שמע על המיטה</span></h3>
+<p dir="rtl" lang="he">רִבּוֹנוֹ שֶׁל עוֹלָם הֲרֵינִי מוֹחֵל לְכָל־מִי שֶׁהִכְעִיס וְהִקְנִיט אוֹתִי אוֹ שֶׁחָטָא כְנֶגְדִּי בֵּין בְּגוּפִי בֵּין בְּמָמוֹנִי בֵּין בִּכְבוֹדִי בֵּין בְּכָל־אֲשֶׁר לִי בֵּין בְּאֽוֹנֶס בֵּין בְּרָצוֹן בֵּין בְּשׁוֹגֵג בֵּין בְּמֵזִיד בֵּין בְּדִבּוּר בֵּין בְּמַעֲשֶׂה בֵּין בְּמַחֲשָׁבָה בֵּין בְּהַרְהוֹר בֵּין בְּגִלְגּוּל זֶה בֵּין בְּגִלְגּוּל אַחֵר לְכָל־בַּר יִשְׂרָאֵל וְלֹא יֵעָנֵשׁ שׁוּם אָדָם בְּסִבָּתִי: יְהִי רָצוֹן מִלְּפָנֶֽיךָ יְהֹוָה אֱלֹהַי וֵאלֹהֵי אֲבוֹתַי שֶׁלֹא אֶחֱטָא עוֹד וּמַה־שֶּׁחָטָֽאתִי לְפָנֶֽיךָ מְחוֹק בְּרַחֲמֶֽיךָ הָרַבִּים אֲבָל לֹא עַל־יְדֵי יִסּוֹרִים וָחֳלָיִים רָעִים: יִהְיוּ לְרָצוֹן אִמְרֵי־פִי וְהֶגְיוֹן לִבִּי לְפָנֶֽיךָ יְהֹוָה צוּרִי וְגֹֽאֲלִֽי:</p>
+<p dir="rtl" lang="he"><b>בָּרוּךְ</b> אַתָּה יְהֹוָה אֱלֺהֵֽינוּ מֶֽלֶךְ הָעוֹלָם הַמַּפִּיל חֶבְלֵי שֵׁנָה עַל עֵינָי וּתְנוּמָה עַל עַפְעַפָּי: <b>וִיהִי רָצוֹן</b> מִלְּפָנֶֽיךָ יְהֹוָה אֱלֹהַי וֵאלֹהֵי אֲבוֹתַי שֶתַּשְׁכִּיבֵֽנִי לְשָׁלוֹם וְתַעֲמִידֵֽנִי לְשָׁלוֹם וְאַל יְבַהֲלֽוּנִי רַעְיוֹנַי וַחֲלוֹמוֹת רָעִים וְהַרְהוֹרִים רָעִים וּתְהֵא מִטָּתִי שְׁלֵמָה לְפָנֶֽיךָ וְהָאֵר עֵינַי פֶּן אִישַׁן הַמָּֽוֶת כִּי אַתָּה הַמֵּאִיר לְאִישׁוֹן בַּת עָֽיִן: בָּרוּךְ אַתָּה יְהֹוָה הַמֵּאִיר לָעוֹלָם כֻּלּוֹ בִּכְבוֹדוֹ:</p>
+<p dir="rtl" lang="he">אֵל מֶֽלֶךְ נֶאֱמָן:</p>
+<p dir="rtl" lang="he"><b>שְׁמַע יִשְׂרָאֵל יְהֹוָה אֱלֹהֵֽינוּ יְהֹוָה אֶחָד:</b></p>
+<p dir="rtl" lang="he"><small>בָּרוּךְ שֵׁם כְּבוֹד מַלְכוּתוֹ לְעוֹלָם וָעֶד:</small></p>
+<p dir="rtl" lang="he"><b>וְאָהַבְתָּ</b> אֵת יְהֹוָה אֱלֹהֶֽיךָ בְּכָל֯־לְ֯בָבְ֒ךָ וּבְכָל־נַפְשְׁ֒ךָ וּבְכָל־מְאֹדֶֽךָ: וְהָיוּ הַדְּ֒בָרִים הָאֵֽלֶּה אֲשֶׁר֯ אָ֯נֹכִי מְצַוְּ֒ךָ הַיּוֹם עַל֯־לְ֯בָבֶֽךָ: וְשִׁנַּנְתָּם לְבָנֶֽיךָ וְדִבַּרְתָּ בָּם בְּשִׁבְתְּ֒ךָ בְּבֵיתֶֽךָ וּבְלֶכְתְּ֒ךָ בַדֶּֽרֶךְ וּבְשָׁכְבְּ֒ךָ וּבְקוּמֶֽךָ: וּקְשַׁרְתָּם לְאוֹת עַל֯־יָ֯דֶֽךָ וְהָיוּ לְטֹטָפֹת בֵּין עֵינֶֽיךָ: וּכְתַבְתָּם עַל־מְזֻזוֹת בֵּיתֶֽךָ וּבִשְׁעָרֶֽיךָ:</p>
+<p dir="rtl" lang="he"><b>וְהָיָה</b> אִם־שָׁמֹֽעַ תִּשְׁמְעוּ אֶל־מִצְוֹתַי אֲשֶׁר֯ אָ֯נֹכִי מְצַוֶּה אֶתְ֒כֶם הַיּוֹם לְאַהֲבָה אֶת־יְהֹוָה אֱלֹהֵיכֶם וּלְעָבְ֒דוֹ בְּכָל־לְבַבְכֶם וּבְכָל־נַפְשְׁכֶם: וְנָתַתִּי מְטַר֯־אַ֯רְצְכֶם בְּעִתּוֹ יוֹרֶה וּמַלְקוֹשׁ וְאָסַפְתָּ דְגָנֶֽךָ וְתִירשְׁךָ וְיִצְהָרֶֽךָ: וְנָתַתִּי עֵֽשֶׂב֯ בְּ֯שָׂדְ֒ךָ לִבְ֒הֶמְתֶּֽךָ וְאָכַלְתָּ וְשָׂבָֽעְתָּ: הִשָּׁמְ֒רוּ לָכֶם פֶּן֯־יִ֯פְתֶּה לְבַבְכֶם וְסַרְתֶּם וַעֲבַדְתֶּם אֱלֹהִים֯ אֲ֯חֵרִים וְהִשְׁתַּחֲוִיתֶם לָהֶם: וְחָרָה אַף־יְהֹוָה בָּכֶם וְעָצַר֯ אֶ֯ת־הַשָּׁמַֽיִם וְלֹּא֯־יִ֯הְיֶה מָטָר וְהָאֲדָמָה לֹא תִתֵּן אֶת֯־יְ֯בוּלָהּ וַאֲבַדְתֶּם֯ מְ֯הֵרָה מֵעַל הָאָֽרֶץ הַטֹּבָה אֲשֶׁר֯ יְ֯הֹוָה נֹתֵן לָכֶם: וְשַׂמְתֶּם֯ אֶ֯ת־דְּבָרַי֯ אֵֽ֯לֶּה עַל֯־לְ֯בַבְכֶם וְעַל־נַפְשְׁ֒כֶם וּקְשַׁרְתֶּם֯ אֹ֯תָם לְאוֹת עַלּ־יֶּדְ֒כֶם וְהָיוּ לְטוֹטָפֹת בֵּין עֵינֵיכֶם: וְלִמַּדְתֶּם֯ אֹ֯תָם אֶת־בְּנֵיכֶם לְדַבֵּר בָּם בְּשִׁבְתְּךָ בְּבֵיתֶֽךָ וּבְלֶכְתְּ֒ךָ בַדֶּֽרֶךְ וּבְשָׁכְבְּ֒ךָ וּבְקוּמֶֽךָ: וּכְתַבְתָּם עַל־מְזוּזוֹת בֵּיתֶֽךָ וּבִשְׁ֒עָרֶֽיךָ: לְמַֽעַן֯ יִ֯רְבּוּ יְמֵיכֶם וִימֵי בְנֵיכֶם עַל הָאֲדָמָה אֲשֶׁר נִשְׁבַּע יְהֹוָה לַאֲבֹתֵיכֶם לָתֵת לָהֶם כִּימֵי הַשָּׁמַֽיִם עַל־הָאָֽרֶץ:</p>
+<p dir="rtl" lang="he"><b>וַֽיֹּאמֶר֯</b> יְהֹוָה אֶ֯ל־משֶׁה לֵּאמֹר: דַּבֵּר֯ אֶ֯ל־בְּנֵי יִשְׂרָאֵל וְאָמַרְתָּ אֲלֵהֶם וְעָשׂוּ לָהֶם צִיצִת עַל־כַּנְפֵי בִגְ֒דֵיהֶם לְדֹרֹתָם וְנָתְ֒נוּ עַל־צִיצִת הַכָּנָף֯ פְּ֯תִיל תְּכֵֽלֶת: וְהָיָה לָכֶם לְצִיצִת וּרְאִיתֶם֯ אֹ֯תוֹ וּזְכַרְתֶּם֯ אֶ֯ת־כָּל־מִצְוֹת֯ יְ֯הֹוָה וַעֲשִׂיתֶם֯ אֹ֯תָם וְלֹא תָתֻרוּ אַחֲרֵי לְבַבְכֶם וְאַחֲרֵי עֵינֵיכֶם אֲשֶׁר֯־אַ֯תֶּם זֹנִים֯ אַ֯חֲרֵיהֶם: לְמַֽעַן תִּזְכְּרוּ וַעֲשִׂיתֶם֯ אֶ֯ת־כָּל־מִצְוֹתָי וִהְיִיתֶם קְדשִׁים לֵאלֹהֵיכֶם: אֲנִי יְהֹוָה אֱלֹהֵיכֶם֯ אֲ֯שֶׁר הוֹצֵֽאתִי אֶתְ֒כֶם֯ מֵּאֶֽרֶץ מִצְרַֽיִם לִהְיוֹת לָכֶם לֵאלֹהִים֯ אֲ֯נִי יְהֹוָה אֱלֹהֵיכֶם֯: אֱ֯מֶת</p>
+<p dir="rtl" lang="he"><b>וִיהִי נֹֽעַם</b> אֲדֹנָי אֱלֹהֵֽינוּ עָלֵֽינוּ וּמַעֲשֵׂה יָדֵֽינוּ כּוֹנְנָה עָלֵֽינוּ וּמַעֲשֵׂה יָדֵֽינוּ כּוֹנְנֵֽהוּ:</p>
+<p dir="rtl" lang="he"><b>ישֵׁב</b> בְּסֵֽתֶר עֶלְיוֹן בְּצֵל שַׁדַּי יִתְלוֹנָן: אֹמַר לַיהֹוָה מַחְסִי וּמְצוּדָתִי אֱלֹהַי אֶבְטַח־בּוֹ: כִּי הוּא יַצִּילְךָ מִפַּח יָקוּשׁ מִדֶּֽבֶר הַוָּוֹת: בְּאֶבְרָתוֹ יָֽסֶךְ לָךְ וְתַֽחַת־כְּנָפָיו תֶּחְסֶה צִנָּה וְסֹחֵרָה אֲמִתּוֹ: לֹא־תִירָא מִפַּֽחַד לָֽיְלָה מֵחֵץ יָעוּף יוֹמָם: מִדֶּֽבֶר בָּאֹֽפֶל יַהֲלֹךְ מִקֶּֽטֶב יָשׁוּד צָהֳרָֽיִם: יִפֹּל מִצִּדְּךָ אֶֽלֶף וּרְבָבָה מִימִינֶֽךָ אֵלֶֽיךָ לֹא יִגָּשׁ: רַק בְּעֵינֶֽיךָ תַבִּיט וְשִׁלֻּמַת רְשָׁעִים תִּרְאֶה: כִּי־אַתָּה יְהֹוָה מַחְסִי עֶלְיוֹן שַֽׂמְתָּ מְעוֹנֶֽךָ: לֹא־תְאֻנֶּה אֵלֶֽיךָ רָעָה וְנֶֽגַע לֹא־יִקְרַב בְּאָהֳלֶֽךָ: כִּי מַלְאָכָיו יְצַוֶּה־לָּךְ לִשְׁמָרְךָ בְּכָל־דְּרָכֶֽיךָ: עַל־כַּפַּֽיִם יִשָּׂאֽוּנְךָ פֶּן־תִּגֹּף בָּאֶֽבֶן רַגְלֶֽךָ: עַל־שַֽׁחַל וָפֶֽתֶן תִּדְרֹךְ תִּרְמֹס כְּפִיר וְתַנִּין: כִּי בִי חָשַׁק וַאֲפַלְּטֵֽהוּ אֲשַׂגְּבֵֽהוּ כִּי־יָדַע שְׁמִי: יִקְרָאֵֽנִי וְאֶעֱנֵֽהוּ עִמּוֹ־אָנֹכִי בְצָרָה אֲחַלְּצֵֽהוּ וַאֲכַבְּדֵֽהוּ: אֹֽרֶךְ יָמִים אַשְׂבִּיעֵֽהוּ וְאַרְאֵֽהוּ בִּישׁוּעָתִי: אֹֽרֶךְ יָמִים אַשְׂבִּיעֵֽהוּ וְאַרְאֵֽהוּ בִּישׁוּעָתִי:</p>
+<p dir="rtl" lang="he"><b>יְהֹוָה</b> מָה־רַבּוּ צָרָי רַבִּים קָמִים עָלָי: רַבִּים אֹמְ֒רִים לְנַפְשִׁי אֵין יְשׁוּעָֽתָה לוֹ בֵאלֺהִים סֶֽלָה: וְאַתָּה יְהֹוָה מָגֵן בַּעֲדִי כְּבוֹדִי וּמֵרִים רֹאשִׁי: קוֹלִי אֶל־יְהֹוָה אֶקְרָא וַיַּעֲנֵֽנִי מֵהַר קָדְשׁוֹ סֶֽלָה: אֲנִי שָׁכַֽבְתִּי וָאִישָֽׁנָה הֱקִיצֽוֹתִי כִּי יְהֹוָה יִסְמְ֒כֵֽנִי: לֺא אִירָא מֵרִבְבוֹת עָם אֲשֶׁר סָבִיב שָֽׁתוּ עָלָי: קוּמָה יְהֹוָה הוֹשִׁיעֵֽנִי אֱלֺהַי כִּי־הִכִּֽיתָ אֶת־כָּל אֹיְ֒בַי לֶֽחִי שִׁנֵּי רְשָׁעִים שִׁבַּֽרְתָּ: לַיהוָֹה הַיְשׁוּעָה עַל־עַמְּ֒ךָ בִרְכָתֶֽךָ סֶֽלָה:</p>
+<p dir="rtl" lang="he"><b>הַשְׁכִּיבֵֽנוּ</b> יְהֹוָה אֱלֹהֵֽינוּ לְשָׁלוֹם וְהַעֲמִידֵֽנוּ מַלְכֵּֽנוּ לְחַיִּים וּפְרוֹשׂ עָלֵֽינוּ סֻכַּת שְׁלוֹמֶֽךָ וְתַקְּ֒נֵֽנוּ בְּעֵצָה טוֹבָה מִלְּ֒פָנֶֽיךָ וְהוֹשִׁיעֵֽנוּ לְמַֽעַן שְׁמֶֽךָ וְהָגֵן בַּעֲדֵֽנוּ וְהָסֵר מֵעָלֵֽינוּ אוֹיֵב דֶּֽבֶר וְחֶֽרֶב וְרָעָב וְיָגוֹן וְהָסֵר שָׂטָן מִלְּ֒פָנֵֽינוּ וּמֵאַחֲרֵֽינוּ וּבְצֵל כְּנָפֶֽיךָ תַּסְתִּירֵֽנוּ כִּי אֵל שׁוֹמְ֒רֵֽנוּ וּמַצִּילֵֽנוּ אָֽתָּה כִּי אֵל מֶֽלֶךְ חַנּוּן וְרַחוּם אָֽתָּה וּשְׁמוֹר צֵאתֵֽנוּ וּבוֹאֵֽנוּ לְחַיִּים וּלְשָׁלוֹם מֵעַתָּה וְעַד עוֹלָם:</p>
+<p dir="rtl" lang="he"><b>בָּרוּךְ</b> יְהֹוָה בַּיּוֹם בָּרוּךְ יְהֹוָה בַּלָּֽיְלָה בָּרוּךְ יְהֹוָה בְּשָׁכְבֵֽנוּ בָּרוּךְ יְהֹוָה בְּקוּמֵֽנוּ. כִּי בְיָדְ֒ךָ נַפְשׁוֹת הַחַיִּים וְהַמֵּתִים אֲשֶׁר בְּיָדוֹ נֶֽפֶשׁ כָּל חָי וְרֽוּחַ כָּל בְּשַׂר אִישׁ. בְּיָדְ֒ךָ אַפְקִיד רוּחִי פָּדִֽיתָה אוֹתִי יְהֹוָה אֵל אֱמֶת. אֱלֺהֵֽינוּ שֶׁבַּשָּׁמַֽיִם יַחֵד שִׁמְךָ וְקַיֵּם מַלְכוּתְ֒ךָ תָּמִיד וּמְלֺךְ עָלֵֽינוּ לְעוֹלָם וָעֶד:</p>
+<p dir="rtl" lang="he"><b>יִרְאוּ</b> עֵינֵֽינוּ וְיִשְׂמַח לִבֵּֽנוּ וְתָגֵל נַפְשֵֽׁנוּ בִּישׁוּעָתְ֒ךָ בֶּאֱמֶת בֶּאֱמוֹר לְצִיּוֹן מָלַךְ אֱלֺהָֽיִךְ. יְהֹוָה מֶֽלֶךְ יְהֹוָה מָלָךְ יְהֹוָה יִמְלֹךְ לְעוֹלָם וָעֶד: כִּי הַמַּלְכוּת שֶׁלְּ֒ךָ הִיא וּלְעֽוֹלְ֒מֵי עַד תִּמְלוֹךְ בְּכָבוֹד כִּי אֵין לָֽנוּ מֶֽלֶךְ אֶלָּא אָֽתָּה:</p>
+<p dir="rtl" lang="he"><b>הַמַּלְאָךְ</b> הַגֹּאֵל אֹתִי מִכָּל רָע יְבָרֵךְ אֶת הַנְּ֒עָרִים וְיִקָּרֵא בָהֶם שְׁמִי וְשֵׁם אֲבוֹתַי אַבְרָהָם וְיִצְחָק וְיִדְגּוּ לָרֹב בְּקֶֽרֶב הָאָֽרֶץ:</p>
+<p dir="rtl" lang="he"><b>וַיֹּֽאמֶר</b> אִם שָׁמֽוֹעַ תִּשְׁמַע לְקוֹל יְהֹוָה אֱלֺהֶֽיךָ וְהַיָּשָׁר בְּעֵינָיו תַּעֲשֶׂה וְהַאֲזַנְתָּ לְמִצְוֹתָיו וְשָׁמַרְתָּ כָּל חֻקָּיו כָּל הַמַּחֲלָה אֲשֶׁר שַֽׂמְתִּי בְמִצְרַֽיִם לֺא אָשִׂים עָלֶֽיךָ כִּי אֲנִי יְהֹוָה רֹפְ֒אֶֽךָ:</p>
+<p dir="rtl" lang="he"><b>וַיֹּֽאמֶר</b> יְהֹוָה אֶל הַשָּׂטָן יִגְעַר יְהֹוָה בְּךָ הַשָּׂטָן וְיִגְעַר יְהֹוָה בְּךָ הַבֹּחֵר בִּירוּשָׁלָֽםִ הֲלֺא זֶה אוּד מֻצָּל מֵאֵשׁ</p>
+<p dir="rtl" lang="he"><b>הִנֵּה</b> מִטָּתוֹ שֶׁלִּשְׁלֺמֹה שִׁשִּׁים גִּבֹּרִים סָבִיב לָהּ מִגִּבֹּרֵי יִשְׂרָאֵל כֻּלָּם אֲחֻֽזֵי חֶֽרֶב מְלֻמְּ֒דֵי מִלְחָמָה אִישׁ חַרְבּוֹ עַל יְרֵכוֹ מִפַּֽחַד בַּלֵּילוֹת</p>
+<p dir="rtl" lang="he"><small>יאמר כל פסוק ג"פ:</small></p>
+<p dir="rtl" lang="he"><b>יְבָרֶכְךָ</b> יְהֹוָה וְיִשְׁמְרֶֽךָ יָאֵר יְהֹוָה פָּנָיו אֵלֶֽיךָ וִיחֻנֶּֽךָּ: יִשָּׂא יְהֹוָה פָּנָיו אֵלֶֽיךָ וְיָשֵׂם לְךָ שָׁלוֹם:</p>
+<p dir="rtl" lang="he"><b>הִנֵּה</b> לֺא יָנוּם וְלֺא יִישָׁן שׁוֹמֵר יִשְׂרָאֵל:</p>
+<p dir="rtl" lang="he"><b>לִישׁוּעָתְ֒ךָ</b> קִוִּיתִי יְהֹוָה קִוִּיתִי יְהֹוָה לִישׁוּעָתְ֒ךָ יְהֹוָה לִישׁוּעָתְ֒ךָ קִוִּיתִי</p>
+<p dir="rtl" lang="he"><b>בְּשֵׁם</b> יְהֹוָה אֱלֺהֵי יִשְׂרָאֵל מִימִינִי מִיכָאֵל וּמִשְּׂ֒מֹאלִי גַבְרִיאֵל וּמִלְּ֒פָנַי אוֹרִיאֵל וּמֵאֲחוֹרַי רְפָאֵל וְעַל רֹאשִי שְׁכִינַת אֵל:</p>
+<p dir="rtl" lang="he"><b>שִׁיר הַמַּעֲלוֹת</b> אַשְׁרֵי כָּל־יְרֵא יְהֹוָה הַהֹלֵךְ בִּדְרָכָיו: יְגִֽיעַ כַּפֶּֽיךָ כִּי תֹאכֵל אַשְׁרֶֽיךָ וְטוֹב לָךְ: אֶשְׁתְּ֒ךָ כְּגֶֽפֶן פֹּרִיָּה בְּיַרְכְּ֒תֵי בֵיתֶֽךָ בָּנֶֽיךָ כִּשְׁתִלֵי זֵיתִים סָבִיב לְשֻׁלְחָנֶֽךָ: הִנֵּה כִי־כֵן יְבֹֽרַךְ גָּֽבֶר יְרֵא יְהֹוָה: יְבָרֶכְךָ יְהֹוָה מִצִּיּוֹן וּרְאֵה בְּטוּב יְרוּשָׁלָֽםִ כֹּל יְמֵי חַיֶּֽיךָ: וּרְאֵה־ בָנִים לְבָנֶֽיךָ שָׁלוֹם עַל־יִשְׂרָאֵל:</p>
+<p dir="rtl" lang="he"><small>יאמר כל פסוק ג"פ:</small></p>
+<p dir="rtl" lang="he"><b>רִגְזוּ</b> וְאַל תֶּחֱטָֽאוּ אִמְרוּ בִלְבַבְכֶם עַל מִשְׁכַּבְכֶם וְדֹֽמּוּ סֶֽלָה:</p>
+<p dir="rtl" lang="he"><b>אֲדוֹן עוֹלָם</b> אֲשֶׁר מָלַךְ, בְּטֶֽרֶם כָּל יְצִיר נִבְרָא:</p>
+<p dir="rtl" lang="he">לְעֵת נַעֲשָׂה בְחֶפְצוֹ כֹּל, אֲזַי מֶֽלֶךְ שְׁמוֹ נִקְרָא:</p>
+<p dir="rtl" lang="he">וְאַחֲרֵי כִּכְ֒לוֹת הַכֹּל, לְבַדּוֹ יִמְלֹךְ נוֹרָא:</p>
+<p dir="rtl" lang="he">וְהוּא הָיָה וְהוּא הֹוֶה, וְהוּא יִהְיֶה בְּתִפְאָרָה:</p>
+<p dir="rtl" lang="he">וְהוּא אֶחָד וְאֵין שֵׁנִי, לְהַמְשִׁיל לוֹ לְהַחְבִּֽירָה:</p>
+<p dir="rtl" lang="he">בְּלִי רֵאשִׁית בְּלִי תַכְלִית, וְלוֹ הָעֹז וְהַמִּשְׂרָה:</p>
+<p dir="rtl" lang="he">וְהוּא אֵלִי וְחַי גּוֹאֲלִי, וְצוּר חֶבְלִי בְּעֵת צָרָה:</p>
+<p dir="rtl" lang="he">וְהוּא נִסִּי וּמָנוֹס לִי, מְנָת כּוֹסִי בְּיוֹם אֶקְרָא:</p>
+<p dir="rtl" lang="he">בְּיָדוֹ אַפְקִיד רוּחִי, בְּעֵת אִישַׁן וְאָעִֽירָה:</p>
+<p dir="rtl" lang="he">וְעִם רוּחִי גְּוִיָּתִי, יְהֹוָה לִי וְלֹא אִירָא:</p></article>
+    <template data-nikud-alt><h3 class="section" id="sec-0"><span>קריאת שמע על המיטה</span></h3>
+<p dir="rtl" lang="he">רבונו של עולם הריני מוחל לכלמי שהכעיס והקניט אותי או שחטא כנגדי בין בגופי בין בממוני בין בכבודי בין בכלאשר לי בין באונס בין ברצון בין בשוגג בין במזיד בין בדבור בין במעשה בין במחשבה בין בהרהור בין בגלגול זה בין בגלגול אחר לכלבר ישראל ולא יענש שום אדם בסבתי: יהי רצון מלפניך יהוה אלהי ואלהי אבותי שלא אחטא עוד ומהשחטאתי לפניך מחוק ברחמיך הרבים אבל לא עלידי יסורים וחליים רעים: יהיו לרצון אמריפי והגיון לבי לפניך יהוה צורי וגאלי:</p>
+<p dir="rtl" lang="he"><b>ברוך</b> אתה יהוה אלהינו מלך העולם המפיל חבלי שנה על עיני ותנומה על עפעפי: <b>ויהי רצון</b> מלפניך יהוה אלהי ואלהי אבותי שתשכיבני לשלום ותעמידני לשלום ואל יבהלוני רעיוני וחלומות רעים והרהורים רעים ותהא מטתי שלמה לפניך והאר עיני פן אישן המות כי אתה המאיר לאישון בת עין: ברוך אתה יהוה המאיר לעולם כלו בכבודו:</p>
+<p dir="rtl" lang="he">אל מלך נאמן:</p>
+<p dir="rtl" lang="he"><b>שמע ישראל יהוה אלהינו יהוה אחד:</b></p>
+<p dir="rtl" lang="he"><small>ברוך שם כבוד מלכותו לעולם ועד:</small></p>
+<p dir="rtl" lang="he"><b>ואהבת</b> את יהוה אלהיך בכללבבך ובכלנפשך ובכלמאדך: והיו הדברים האלה אשר אנכי מצוך היום עללבבך: ושננתם לבניך ודברת בם בשבתך בביתך ובלכתך בדרך ובשכבך ובקומך: וקשרתם לאות עלידך והיו לטטפת בין עיניך: וכתבתם עלמזזות ביתך ובשעריך:</p>
+<p dir="rtl" lang="he"><b>והיה</b> אםשמע תשמעו אלמצותי אשר אנכי מצוה אתכם היום לאהבה אתיהוה אלהיכם ולעבדו בכללבבכם ובכלנפשכם: ונתתי מטרארצכם בעתו יורה ומלקוש ואספת דגנך ותירשך ויצהרך: ונתתי עשב בשדך לבהמתך ואכלת ושבעת: השמרו לכם פןיפתה לבבכם וסרתם ועבדתם אלהים אחרים והשתחויתם להם: וחרה אףיהוה בכם ועצר אתהשמים ולאיהיה מטר והאדמה לא תתן אתיבולה ואבדתם מהרה מעל הארץ הטבה אשר יהוה נתן לכם: ושמתם אתדברי אלה עללבבכם ועלנפשכם וקשרתם אתם לאות עלידכם והיו לטוטפת בין עיניכם: ולמדתם אתם אתבניכם לדבר בם בשבתך בביתך ובלכתך בדרך ובשכבך ובקומך: וכתבתם עלמזוזות ביתך ובשעריך: למען ירבו ימיכם וימי בניכם על האדמה אשר נשבע יהוה לאבתיכם לתת להם כימי השמים עלהארץ:</p>
+<p dir="rtl" lang="he"><b>ויאמר</b> יהוה אלמשה לאמר: דבר אלבני ישראל ואמרת אלהם ועשו להם ציצת עלכנפי בגדיהם לדרתם ונתנו עלציצת הכנף פתיל תכלת: והיה לכם לציצת וראיתם אתו וזכרתם אתכלמצות יהוה ועשיתם אתם ולא תתרו אחרי לבבכם ואחרי עיניכם אשראתם זנים אחריהם: למען תזכרו ועשיתם אתכלמצותי והייתם קדשים לאלהיכם: אני יהוה אלהיכם אשר הוצאתי אתכם מארץ מצרים להיות לכם לאלהים אני יהוה אלהיכם: אמת</p>
+<p dir="rtl" lang="he"><b>ויהי נעם</b> אדני אלהינו עלינו ומעשה ידינו כוננה עלינו ומעשה ידינו כוננהו:</p>
+<p dir="rtl" lang="he"><b>ישב</b> בסתר עליון בצל שדי יתלונן: אמר ליהוה מחסי ומצודתי אלהי אבטחבו: כי הוא יצילך מפח יקוש מדבר הוות: באברתו יסך לך ותחתכנפיו תחסה צנה וסחרה אמתו: לאתירא מפחד לילה מחץ יעוף יומם: מדבר באפל יהלך מקטב ישוד צהרים: יפל מצדך אלף ורבבה מימינך אליך לא יגש: רק בעיניך תביט ושלמת רשעים תראה: כיאתה יהוה מחסי עליון שמת מעונך: לאתאנה אליך רעה ונגע לאיקרב באהלך: כי מלאכיו יצוהלך לשמרך בכלדרכיך: עלכפים ישאונך פןתגף באבן רגלך: עלשחל ופתן תדרך תרמס כפיר ותנין: כי בי חשק ואפלטהו אשגבהו כיידע שמי: יקראני ואענהו עמואנכי בצרה אחלצהו ואכבדהו: ארך ימים אשביעהו ואראהו בישועתי: ארך ימים אשביעהו ואראהו בישועתי:</p>
+<p dir="rtl" lang="he"><b>יהוה</b> מהרבו צרי רבים קמים עלי: רבים אמרים לנפשי אין ישועתה לו באלהים סלה: ואתה יהוה מגן בעדי כבודי ומרים ראשי: קולי אליהוה אקרא ויענני מהר קדשו סלה: אני שכבתי ואישנה הקיצותי כי יהוה יסמכני: לא אירא מרבבות עם אשר סביב שתו עלי: קומה יהוה הושיעני אלהי כיהכית אתכל איבי לחי שני רשעים שברת: ליהוה הישועה עלעמך ברכתך סלה:</p>
+<p dir="rtl" lang="he"><b>השכיבנו</b> יהוה אלהינו לשלום והעמידנו מלכנו לחיים ופרוש עלינו סכת שלומך ותקננו בעצה טובה מלפניך והושיענו למען שמך והגן בעדנו והסר מעלינו אויב דבר וחרב ורעב ויגון והסר שטן מלפנינו ומאחרינו ובצל כנפיך תסתירנו כי אל שומרנו ומצילנו אתה כי אל מלך חנון ורחום אתה ושמור צאתנו ובואנו לחיים ולשלום מעתה ועד עולם:</p>
+<p dir="rtl" lang="he"><b>ברוך</b> יהוה ביום ברוך יהוה בלילה ברוך יהוה בשכבנו ברוך יהוה בקומנו. כי בידך נפשות החיים והמתים אשר בידו נפש כל חי ורוח כל בשר איש. בידך אפקיד רוחי פדיתה אותי יהוה אל אמת. אלהינו שבשמים יחד שמך וקים מלכותך תמיד ומלך עלינו לעולם ועד:</p>
+<p dir="rtl" lang="he"><b>יראו</b> עינינו וישמח לבנו ותגל נפשנו בישועתך באמת באמור לציון מלך אלהיך. יהוה מלך יהוה מלך יהוה ימלך לעולם ועד: כי המלכות שלך היא ולעולמי עד תמלוך בכבוד כי אין לנו מלך אלא אתה:</p>
+<p dir="rtl" lang="he"><b>המלאך</b> הגאל אתי מכל רע יברך את הנערים ויקרא בהם שמי ושם אבותי אברהם ויצחק וידגו לרב בקרב הארץ:</p>
+<p dir="rtl" lang="he"><b>ויאמר</b> אם שמוע תשמע לקול יהוה אלהיך והישר בעיניו תעשה והאזנת למצותיו ושמרת כל חקיו כל המחלה אשר שמתי במצרים לא אשים עליך כי אני יהוה רפאך:</p>
+<p dir="rtl" lang="he"><b>ויאמר</b> יהוה אל השטן יגער יהוה בך השטן ויגער יהוה בך הבחר בירושלם הלא זה אוד מצל מאש</p>
+<p dir="rtl" lang="he"><b>הנה</b> מטתו שלשלמה ששים גברים סביב לה מגברי ישראל כלם אחזי חרב מלמדי מלחמה איש חרבו על ירכו מפחד בלילות</p>
+<p dir="rtl" lang="he"><small>יאמר כל פסוק ג"פ:</small></p>
+<p dir="rtl" lang="he"><b>יברכך</b> יהוה וישמרך יאר יהוה פניו אליך ויחנך: ישא יהוה פניו אליך וישם לך שלום:</p>
+<p dir="rtl" lang="he"><b>הנה</b> לא ינום ולא יישן שומר ישראל:</p>
+<p dir="rtl" lang="he"><b>לישועתך</b> קויתי יהוה קויתי יהוה לישועתך יהוה לישועתך קויתי</p>
+<p dir="rtl" lang="he"><b>בשם</b> יהוה אלהי ישראל מימיני מיכאל ומשמאלי גבריאל ומלפני אוריאל ומאחורי רפאל ועל ראשי שכינת אל:</p>
+<p dir="rtl" lang="he"><b>שיר המעלות</b> אשרי כלירא יהוה ההלך בדרכיו: יגיע כפיך כי תאכל אשריך וטוב לך: אשתך כגפן פריה בירכתי ביתך בניך כשתלי זיתים סביב לשלחנך: הנה כיכן יברך גבר ירא יהוה: יברכך יהוה מציון וראה בטוב ירושלם כל ימי חייך: וראה בנים לבניך שלום עלישראל:</p>
+<p dir="rtl" lang="he"><small>יאמר כל פסוק ג"פ:</small></p>
+<p dir="rtl" lang="he"><b>רגזו</b> ואל תחטאו אמרו בלבבכם על משכבכם ודמו סלה:</p>
+<p dir="rtl" lang="he"><b>אדון עולם</b> אשר מלך, בטרם כל יציר נברא:</p>
+<p dir="rtl" lang="he">לעת נעשה בחפצו כל, אזי מלך שמו נקרא:</p>
+<p dir="rtl" lang="he">ואחרי ככלות הכל, לבדו ימלך נורא:</p>
+<p dir="rtl" lang="he">והוא היה והוא הוה, והוא יהיה בתפארה:</p>
+<p dir="rtl" lang="he">והוא אחד ואין שני, להמשיל לו להחבירה:</p>
+<p dir="rtl" lang="he">בלי ראשית בלי תכלית, ולו העז והמשרה:</p>
+<p dir="rtl" lang="he">והוא אלי וחי גואלי, וצור חבלי בעת צרה:</p>
+<p dir="rtl" lang="he">והוא נסי ומנוס לי, מנת כוסי ביום אקרא:</p>
+<p dir="rtl" lang="he">בידו אפקיד רוחי, בעת אישן ואעירה:</p>
+<p dir="rtl" lang="he">ועם רוחי גויתי, יהוה לי ולא אירא:</p></template>
+    <div class="end-orn">✦</div>
+    <div class="dedication" lang="he" dir="rtl" aria-label="In memory">
+      <p>לעילוי נשמת</p>
+      <p>מנחם מנדל בן אהרן הלוי</p>
+      <p>פייגא שיינדל בת ברוך</p>
+    </div>
+    <footer class="other-nusachim">
+    <span data-lang-en>Same prayer in other nusachim:</span><span data-lang-he lang="he">תפילה זו בנוסחים אחרים:</span>
+    <div>
+      <a href="../../ksham/sefard/"><span data-lang-en>Sefard</span><span data-lang-he lang="he">ספרד</span></a>
+      <a href="../../ksham/ari/"><span data-lang-en>Ari (Chabad)</span><span data-lang-he lang="he">האר״י</span></a>
+      <a href="../../ksham/edut/"><span data-lang-en>Edut HaMizrach</span><span data-lang-he lang="he">עדות המזרח</span></a>
+    </div>
+  </footer>
+  
+  </main>
+  <script src="../../app.js" defer></script>
+  <script defer src="https://stats.piliavin.com/script.js" data-website-id="05f57ffb-fd83-4049-8964-89d4a3335924"></script>
+</body>
+</html>

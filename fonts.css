@@ -1,0 +1,183 @@
+/* Self-hosted fonts.
+
+   ── Hebrew reading faces ────────────────────────────────────────────────
+   One family per entry in manifest.mjs::FONTS, files named
+   he-<id>-<weight>.woff2. Only the family the reader has selected is ever
+   downloaded — @font-face declarations cost nothing until something renders
+   in them, so the six non-default families are free for everyone else.
+
+   font-display: `swap` everywhere, including the default. `optional` was used
+   for the default and is tempting — a ~100ms block period and no swap keeps
+   first paint free of FOUT and layout shift — but its swap period is ZERO, so
+   a face that misses that window is not used AT ALL for the rest of the page
+   load. At 21.9 KB the default face needs ~109ms at 1.6 Mbps and ~437ms at
+   400 kbps before RTT, so on the weak-phone/slow-cellular profile this project
+   targets, a first-time reader would render the whole session in a system
+   fallback — with no cantillation glyphs and no mark positioning, which is
+   the exact defect this font was chosen to fix. Correct text outranks a
+   first-paint flash (project goal 1 over goal 4). The per-family size-adjust
+   below keeps the fallback close enough that the swap is not a big reflow,
+   and pre-paint.js preloads whichever face is active so it usually lands
+   before first paint anyway.
+
+   size-adjust: tuned per family so a given --size renders Hebrew at the same
+   optical height everywhere, i.e. the text-size stepper means one thing no
+   matter which font is active. Values are derived from the measured median
+   bounding-box height of 15 full-height Hebrew letters (אבגדהחטכמנסעצרת),
+   normalised to Frank Ruhl Libre's height x its historical 95%. Do NOT copy
+   these from OS/2 sxHeight — that metric is taken from the Latin 'x' and is
+   badly wrong for Hebrew (it mis-sizes Arimo and Cardo by ~10% each).
+
+   Bold: each family ships its nearest available bold — a true 700 where one
+   exists (Frank Ruehl CLM, Tinos), otherwise the 500. Both are declared over
+   the range `500 700` so the chrome's font-weight:500 rules AND content <b>
+   (which resolves to 700) land on the heavier face either way. Cardo and
+   Shlomo SemiStam ship regular only, so <b> gets browser-synthesised bolding.
+
+   Coverage is a hard invariant: EVERY family here carries the full ~14,450
+   cantillation marks and masora circles used in content/prayers/*.md, with
+   working mark attachment. Verify any new face against the real repertoire
+   before adding it — most Hebrew families on Google Fonts fail, and Frank Ruhl
+   Libre (this site's face until 2026-07) was removed for exactly this reason:
+   zero te'amim glyphs, so every one of them fell back to a system font and
+   lost its positioning anchors.                                               */
+
+/* ── ruehl · Frank Ruehl CLM — DEFAULT (GPL v2 + font exception) ── */
+@font-face {
+  font-family: 'Frank Ruehl CLM';
+  src: url('fonts/he-ruehl-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 103.5%;
+}
+@font-face {
+  font-family: 'Frank Ruehl CLM';
+  src: url('fonts/he-ruehl-700.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 103.5%;
+}
+
+/* ── noto · Noto Serif Hebrew ── */
+@font-face {
+  font-family: 'Noto Serif Hebrew';
+  src: url('fonts/he-noto-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 85.6%;
+}
+@font-face {
+  font-family: 'Noto Serif Hebrew';
+  src: url('fonts/he-noto-500.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 85.6%;
+}
+
+/* ── cardo · Cardo (regular only — see below) ──
+   Cardo Bold is deliberately NOT shipped. Google's Cardo 700 hebrew subset has
+   an entirely empty GPOS and GSUB (verified byte-identical to upstream), so it
+   carries no `mark` attachment and no `ccmp` — every nikud and ta'am in a <b>
+   would render at its default, unpositioned location. The regular face has
+   correct positioning, so <b> falls back to browser-synthesised bolding of it,
+   which keeps the marks where they belong. */
+@font-face {
+  font-family: 'Cardo';
+  src: url('fonts/he-cardo-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 90.7%;
+}
+
+/* ── stam · Shlomo SemiStam (single weight — <b> is synthesised) ── */
+@font-face {
+  font-family: 'Shlomo SemiStam';
+  src: url('fonts/he-stam-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 79.4%;
+}
+
+/* ── times · Tinos (metric-compatible stand-in for Times New Roman) ── */
+@font-face {
+  font-family: 'Tinos';
+  src: url('fonts/he-times-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 94.1%;
+}
+@font-face {
+  font-family: 'Tinos';
+  src: url('fonts/he-times-700.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 94.1%;
+}
+
+/* ── arial · Arimo (metric-compatible stand-in for Arial) ── */
+@font-face {
+  font-family: 'Arimo';
+  src: url('fonts/he-arial-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 93.4%;
+}
+@font-face {
+  font-family: 'Arimo';
+  src: url('fonts/he-arial-500.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F, U+200C-200E;
+  size-adjust: 93.4%;
+}
+
+/* ── Latin faces (not selectable — chrome and English body copy) ──────────
+   font-display: optional eliminates FOUT/CLS; the system fallback is used for
+   the first ~100ms and never swaps if the font misses that window. */
+
+@font-face {
+  font-family: 'EB Garamond';
+  src: url('fonts/eb-garamond-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: optional;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  size-adjust: 100%;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/inter-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: optional;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  size-adjust: 100%;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/inter-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: optional;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  size-adjust: 100%;
+}

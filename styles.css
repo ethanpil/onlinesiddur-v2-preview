@@ -1,0 +1,953 @@
+/* OnlineSiddur — single stylesheet.
+   Design tokens mirror design/project/siddur-app.jsx:166-177. */
+
+:root {
+  --bg: rgb(240, 238, 233);
+  --fg: #1a1a1a;
+  --muted: #6b6862;
+  --rule: rgba(60, 40, 20, 0.10);
+  --soft: rgba(60, 40, 20, 0.035);
+  --serif-he: 'Frank Ruehl CLM', 'SBL Hebrew', 'David', 'Times New Roman', serif;
+  --serif-en: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --size: 22px;
+  --lh: 1.85;
+  /* Wordmark stays on the default face regardless of the reader's font pick,
+     so the site's identity is constant between visitors. */
+  --serif-he-brand: 'Frank Ruehl CLM', 'SBL Hebrew', 'David', 'Times New Roman', serif;
+}
+
+/* ── Reader-selected Hebrew face ──────────────────────────────────────────
+   pre-paint.js sets data-font on <html> from localStorage before first paint;
+   app.js updates it on pick. Each id matches an entry in
+   build/lib/manifest.mjs::FONTS and a family declared in static/fonts.css.
+   The default (ruehl) needs no rule — it IS the :root value above. */
+html[data-font='noto']  { --serif-he: 'Noto Serif Hebrew', 'SBL Hebrew', 'David', serif; }
+html[data-font='cardo'] { --serif-he: 'Cardo', 'SBL Hebrew', 'David', serif; }
+html[data-font='stam']  { --serif-he: 'Shlomo SemiStam', 'SBL Hebrew', 'David', serif; }
+html[data-font='times'] { --serif-he: 'Tinos', 'Times New Roman', 'David', serif; }
+html[data-font='arial'] { --serif-he: 'Arimo', Arial, 'David', sans-serif; }
+html[data-theme='dark'] {
+  --bg: #0e0e10;
+  --fg: #ececea;
+  --muted: #8a877f;
+  --rule: rgba(255, 255, 255, 0.09);
+  --soft: rgba(255, 255, 255, 0.04);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; }
+body { background: var(--bg); color: var(--fg); font-family: var(--ui); min-height: 100vh; }
+
+/* Accessible-name-only text. Used by the header's icon-only links so their
+   name still ships as bilingual data-lang spans (the rule below hides the
+   inactive one, which removes it from the a11y tree too). */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* Bilingual chrome: pair each chrome string as
+   <span data-lang-en>...</span><span data-lang-he lang="he">...</span>. */
+html[data-lang='en'] [data-lang-he] { display: none; }
+html[data-lang='he'] [data-lang-en] { display: none; }
+
+/* Chrome direction follows the user's UI language, decoupled from the
+   document direction. Reading pages have <html dir="rtl"> for SEO of the
+   Hebrew prayer body, but the header / reading-head / controls should
+   still lay out LTR when the user has English UI selected. Prayer
+   paragraphs carry their own dir="rtl" attribute, so they stay RTL. */
+html[data-lang='en'] body { direction: ltr; }
+html[data-lang='he'] body { direction: rtl; }
+[lang='he'] { font-feature-settings: 'kern', 'liga'; }
+
+/* Headings on/off (reading view) */
+/* Collapse (don't display:none) the section heading so its id="sec-N"
+   anchor keeps a layout box — scrollIntoView and the section
+   IntersectionObserver both need a real rect to land/track correctly. */
+html[data-headings='off'] .reading-body .section {
+  height: 0; margin: 0; padding: 0; overflow: hidden;
+}
+html[data-headings='off'] .reading-body .sub-heading { display: none; }
+html[data-headings='off'] .reading-body .section + p { margin-top: 36px; }
+
+/* Focus visible */
+button:focus-visible, a:focus-visible {
+  outline: 2px solid currentColor; outline-offset: 2px; border-radius: 4px;
+}
+
+/* ── Site header ── */
+.site-head {
+  position: sticky; top: 0; z-index: 10; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px; background: var(--bg);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--ui); gap: 8px;
+}
+.site-head .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--serif-he-brand);
+  font-size: 19px; font-weight: 500; letter-spacing: -0.01em;
+  color: var(--fg); text-decoration: none; white-space: nowrap;
+}
+.site-head .brand-mark {
+  flex-shrink: 0;
+  /* fill="currentColor" inherits color: var(--fg), so the mark
+     auto-flips between #1a1a1a (light theme) and #ececea (dark theme). */
+}
+.site-head .brand[lang='en'] { font-family: var(--serif-en); }
+.site-head nav {
+  display: flex; align-items: center; gap: 4px;
+}
+.site-head nav .nav-link {
+  font-family: var(--ui); font-size: 13.5px;
+  padding: 6px 10px; border-radius: 6px; color: var(--muted);
+  text-decoration: none; cursor: pointer;
+  background: none; border: none;
+}
+.site-head nav .nav-link:hover { background: var(--soft); }
+.site-head nav .divider {
+  width: 1px; height: 16px; background: var(--rule); margin: 0 6px;
+}
+.site-head nav .icon-btn {
+  width: 32px; height: 32px; border-radius: 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--fg); background: none; border: none;
+}
+.site-head nav .icon-btn:hover { background: var(--soft); }
+/* Awake (wake-lock) toggle in site-head, reading pages only.
+   Inherits .nav-link sizing; adds a small dot that turns green when active. */
+.site-head nav .awake-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.site-head nav .awake-toggle .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--muted); display: inline-block;
+}
+.site-head nav .awake-toggle[aria-pressed='true'] .dot { background: #34c759; }
+.site-head nav .awake-toggle[aria-pressed='true'] { color: var(--fg); }
+
+/* ── Today (Hebrew date pill + panel) ── */
+.today-toggle { position: relative; display: inline-flex; }
+.site-head nav .date-pill { white-space: nowrap; display: inline-flex; align-items: center; }
+/* The display rule above outranks the UA's [hidden] — restore it. */
+.site-head nav .date-pill[hidden] { display: none; }
+.date-pill-icon { display: none; }
+.today-date {
+  padding: 7px 9px 4px; font-family: var(--ui); font-size: 13px;
+  font-weight: 600; color: var(--fg);
+}
+/* Omer page: which night the visible count belongs to. */
+.omer-note {
+  margin-top: 10px; font-family: var(--ui); font-size: 13px;
+  color: var(--muted);
+}
+.omer-note[hidden] { display: none; }
+.today-menu {
+  position: absolute; top: calc(100% + 4px); inset-inline-start: 0;
+  width: 218px;
+  background: var(--bg); border: 1px solid var(--rule); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 30; padding: 8px;
+}
+html[data-theme='dark'] .today-menu { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
+.today-menu[hidden] { display: none; }
+.today-menu-label {
+  display: block; margin: 9px 2px 4px;
+  font-family: var(--ui); font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted);
+}
+.today-row {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 7px 9px; border-radius: 7px;
+  font-family: var(--ui); font-size: 13px; color: var(--fg);
+  background: none; border: none; cursor: pointer; text-align: start;
+}
+.today-row:hover { background: var(--soft); }
+/* A checked switch/radio row gets a trailing mark. */
+.today-row[aria-checked='true']::after { content: '✓'; color: var(--fg); }
+.today-row[aria-checked='false']::after { content: ''; }
+@media (max-width: 640px) {
+  /* The nav has no room for a text pill (it sits at its 320px overflow
+     limit) — collapse to the calendar icon; the panel's date row shows
+     the full date. The .nav-link.date-pill selector outranks the later
+     `.site-head nav .nav-link` mobile rule. */
+  .site-head nav .nav-link.date-pill { padding: 6px 5px; }
+  .date-pill-icon { display: inline; }
+  .date-pill .date-pill-text { display: none; }
+  /* Anchored to the pill the panel clips off-viewport on a phone. Fixed
+     positioning resolves against the sticky header (its backdrop-filter
+     makes it the containing block), which spans the full viewport width
+     — so these insets span the screen, below the 56px header. */
+  .today-menu {
+    position: fixed; inset-inline-start: 8px; inset-inline-end: 8px;
+    top: 56px; width: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-head { padding: 0 8px; }
+  .site-head .brand { font-size: 16px; gap: 6px; }
+  .site-head .brand-mark { width: 18px; height: 18px; }
+  .site-head nav { gap: 0; }
+  .site-head nav .nav-link { padding: 6px 7px; font-size: 12px; }
+  .site-head nav .divider { display: none; }
+  .site-head nav .lang-toggle { padding: 6px 7px; font-size: 12px; }
+  .site-head nav .awake-toggle { padding: 6px 6px; font-size: 12px; }
+  /* Two more 32px controls landed in the nav; at 320px the row overflowed
+     and gave every reading page horizontal scroll. */
+  .site-head nav .icon-btn { width: 28px; height: 28px; }
+}
+
+/* ── Home page (3×2 card grid) ── */
+.home {
+  max-width: 1080px; margin: 0 auto;
+  padding: 56px 36px 120px;
+}
+.home .heading-row {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 32px; gap: 16px; flex-wrap: wrap;
+}
+.home .kicker {
+  font-family: var(--ui); font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 8px;
+}
+.home h1 {
+  margin: 0; font-family: var(--serif-he); font-weight: 400;
+  font-size: 38px; color: var(--fg); letter-spacing: -0.02em; line-height: 1.1;
+}
+html[data-lang='en'] .home h1 { font-family: var(--serif-en); }
+.home .grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.card {
+  display: flex; flex-direction: column; justify-content: space-between;
+  gap: 12px; padding: 30px 28px 34px; min-height: 180px;
+  border: 1px solid var(--rule); border-radius: 6px;
+  background: transparent; color: var(--fg);
+  text-decoration: none; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  overflow: hidden;
+}
+.card:hover { background: var(--soft); border-color: var(--muted); }
+.card .he {
+  font-family: var(--serif-he); font-size: 38px; line-height: 1.1;
+  color: var(--fg); letter-spacing: -0.005em; text-align: right;
+  word-break: keep-all; overflow-wrap: normal;
+  text-wrap: balance;
+}
+.card .en {
+  font-family: var(--serif-en); font-size: 19px; line-height: 1.15;
+  color: var(--fg); letter-spacing: -0.005em;
+}
+.card .sub {
+  font-family: var(--ui); font-size: 12.5px; line-height: 1.3;
+  color: var(--muted); margin-top: 3px;
+}
+/* Memorial dedication — centered, framed. Above the heading row on the home
+   page; after the closing ornament on every reading/bracha page.
+   Matches .card .en (font-size, color, letter-spacing) but uses serif-he
+   so the Hebrew renders with the project's primary Hebrew serif rather
+   than a system fallback. font-weight 500 is the heaviest Frank Ruhl Libre
+   weight loaded by /static/fonts.css. */
+.dedication {
+  max-width: 520px; margin: 0 auto 32px;
+  padding: 24px 28px;
+  text-align: center;
+  font-family: var(--serif-he); font-weight: 500;
+  font-size: 19px; line-height: 1.6;
+  color: var(--fg); letter-spacing: -0.005em;
+  border: 4px double var(--rule); border-radius: 6px;
+}
+.dedication p { margin: 0; }
+.home .dedication { margin-bottom: 40px; }
+
+@media (max-width: 1023px) and (min-width: 641px) {
+  .home .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .home { padding: 28px 16px 80px; }
+  .home h1 { font-size: 26px; }
+  .home .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .dedication { padding: 18px 16px; font-size: 16.5px; line-height: 1.55; }
+  .home .dedication { margin-bottom: 28px; }
+  .card {
+    min-height: 120px; padding: 14px 12px 16px; gap: 8px;
+  }
+  .card .he { font-size: 20px; }
+  .card .en { font-size: 13px; }
+  .card .sub { font-size: 10.5px; }
+  .card .he.long { font-size: 17px; }
+  .card .he.xlong { font-size: 15px; }
+}
+
+/* ── Nusach indicator pill (home + reading head) ── */
+.nusach-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-radius: 999px; border: 1px solid var(--rule);
+  color: var(--fg); font-family: var(--ui); font-size: 12.5px;
+  background: transparent; cursor: pointer; text-decoration: none;
+  transition: background 0.15s;
+}
+.nusach-pill:hover { background: var(--soft); }
+.nusach-pill .dot {
+  width: 6px; height: 6px; border-radius: 3px;
+  background: var(--fg); opacity: 0.85;
+}
+.nusach-pill[data-empty='true'] .dot { opacity: 0.25; }
+.nusach-pill .label { color: var(--muted); }
+
+/* ── Nusach picker page ── */
+.picker {
+  max-width: 640px; margin: 0 auto; padding: 88px 32px 120px;
+}
+.picker .kicker {
+  font-family: var(--ui); font-size: 12px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 12px;
+}
+.picker h1, .picker h2 {
+  margin: 0; font-family: var(--serif-he); font-weight: 400; font-size: 34px;
+  color: var(--fg); letter-spacing: -0.015em;
+}
+html[data-lang='en'] .picker h1, html[data-lang='en'] .picker h2 { font-family: var(--serif-en); }
+.picker .desc {
+  font-family: var(--ui); font-size: 13.5px; color: var(--muted);
+  margin: 8px 0 36px; max-width: 460px;
+}
+.picker .grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.picker-option {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 16px; padding: 20px 22px;
+  border: 1px solid var(--rule); border-radius: 4px;
+  background: transparent; color: var(--fg); cursor: pointer;
+  text-align: start; text-decoration: none; font: inherit;
+  transition: background 0.12s, border-color 0.12s;
+}
+.picker-option:hover { background: var(--soft); border-color: var(--muted); }
+.picker-option .en {
+  font-family: var(--serif-en); font-size: 19px; color: var(--fg);
+}
+.picker-option .he {
+  font-family: var(--serif-he); font-size: 18px; color: var(--muted);
+}
+.picker .back {
+  margin-top: 24px; color: var(--muted); font-family: var(--ui);
+  font-size: 13px; text-decoration: underline; text-underline-offset: 3px;
+  background: none; border: none; cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .picker { padding: 40px 22px 80px; }
+  .picker h1, .picker h2 { font-size: 26px; }
+  .picker .grid { grid-template-columns: 1fr; }
+}
+
+/* ── Reading view ──
+   With the section bar above carrying the prayer/nusach pills, navigation,
+   and controls, the reading-head shrinks to just a centered visual title:
+   the big Hebrew prayer name + a small nusach label below it. */
+.reading-head {
+  max-width: 760px; margin: 0 auto; padding: 28px 32px 0;
+  text-align: center;
+}
+.reading-head h1 {
+  margin: 0; font-family: var(--serif-he); font-weight: 400;
+  font-size: 36px; color: var(--fg); letter-spacing: -0.015em; line-height: 1.1;
+}
+.reading-head .nusach-label {
+  margin: 8px 0 28px;
+  font-family: var(--ui); font-size: 13px; color: var(--muted);
+}
+html[data-lang='he'] .reading-head .nusach-label { font-family: var(--serif-he); font-size: 14px; }
+
+.reading-body {
+  max-width: 760px; margin: 0 auto; padding: 16px 32px 80px;
+}
+.reading-body p {
+  margin: 0 0 18px; font-family: var(--serif-he);
+  font-size: var(--size); line-height: var(--lh); color: var(--fg);
+  text-align: right; letter-spacing: 0.005em;
+  font-feature-settings: 'kern', 'liga'; text-wrap: pretty;
+}
+.reading-body p small {
+  font-size: 0.72em; color: var(--muted); font-style: italic;
+}
+.reading-body .section {
+  text-align: center; margin: 36px 0 14px; color: var(--muted);
+  font-family: var(--serif-he); font-weight: 400; letter-spacing: 0.02em;
+  font-size: clamp(15px, calc(var(--size) * 0.7), 22px);
+}
+.reading-body .section span {
+  display: inline-block; padding: 14px 16px 0; border-top: 1px solid var(--rule);
+}
+.reading-body .orn {
+  text-align: center; margin: 24px 0; color: var(--muted);
+  font-family: var(--serif-he); letter-spacing: 0.4em; font-size: 18px;
+}
+.end-orn {
+  max-width: 760px; margin: 60px auto 80px;
+  text-align: center; font-family: var(--serif-he);
+  font-size: 18px; color: var(--muted); letter-spacing: 0.4em;
+}
+
+@media (max-width: 640px) {
+  .reading-head { padding: 20px 22px 0; }
+  .reading-head h1 { font-size: 28px; }
+  .reading-head .nusach-label { margin-bottom: 20px; }
+  .reading-body { padding: 8px 22px 60px; }
+}
+
+/* ── Bracha merged flow (shared text full-width, variant forks in 3 columns) ── */
+.bracha {
+  max-width: 1100px; margin: 0 auto; padding: 16px 32px 80px;
+}
+.bracha-flow {
+  max-width: 860px; margin: 0 auto 40px;
+}
+.bracha-flow > p {
+  margin: 0 0 18px; font-family: var(--serif-he);
+  font-size: var(--size); line-height: var(--lh); color: var(--fg);
+  text-align: right;
+}
+.bracha-flow > p small {
+  font-size: 0.72em; color: var(--muted); font-style: italic;
+}
+.bracha-fork {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  margin: 4px 0 22px;
+}
+.bracha-cell {
+  padding: 2px 16px;
+}
+.bracha-cell + .bracha-cell {
+  border-inline-start: 1px solid var(--rule);
+}
+.bracha-cell p {
+  margin: 0 0 8px; font-family: var(--serif-he);
+  font-size: clamp(15px, calc(var(--size) * 0.9), 24px);
+  line-height: var(--lh); color: var(--fg); text-align: center;
+}
+.bracha-cell p small {
+  font-size: 0.72em; color: var(--muted); font-style: italic;
+}
+.bracha-cell p.cell-label {
+  font-size: 13px; line-height: 1.4; color: var(--muted);
+  margin: 0 0 8px;
+}
+.bracha-tail {
+  max-width: 760px; margin: 32px auto 0;
+}
+.bracha-tail h3 {
+  text-align: center; font-family: var(--serif-he); font-weight: 400;
+  font-size: 22px; margin: 32px 0 16px; color: var(--muted);
+  padding-top: 14px; border-top: 1px solid var(--rule); display: block;
+}
+.bracha-tail p {
+  margin: 0 0 18px; font-family: var(--serif-he);
+  font-size: var(--size); line-height: var(--lh); color: var(--fg);
+  text-align: right;
+}
+
+@media (max-width: 1023px) and (min-width: 641px) {
+  .bracha-cell { padding: 2px 10px; }
+}
+@media (max-width: 640px) {
+  .bracha { padding: 8px 22px 60px; }
+  .bracha-fork { grid-template-columns: 1fr; }
+  .bracha-cell { padding: 6px 0; }
+  .bracha-cell + .bracha-cell {
+    border-inline-start: none; border-top: 1px solid var(--rule);
+    padding-top: 12px; margin-top: 6px;
+  }
+}
+
+/* ── Static pages (about, 404) ── */
+.static-page {
+  max-width: 640px; margin: 0 auto; padding: 72px 32px 120px;
+}
+.static-page h1 {
+  margin: 0; font-family: var(--serif-en); font-weight: 400;
+  font-size: 36px; color: var(--fg); letter-spacing: -0.015em;
+}
+html[data-lang='he'] .static-page h1 { font-family: var(--serif-he); }
+.static-page .body {
+  margin-top: 28px; font-family: var(--serif-en);
+  font-size: 17px; line-height: 1.7; color: var(--fg);
+}
+html[data-lang='he'] .static-page .body { font-family: var(--serif-he); }
+.static-page p { margin: 0 0 18px; }
+.static-page ul { padding-inline-start: 24px; margin: 0 0 18px; }
+.static-page li { margin-bottom: 6px; }
+.static-page a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+.static-page .faq-link { margin: 12px 0 4px 18px; font-family: var(--ui); font-size: 14px; }
+.static-page .back {
+  margin-top: 32px; cursor: pointer; color: var(--muted);
+  font-family: var(--ui); font-size: 14px;
+  text-decoration: underline; text-underline-offset: 3px;
+  background: none; border: none; padding: 0;
+}
+@media (max-width: 640px) {
+  .static-page { padding: 40px 22px 80px; }
+  .static-page h1 { font-size: 28px; }
+}
+
+/* ── FAQ section (about page) ── */
+.static-page .faq {
+  margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--rule);
+}
+.static-page .faq h2 {
+  margin: 0 0 20px; font-family: var(--serif-en); font-weight: 400;
+  font-size: 24px; letter-spacing: -0.01em; color: var(--fg);
+}
+.static-page .faq-item {
+  border-bottom: 1px solid var(--rule); padding: 14px 0;
+  font-family: var(--serif-en); font-size: 17px; line-height: 1.7;
+}
+.static-page .faq-item summary {
+  cursor: pointer; font-weight: 500; padding: 4px 0;
+  list-style: none; color: var(--fg);
+}
+.static-page .faq-item summary::-webkit-details-marker { display: none; }
+.static-page .faq-item summary::before {
+  content: '+'; display: inline-block; width: 18px;
+  font-family: var(--ui); color: var(--muted); font-weight: 400;
+}
+.static-page .faq-item[open] summary::before { content: '−'; }
+.static-page .faq-item p { margin: 8px 0 4px 18px; color: var(--muted); }
+
+/* ── Section bar / panel (reading pages only) ──
+   Sticky strip below site-head. Holds:
+   • Title  — "Prayer · Nusach · CurrentSection" (Hebrew section updated by
+     scroll-spy in app.js).
+   • Controls — text-size stepper, Headings, Nikud, Sections (jump-to dropdown).
+   Layout: single row on desktop (≥ 641 px). Two rows on mobile (≤ 640 px) —
+   title on top, controls below. The dropdown panel anchors below the bar on
+   desktop and slides up as a bottom sheet on mobile. */
+.section-bar {
+  position: sticky; top: 56px; z-index: 9;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center; gap: 12px;
+  min-height: 44px; padding: 6px 18px;
+  background: var(--bg);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--ui);
+}
+.section-bar-title {
+  display: flex; align-items: center; gap: 6px;
+  min-width: 0; flex-wrap: wrap;
+}
+/* Title pills: Prayer (link), Nusach (link), Section (button — opens panel).
+   Visual style mirrors the right-side .pill controls so the whole bar reads
+   as a row of consistent, tappable pills. The Prayer pill is the focal one:
+   slightly larger and bolder. Nusach + Section are bolder than the right-side
+   utility pills so the whole title row has stronger presence. */
+.title-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 30px; padding: 0 14px;
+  border: 1px solid var(--rule); border-radius: 999px;
+  background: transparent; color: var(--fg);
+  font-family: var(--ui); font-size: 13px; font-weight: 600; letter-spacing: 0.01em;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+}
+.title-pill:hover { background: var(--soft); border-color: var(--muted); }
+
+/* Prayer pill — focal, larger. In English mode it shows BOTH the English
+   name (UI font) AND the Hebrew name (serif): "Shacharit שחרית". In Hebrew
+   mode the English span is hidden by the existing data-lang rule, leaving
+   just the Hebrew. */
+.title-pill-prayer {
+  height: 32px; padding: 0 16px;
+  font-size: 14px;
+}
+.title-pill-prayer .prayer-en {
+  font-family: var(--ui); font-weight: 600;
+}
+.title-pill-prayer .prayer-he {
+  font-family: var(--serif-he); font-weight: 500;
+  font-size: 16px; letter-spacing: 0;
+}
+
+.title-pill-nusach[lang='he'],
+.title-pill-nusach span[lang='he'] {
+  font-family: var(--serif-he); font-size: 14px; font-weight: 500;
+}
+
+/* Section pill always carries Hebrew chapter text. */
+.title-pill-section .current-name {
+  font-family: var(--serif-he); font-size: 15px; font-weight: 500;
+  color: var(--fg);
+  overflow: hidden; text-overflow: ellipsis; max-width: 220px;
+}
+.title-pill-caret {
+  font-family: var(--ui); opacity: 0.55; font-size: 11px;
+}
+.section-bar-controls {
+  display: inline-flex; align-items: center; gap: 6px;
+  flex-wrap: nowrap;
+}
+.section-bar-controls .pill {
+  height: 28px; padding: 0 12px; border-radius: 999px;
+  border: 1px solid var(--rule); background: transparent;
+  font-family: var(--ui); font-size: 12px; letter-spacing: 0.02em;
+  color: var(--muted); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.section-bar-controls .pill[aria-pressed='true'] { color: var(--fg); }
+
+/* ── Type controls: text size + Hebrew font ───────────────────────────────
+   A single "Aa" button opens one popover holding the size stepper and the
+   font list — the same control and the same interaction on phone and desktop,
+   which keeps the bar to four buttons instead of six.
+
+   Each font row previews a pointed Hebrew word rendered in its own face, so
+   the choice is shown rather than named (font names mean nothing to most
+   readers, and the point of the pick is how the nikud looks). The samples sit
+   inside the [hidden] popover, so the browser downloads nothing for the six
+   non-default families until the reader actually opens the menu. */
+.type-toggle { position: relative; display: inline-flex; }
+.section-bar-controls .pill.type-btn { padding: 0 11px; gap: 0; }
+.section-bar-controls .pill.type-btn[aria-expanded='true'] {
+  color: var(--fg); background: var(--soft); border-color: var(--muted);
+}
+.type-btn-aa {
+  font-family: var(--ui); font-size: 13px; font-weight: 600; line-height: 1;
+}
+.type-menu {
+  position: absolute; top: calc(100% + 4px); inset-inline-end: 0;
+  width: 248px; max-height: min(70vh, 430px); overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg); border: 1px solid var(--rule); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 30; padding: 10px;
+}
+html[data-theme='dark'] .type-menu { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
+.type-menu[hidden] { display: none; }
+.type-menu-label {
+  display: block; margin: 0 0 7px 2px;
+  font-family: var(--ui); font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted);
+}
+.type-menu-row { display: flex; align-items: flex-end; gap: 10px; }
+.type-menu-col { flex: 1; min-width: 0; }
+.type-menu-col .stepper { width: 100%; justify-content: space-between; }
+.type-menu-sep { height: 1px; background: var(--rule); margin: 11px 0; }
+.type-menu .stepper {
+  display: inline-flex; align-items: center; height: 30px;
+  border: 1px solid var(--rule); border-radius: 999px; padding: 1px;
+}
+.type-menu .stepper button {
+  width: 30px; height: 28px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--fg); font-size: 15px;
+  background: none; border: none;
+}
+.type-menu .stepper button:hover { background: var(--soft); }
+.type-menu .stepper .size-num {
+  min-width: 26px; text-align: center;
+  font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted);
+}
+.type-font-list {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 1px;
+}
+.type-font {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; padding: 7px 8px; border-radius: 7px;
+  background: none; border: 1px solid transparent; cursor: pointer;
+  color: var(--fg); text-align: start;
+}
+.type-font:hover { background: var(--soft); }
+.type-font[aria-checked='true'] { background: var(--soft); border-color: var(--rule); }
+.type-font-sample { font-size: 20px; line-height: 1.5; white-space: nowrap; }
+.type-font-label {
+  font-family: var(--ui); font-size: 11.5px; color: var(--muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.type-font[aria-checked='true'] .type-font-label { color: var(--fg); font-weight: 600; }
+/* Per-row preview faces — one per manifest.mjs::FONTS id. Deliberately NOT
+   var(--serif-he): every row must show its own face, not the active one. */
+.type-font[data-font='ruehl'] .type-font-sample { font-family: 'Frank Ruehl CLM', serif; }
+.type-font[data-font='noto'] .type-font-sample { font-family: 'Noto Serif Hebrew', serif; }
+.type-font[data-font='cardo'] .type-font-sample { font-family: 'Cardo', serif; }
+.type-font[data-font='stam'] .type-font-sample { font-family: 'Shlomo SemiStam', serif; }
+.type-font[data-font='times'] .type-font-sample { font-family: 'Tinos', serif; }
+.type-font[data-font='arial'] .type-font-sample { font-family: 'Arimo', sans-serif; }
+
+/* Download icon-only button + popover (HTML/Markdown links). */
+.download-toggle { position: relative; display: inline-flex; }
+.section-bar-controls .pill.download-btn {
+  padding: 0 8px; gap: 0;
+}
+.download-menu {
+  position: absolute; top: calc(100% + 4px); right: 0;
+  background: var(--bg); border: 1px solid var(--rule); border-radius: 6px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.10);
+  display: flex; flex-direction: column; min-width: 110px; z-index: 30;
+  padding: 4px 0;
+}
+.download-menu[hidden] { display: none; }
+.download-menu a {
+  font-family: var(--ui); font-size: 13px; padding: 6px 14px;
+  color: var(--fg); text-decoration: none;
+}
+.download-menu a:hover, .download-menu a:focus { background: var(--rule-soft, #eee); }
+
+/* Anchor offset so jumped-to chapter heading clears site-head + section-bar. */
+.reading-body .section[id^="sec-"] { scroll-margin-top: 110px; }
+@media (max-width: 640px) { .reading-body .section[id^="sec-"] { scroll-margin-top: 150px; } }
+
+.section-panel { position: fixed; z-index: 20; }
+.section-panel[hidden] { display: none; }
+.section-panel-list {
+  list-style: none; padding: 6px 0; margin: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.section-panel-item {
+  display: block; width: 100%; box-sizing: border-box;
+  padding: 10px 18px; margin: 0;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--serif-he); font-size: 16px;
+  color: var(--fg); text-align: start;
+  border-radius: 0;
+}
+.section-panel-item:hover { background: var(--soft); }
+.section-panel-item[aria-current="true"] {
+  background: var(--soft);
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* Desktop / tablet — anchored popover */
+@media (min-width: 641px) {
+  .section-panel {
+    top: 102px;               /* site-head 56 + bar ~44 + 2 gap */
+    inset-inline-start: 18px; /* anchor to the section button's side */
+    width: 280px; max-height: 70vh;
+    background: var(--bg); border: 1px solid var(--rule);
+    border-radius: 8px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.10);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  html[data-theme='dark'] .section-panel {
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.40);
+  }
+  .section-panel-backdrop { display: none; }
+}
+
+/* Mobile — two-row bar + bottom-sheet panel */
+@media (max-width: 640px) {
+  .section-bar {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 6px 10px;
+    row-gap: 4px;
+  }
+  .section-bar-title {
+    /* Center the title pills row on mobile (single-column grid).
+       Desktop keeps default left-alignment so the title hugs the start
+       and the controls hug the end across the bar. */
+    justify-content: center;
+    font-size: 12px;
+  }
+  .title-pill { font-size: 11.5px; padding: 0 10px; }
+  .title-pill-section .current-name { max-width: 160px; }
+  .section-bar-controls {
+    justify-self: stretch;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .section-bar-controls .pill {
+    padding: 0 9px; font-size: 11.5px;
+  }
+  /* Controls are space-between on mobile, so the "Aa" button sits at the start
+     of the row. Anchor the popover to the button's START edge — anchored to
+     the end it would extend past the viewport. Width is capped so it always
+     fits a narrow phone. */
+  .type-menu {
+    inset-inline-start: 0; inset-inline-end: auto;
+    width: min(248px, calc(100vw - 24px));
+  }
+  .section-panel {
+    inset: 0;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .section-panel-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+  }
+  .section-panel-list {
+    position: relative;
+    width: 100%;
+    max-height: 65vh;
+    background: var(--bg);
+    border-top-left-radius: 14px; border-top-right-radius: 14px;
+    padding: 14px 0 max(14px, env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.18);
+  }
+  .section-panel-item { padding: 12px 22px; font-size: 17px; }
+  /* Body scroll lock — only when the bottom sheet is on screen (mobile).
+     On desktop the panel is a small popover; the body remains scrollable. */
+  body.section-open { overflow: hidden; }
+}
+
+/* ── Cross-nusach footer (reading + bracha pages) ── */
+.other-nusachim {
+  max-width: 720px; margin: 16px auto 56px;
+  padding: 24px 28px; border-top: 1px solid var(--rule);
+  text-align: center; font-family: var(--ui); font-size: 14px;
+  color: var(--muted);
+}
+.other-nusachim > span:first-child { display: block; margin-bottom: 8px; }
+.other-nusachim a {
+  display: inline-block; margin: 0 8px; padding: 4px 10px;
+  color: var(--fg); text-decoration: underline;
+  text-underline-offset: 3px; border-radius: 4px;
+}
+.other-nusachim a:hover { background: var(--soft); }
+@media (max-width: 640px) {
+  .other-nusachim { padding: 20px 22px; margin-bottom: 40px; }
+  .other-nusachim a { margin: 2px 4px; padding: 4px 8px; }
+}
+
+/* ── Install page (/install/) ──
+   The animation is CSS-only and decorative: no JS drives it, and the markup
+   is aria-hidden, so a screen reader gets the prose instead of a mime of it. */
+.install-page { text-align: center; }
+.install-page .install-lede {
+  margin: 28px auto 0; max-width: 46ch;
+  font-family: var(--serif-en); font-size: 17px; line-height: 1.7; color: var(--fg);
+}
+html[data-lang='he'] .install-page .install-lede { font-family: var(--serif-he); }
+
+.install-btn {
+  margin-top: 28px; padding: 13px 26px;
+  font-family: var(--ui); font-size: 15px; font-weight: 500;
+  color: var(--bg); background: var(--fg);
+  border: none; border-radius: 10px; cursor: pointer;
+}
+.install-btn:hover { opacity: 0.86; }
+/* The global focus ring is `outline: 2px solid currentColor`, and this
+   button's colour IS the page background — the ring was drawn invisible in
+   both themes. Name the colour explicitly. */
+.install-btn:focus-visible { outline-color: var(--fg); }
+.install-page .install-done {
+  margin-top: 24px; font-family: var(--ui); font-size: 14.5px;
+  line-height: 1.6; color: var(--muted);
+}
+.install-manual p { margin: 0; }
+.install-page .back { display: inline-block; }
+
+/* Per-platform walkthroughs. Wider than the 640px prose column: these are
+   three-panel step graphics, and at prose width each phone panel would be
+   ~200px and unreadable. */
+.install-how {
+  margin: 56px 0 0; text-align: start;
+  width: min(860px, calc(100vw - 44px));
+  position: relative; left: 50%; transform: translateX(-50%);
+}
+.install-how h2 {
+  margin: 0 0 8px; font-family: var(--serif-en); font-weight: 400;
+  font-size: 26px; letter-spacing: -0.015em; text-align: center;
+}
+html[data-lang='he'] .install-how h2 { font-family: var(--serif-he); }
+.install-guide { margin-top: 34px; }
+.install-guide h3 {
+  margin: 0 0 10px; font-family: var(--ui);
+  font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+}
+.install-guide ol {
+  margin: 0 0 16px; padding-inline-start: 22px;
+  font-family: var(--ui); font-size: 15px; line-height: 1.7; color: var(--fg);
+}
+.install-guide li { margin-bottom: 4px; }
+.install-guide img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--rule); border-radius: 10px;
+}
+/* The artwork is a light illustration; in dark mode it would glare against a
+   near-black page, so take the edge off without washing out the detail. */
+html[data-theme='dark'] .install-guide img { filter: brightness(0.86); }
+@media (max-width: 640px) {
+  .install-how { margin-top: 40px; }
+  .install-how h2 { font-size: 22px; }
+  .install-guide ol { font-size: 14.5px; }
+}
+
+/* Phone mock. Sized in px rather than em so the grid geometry holds
+   regardless of the reader's text-size stepper setting. */
+.install-anim {
+  margin: 40px auto 0; display: flex; justify-content: center;
+}
+.install-anim .phone {
+  position: relative; width: 176px; height: 252px;
+  border: 2px solid var(--rule); border-radius: 26px;
+  background: var(--soft); padding: 14px 12px;
+  display: flex; flex-direction: column; align-items: center;
+}
+.install-anim .phone-bar {
+  width: 46px; height: 4px; border-radius: 2px;
+  background: var(--rule); margin-bottom: 12px; flex-shrink: 0;
+}
+.install-anim .screen {
+  width: 100%; flex: 1;
+}
+.install-anim .app-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px 14px;
+}
+.install-anim .slot {
+  aspect-ratio: 1; border-radius: 22%;
+  background: var(--rule);
+}
+/* The landing spot reads as an empty outline until the icon arrives. */
+.install-anim .target {
+  position: relative; background: none;
+  border: 1.5px dashed var(--rule);
+}
+.install-anim .drop-icon {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  border-radius: 22%;
+  animation: siddur-drop 4s cubic-bezier(0.34, 1.4, 0.64, 1) infinite;
+}
+.install-anim .app-label {
+  position: absolute; top: calc(100% + 5px); left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--ui); font-size: 7px; color: var(--muted);
+  white-space: nowrap;
+  animation: siddur-label 4s ease infinite;
+}
+@keyframes siddur-drop {
+  0%          { transform: translateY(-34px) scale(0.55); opacity: 0; }
+  26%, 84%    { transform: translateY(0) scale(1); opacity: 1; }
+  96%, 100%   { transform: translateY(-34px) scale(0.55); opacity: 0; }
+}
+@keyframes siddur-label {
+  0%, 26%     { opacity: 0; }
+  38%, 82%    { opacity: 1; }
+  92%, 100%   { opacity: 0; }
+}
+/* Reduced motion: hold the finished state — the icon sitting on the home
+   screen IS the message, so there is nothing to lose by not animating it. */
+@media (prefers-reduced-motion: reduce) {
+  .install-anim .drop-icon, .install-anim .app-label {
+    animation: none; opacity: 1; transform: none;
+  }
+  .install-anim .app-label { transform: translateX(-50%); }
+}
+@media (max-width: 640px) {
+  .install-anim { margin-top: 30px; }
+  .install-page .install-lede { font-size: 16px; }
+}

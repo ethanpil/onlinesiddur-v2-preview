@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-theme="light" data-headings="on" data-nikud="on" data-lang="he" data-filter="on" data-daykind="day">
+<head><script>window.__BASE__="../../";window.__DEFAULT_SIZE__=22;window.__DEFAULT_LH__=1.85;window.__FONTS__=["ruehl","noto","cardo","stam","times","arial"];window.__DEFAULT_FONT__="ruehl";</script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <title>Tefilat HaDerech Edut HaMizrach · תפילת הדרך נוסח עדות המזרח · OnlineSiddur</title>
+  <meta name="description" content="Tefilat HaDerech (traveler&#39;s prayer) in Nusach Edut HaMizrach with nikud — full Hebrew text, free, no ads. תפילת הדרך — תפילה לפני הנסיעה, נוסח עדות המזרח." />
+  <link rel="canonical" href="https://onlinesiddur.com/derech/edut/" />
+  <meta property="og:title" content="Tefilat HaDerech Edut HaMizrach · תפילת הדרך נוסח עדות המזרח · OnlineSiddur" />
+  <meta property="og:description" content="Tefilat HaDerech (traveler&#39;s prayer) in Nusach Edut HaMizrach with nikud — full Hebrew text, free, no ads. תפילת הדרך — תפילה לפני הנסיעה, נוסח עדות המזרח." />
+  <meta property="og:url" content="https://onlinesiddur.com/derech/edut/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="he_IL" />
+  <meta property="og:site_name" content="OnlineSiddur" />
+  <meta property="og:image" content="https://onlinesiddur.com/og/derech-edut.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Tefilat HaDerech Edut HaMizrach · תפילת הדרך נוסח עדות המזרח · OnlineSiddur" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tefilat HaDerech Edut HaMizrach · תפילת הדרך נוסח עדות המזרח · OnlineSiddur" />
+  <meta name="twitter:description" content="Tefilat HaDerech (traveler&#39;s prayer) in Nusach Edut HaMizrach with nikud — full Hebrew text, free, no ads. תפילת הדרך — תפילה לפני הנסיעה, נוסח עדות המזרח." />
+  <meta name="twitter:image" content="https://onlinesiddur.com/og/derech-edut.png" />
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../fonts.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <script>// Pre-paint bootstrap. Inlined into <head> of every page so the document
+// renders with the user's saved theme/size/lang/headings/nikud immediately
+// — no FOUC, no theme flash. Validates and clamps every value.
+(function () {
+  try {
+    var s = localStorage, root = document.documentElement;
+    var t = s.getItem('ssd:theme');
+    if (t === 'light' || t === 'dark') root.dataset.theme = t;
+    var szRaw = parseInt(s.getItem('ssd:textsize'), 10);
+    if (Number.isFinite(szRaw)) {
+      var sz = Math.max(14, Math.min(40, szRaw));
+      root.style.setProperty('--size', sz + 'px');
+    }
+    var lhRaw = parseFloat(s.getItem('ssd:leading'));
+    if (Number.isFinite(lhRaw)) {
+      var lh = Math.max(1.3, Math.min(2.6, lhRaw));
+      root.style.setProperty('--lh', String(lh));
+    }
+    var h = s.getItem('ssd:headings');
+    if (h === 'on' || h === 'off') root.dataset.headings = h;
+    var n = s.getItem('ssd:nikud');
+    if (n === 'on' || n === 'off') root.dataset.nikud = n;
+    var lang = s.getItem('ssd:lang');
+    if (lang === 'en' || lang === 'he') root.dataset.lang = lang;
+    else if (navigator.language && /^he/i.test(navigator.language)) root.dataset.lang = 'he';
+    // Calendar filter. data-filter ships "on"; restore the saved choice.
+    // Replay the cached condition tokens BEFORE first paint, so a repeat
+    // visit filters with zero content shift. No cache (or an expired one)
+    // leaves data-conds unset — the hide rules stay inert and the page
+    // paints complete; app.js recomputes after load.
+    var dk = root.dataset.daykind;
+    // A ?date= QA view must not first-paint with the REAL day's cache.
+    if (dk && !/[?&]date=/.test(location.search)) {
+      var fl = s.getItem('ssd:filter');
+      if (fl === 'on' || fl === 'off') root.dataset.filter = fl;
+      // Inner try: a corrupt cache entry must not skip the font preload
+      // below.
+      try {
+        var c = JSON.parse(s.getItem('ssd:conds') || 'null');
+        if (c && c.v === 1 && c.exp > Date.now() && c.day && c.night) {
+          var night = dk === 'night'
+            || (dk === 'meal' && Number(s.getItem('ssd:night')) > Date.now());
+          var pick = night ? c.night : c.day;
+          var joined = (pick.conds || []).join(' ');
+          if (/^[a-z0-9 -]+$/.test(joined)) root.dataset.conds = joined;
+        }
+      } catch (e2) {}
+    }
+    // Hebrew face. The roster and default come from manifest.mjs via
+    // build.mjs::relocate, so adding a font needs no edit here.
+    //
+    // This owns the preload for EVERY face, default included — a static
+    // <link> in the template could only ever name the default, and would be
+    // dead weight (~21 KB at high priority, ahead of the face actually in
+    // use) for anyone who picked something else.
+    var fonts = window.__FONTS__ || [];
+    var def = window.__DEFAULT_FONT__;
+    var f = s.getItem('ssd:font');
+    if (!f || fonts.indexOf(f) === -1) f = def;
+    // The default face is the :root --serif-he value, so it needs no
+    // attribute; setting one for it would just add a redundant selector.
+    if (f && f !== def) root.dataset.font = f;
+    if (f) {
+      var link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'font';
+      link.type = 'font/woff2';
+      link.crossOrigin = 'anonymous';
+      link.href = (window.__BASE__ || '/') + 'fonts/he-' + f + '-400.woff2';
+      document.head.appendChild(link);
+    }
+  } catch (e) {}
+})();
+</script>
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+  <meta name="theme-color" content="#F0EEE9" data-light="#F0EEE9" data-dark="#0E0E10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <!-- black-translucent lets the page background show through the status bar,
+       so it follows the reader's saved theme instead of pinning glyphs to a
+       colour chosen at build time. iOS offers no media-gated variant. -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="OnlineSiddur" />
+  <meta name="application-name" content="OnlineSiddur" />
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-750x1334.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-1334x750.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1242x2208.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2208x1242.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1125x2436.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2436x1125.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-828x1792.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-1792x828.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1242x2688.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2688x1242.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1170x2532.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2532x1170.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1284x2778.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2778x1284.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1179x2556.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2556x1179.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1290x2796.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2796x1290.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1206x2622.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2622x1206.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../../icons/splash-1320x2868.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="../../icons/splash-2868x1320.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1488x2266.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2266x1488.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1536x2048.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2048x1536.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1620x2160.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2160x1620.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1640x2360.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2360x1640.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1668x2224.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2224x1668.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-1668x2388.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2388x1668.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../../icons/splash-2048x2732.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="../../icons/splash-2732x2048.png" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Tefilat HaDerech Edut HaMizrach","alternateName":"תפילת הדרך נוסח עדות המזרח","url":"https://onlinesiddur.com/derech/edut/","inLanguage":"he","isPartOf":{"@type":"WebSite","name":"OnlineSiddur","url":"https://onlinesiddur.com/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"OnlineSiddur","item":"https://onlinesiddur.com/"},{"@type":"ListItem","position":2,"name":"Tefilat HaDerech","item":"https://onlinesiddur.com/derech/edut/"},{"@type":"ListItem","position":3,"name":"Edut HaMizrach"}]}</script>
+</head>
+<body class="page-reading">
+  <header class="site-head">
+    <a class="brand" href="../../" data-lang-attr>
+      <svg class="brand-mark" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.39 20.87a.696.696 0 0 1-.78 0C9.764 19.637 2 14.15 2 8.973c0-6.68 7.85-7.75 10-3.25 2.15-4.5 10-3.43 10 3.25 0 5.178-7.764 10.664-9.61 11.895z"/></svg>
+      <span data-lang-en>OnlineSiddur</span><span data-lang-he lang="he">סידור</span>
+    </a>
+    <nav>
+      <div class="today-toggle" data-today-toggle>
+      <button class="nav-link date-pill" type="button" data-act="open-today" aria-haspopup="dialog" aria-expanded="false" hidden data-tooltip-en="Hebrew date" data-tooltip-he="תאריך עברי" title="Hebrew date">
+        <svg class="date-pill-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4.75" width="18" height="16" rx="2.5"/>
+          <path d="M3 9.5h18M8 2.5v4M16 2.5v4"/>
+        </svg>
+        <span class="date-pill-text"><span data-lang-en data-date-en></span><span data-lang-he lang="he" data-date-he></span></span>
+      </button>
+      <div class="today-menu" data-today-menu hidden role="dialog" aria-label="Today">
+        <div class="today-date"><span data-lang-en data-date-en></span><span data-lang-he lang="he" data-date-he></span></div>
+
+        <button class="today-row" type="button" data-act="filter" role="switch" aria-checked="true">
+          <span data-lang-en>Today's text only</span><span data-lang-he lang="he">רק טקסט של היום</span>
+        </button>
+        <span class="today-menu-label"><span data-lang-en>Location</span><span data-lang-he lang="he">מיקום</span></span>
+        <div role="radiogroup" aria-label="Location">
+        <button class="today-row today-loc" type="button" role="radio" aria-checked="true" tabindex="0" data-act="pick-location" data-location="auto">
+          <span data-lang-en>Automatic</span><span data-lang-he lang="he">אוטומטי</span>
+        </button>
+        <button class="today-row today-loc" type="button" role="radio" aria-checked="false" tabindex="-1" data-act="pick-location" data-location="israel">
+          <span data-lang-en>Israel</span><span data-lang-he lang="he">ארץ ישראל</span>
+        </button>
+        <button class="today-row today-loc" type="button" role="radio" aria-checked="false" tabindex="-1" data-act="pick-location" data-location="diaspora">
+          <span data-lang-en>Diaspora</span><span data-lang-he lang="he">חוץ לארץ</span>
+        </button>
+        </div>
+      </div>
+    </div>
+      <a class="icon-btn" href="../../install/" data-tooltip-en="Add to home screen" data-tooltip-he="הוספה למסך הבית" title="Add to home screen">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="6.75" y="2.25" width="10.5" height="19.5" rx="2.5"/>
+          <path d="M11 18.75h2"/>
+        </svg>
+        <span class="sr-only" data-lang-en>Add to home screen</span><span class="sr-only" data-lang-he lang="he">הוספה למסך הבית</span>
+      </a>
+      <a class="icon-btn" href="../../about/" data-tooltip-en="About" data-tooltip-he="אודות" title="About">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 11v5"/>
+          <path d="M12 7.75h.01"/>
+        </svg>
+        <span class="sr-only" data-lang-en>About</span><span class="sr-only" data-lang-he lang="he">אודות</span>
+      </a>
+      <span class="divider" aria-hidden="true"></span>
+      <button class="nav-link lang-toggle" data-act="lang" aria-label="Toggle language" type="button">
+        <span data-lang-en data-toggle-to="he">עברית</span><span data-lang-he data-toggle-to="en" lang="he">English</span>
+      </button>
+      <button class="icon-btn" data-act="theme" aria-label="Toggle theme" aria-pressed="false" type="button">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 4v2M12 18v2M4 12H2M22 12h-2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>
+        </svg>
+      </button>
+      <button class="nav-link awake-toggle" data-act="awake" aria-label="Keep screen awake" aria-pressed="false" type="button" title="Keep screen awake">
+        <span class="dot" aria-hidden="true"></span>
+        <span data-lang-en>Awake</span><span data-lang-he lang="he">מסך</span>
+      </button>
+    </nav>
+  </header>
+  <main>
+    
+    <div class="section-bar" data-section-bar>
+  <div class="section-bar-title">
+    <a class="title-pill title-pill-prayer" href="../../" title="Choose prayer">
+      <span class="prayer-en" data-lang-en>Tefilat HaDerech</span><span class="prayer-he" lang="he">תפילת הדרך</span>
+    </a>
+    <a class="title-pill title-pill-nusach" href="../../nusach/?from=derech" title="Choose nusach">
+      <span data-lang-en>Edut HaMizrach</span><span data-lang-he lang="he">עדות המזרח</span>
+    </a>
+  </div>
+  <div class="section-bar-controls" role="toolbar" aria-label="Reading controls">
+    <div class="type-toggle" data-type-toggle>
+      <button class="pill type-btn" type="button" data-act="open-type" aria-haspopup="dialog" aria-expanded="false" data-tooltip-en="Text size and font" data-tooltip-he="גודל טקסט וגופן" title="Text size and font">
+        <span class="type-btn-aa" aria-hidden="true">Aa</span>
+      </button>
+      <div class="type-menu" data-type-menu hidden role="dialog" aria-label="Text size and font">
+        <div class="type-menu-row">
+          <div class="type-menu-col">
+            <span class="type-menu-label"><span data-lang-en>Text size</span><span data-lang-he lang="he">גודל טקסט</span></span>
+            <div class="stepper" role="group" aria-label="Text size">
+              <button data-act="size-down" aria-label="Smaller text" type="button">−</button>
+              <span class="size-num" data-size-display>22</span>
+              <button data-act="size-up" aria-label="Larger text" type="button">+</button>
+            </div>
+          </div>
+          <div class="type-menu-col">
+            <span class="type-menu-label"><span data-lang-en>Line height</span><span data-lang-he lang="he">גובה שורה</span></span>
+            <div class="stepper" role="group" aria-label="Line height">
+              <button data-act="leading-down" aria-label="Tighter lines" type="button">−</button>
+              <span class="size-num" data-leading-display>1.85</span>
+              <button data-act="leading-up" aria-label="Looser lines" type="button">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="type-menu-sep" aria-hidden="true"></div>
+        <span class="type-menu-label"><span data-lang-en>Font</span><span data-lang-he lang="he">גופן</span></span>
+        <ul class="type-font-list" role="radiogroup" aria-label="Hebrew font">
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="true" tabindex="0" data-act="pick-font" data-font="ruehl">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Frank Ruehl</span><span data-lang-he lang="he">פרנק רוהל</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="noto">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Noto Serif</span><span data-lang-he lang="he">נוטו סריף</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="cardo">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Cardo</span><span data-lang-he lang="he">קרדו</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="stam">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Shlomo SemiStam</span><span data-lang-he lang="he">שלמה סמי־סת״ם</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="times">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Times New Roman</span><span data-lang-he lang="he">טיימס</span></span>
+        </button></li>
+        <li role="none"><button type="button" class="type-font" role="radio" aria-checked="false" tabindex="-1" data-act="pick-font" data-font="arial">
+          <span class="type-font-sample" lang="he" aria-hidden="true">אַבְגָד</span>
+          <span class="type-font-label"><span data-lang-en>Arial</span><span data-lang-he lang="he">אריאל</span></span>
+        </button></li>
+        </ul>
+      </div>
+    </div>
+    <button class="pill" data-act="headings" aria-pressed="true" type="button" title="Toggle section headings">
+      <span data-lang-en>Headings</span><span data-lang-he lang="he">כותרות</span>
+    </button>
+    <button class="pill" data-act="nikud" aria-pressed="true" type="button" title="Toggle nikud (vowels)">
+      <span data-lang-en>Nikud</span><span data-lang-he lang="he">ניקוד</span>
+    </button>
+    <div class="download-toggle" data-download-toggle>
+      <button class="pill download-btn" type="button" data-act="open-download" aria-haspopup="menu" aria-expanded="false" data-tooltip-en="Download" data-tooltip-he="הורדה" title="Download">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><polyline points="6 12 12 18 18 12"/><line x1="4" y1="20" x2="20" y2="20"/></svg>
+      </button>
+      <div class="download-menu" data-download-menu hidden role="menu">
+        <a href="../../derech/edut/index.html" download="derech-edut.html" role="menuitem">HTML</a>
+        <a href="../../prayers/derech-edut.md" download="derech-edut.md" role="menuitem">Markdown</a>
+      </div>
+    </div>
+  </div>
+</div>
+    <header class="reading-head">
+      <h1>תפילת הדרך</h1>
+      <p class="nusach-label">
+        <span data-lang-en>Nusach Edut HaMizrach</span><span data-lang-he lang="he">נוסח עדות המזרח</span>
+      </p>
+    </header>
+    <article class="reading-body"><p dir="rtl" lang="he"><b>תפלת הדרך</b></p>
+<p dir="rtl" lang="he"><b>יְהִי</b> רָצוֹן מִלְּפָנֶֽיךָ יְהֹוָה אֱלֹהֵֽינוּ וֵאלֹהֵי אֲבוֹתֵֽינוּ, שֶׁתּוֹלִיכֵֽנוּ לְשָׁלוֹם, וְתַצְעִידֵֽנוּ לְשָׁלוֹם, וְתִסְמְכֵֽנוּ לְשָׁלוֹם, וְתַגִּיעֵֽנוּ לִמְחוֹז חֶפְצֵֽנוּ לְחַיִּים טוֹבִים וּלְשִׂמְחָה וּלְשָׁלוֹם, <small>(<small>אם חוזר בו ביום מוסיף</small> וְתַחֲזִירֵֽנוּ לְשָׁלוֹם),</small> וְתַצִּילֵֽנוּ מִכַּף כָּל־אוֹיֵב וְאוֹרֵב בַּדֶּֽרֶךְ, וּמִכָּל־מִינֵי פֻרְעָנֻיּוֹת הַמִּתְרַגְּשׁוֹת וּבָאוֹת לָעוֹלָם, וְתִשְׁלַח בְּרָכָה בְּמַעֲשֵׂה יָדֵֽינוּ, וְתִתְּנֵֽנוּ לְחֵן וּלְחֶֽסֶד וּלְרַחֲמִים בְּעֵינֶֽיךָ וּבְעֵינֵי כָל־רוֹאֵֽינוּ. וְתִשְׁמַע קוֹל תַּחֲנוּנֵֽינוּ, כִּי אֵל שׁוֹמֵֽעַ תְּפִלָּה וְתַחֲנוּן אָֽתָּה. בָּרוּךְ (אַתָּה יְהֹוָה) שׁוֹמֵֽעַ תְּפִלָּה:</p>
+<p dir="rtl" lang="he"><small>ויש מוסיפים פסוקים אלה לשמירה</small></p>
+<p dir="rtl" lang="he"><small><b>וְיַעֲקֹ֖ב</b> הָלַ֣ךְ לְדַרְכּ֑וֹ וַיִּפְגְּעוּ־ב֖וֹ מַלְאֲכֵ֥י אֱלֹהִֽים׃ וַיֹּ֤אמֶר יַעֲקֹב֙ כַּאֲשֶׁ֣ר רָאָ֔ם מַחֲנֵ֥ה אֱלֹהִ֖ים זֶ֑ה וַיִּקְרָ֛א שֵֽׁם־הַמָּק֥וֹם הַה֖וּא מַֽחֲנָֽיִם׃</small></p>
+<p dir="rtl" lang="he"><small><b>וַיִּסָּ֑עוּ</b> וַיְהִ֣י ׀ חִתַּ֣ת אֱלֹהִ֗ים עַל־הֶֽעָרִים֙ אֲשֶׁר֙ סְבִיב֣וֹתֵיהֶ֔ם וְלֹ֣א רָֽדְפ֔וּ אַחֲרֵ֖י בְּנֵ֥י יַעֲקֹֽב׃ לִישׁוּעָתְךָ֖ קִוִּ֥יתִי יְהֹוָֽה׃ <small>ג' פעמים</small></small></p>
+<p dir="rtl" lang="he"><small><b>יְבָרֶכְךָ֥</b> יְהֹוָ֖ה וְיִשְׁמְרֶֽךָ׃ יָאֵ֨ר יְהֹוָ֧ה ׀ פָּנָ֛יו אֵלֶ֖יךָ וִֽיחֻנֶּֽךָּ׃ יִשָּׂ֨א יְהֹוָ֤ה ׀ פָּנָיו֙ אֵלֶ֔יךָ וְיָשֵׂ֥ם לְךָ֖ שָׁלֽוֹם׃ <small>ג' פעמים</small></small></p>
+<p dir="rtl" lang="he"><small><b>הִנֵּ֨ה</b> אָנֹכִ֜י שֹׁלֵ֤חַ מַלְאָךְ֙ לְפָנֶ֔יךָ לִשְׁמָרְךָ֖ בַּדָּ֑רֶךְ וְלַהֲבִ֣יאֲךָ֔ אֶל־הַמָּק֖וֹם אֲשֶׁ֥ר הֲכִנֹֽתִי׃ <small>ג' פעמים</small></small></p>
+<p dir="rtl" lang="he"><small><b>הַמַּלְאָךְ֩</b> הַגֹּאֵ֨ל אֹתִ֜י מִכׇּל־רָ֗ע יְבָרֵךְ֮ אֶת־הַנְּעָרִים֒ וְיִקָּרֵ֤א בָהֶם֙ שְׁמִ֔י וְשֵׁ֥ם אֲבֹתַ֖י אַבְרָהָ֣ם וְיִצְחָ֑ק וְיִדְגּ֥וּ לָרֹ֖ב בְּקֶ֥רֶב הָאָֽרֶץ׃ <small>ג' פעמים</small></small></p>
+<h3 class="section"><span>תעניות ואבילות</span></h3>
+<h3 class="section"><span>סליחות לצום גדליה</span></h3>
+<p dir="rtl" lang="he"><b>תעניות ואבילות</b></p>
+<p dir="rtl" lang="he"><b>סליחות לצום גדליה</b></p>
+<p dir="rtl" lang="he"><small>אחר החזרה אומרים וידוי ונפילת אפים, ואחר־כך אומרים:</small></p>
+<p dir="rtl" lang="he"><b>עַל</b> יְדֵי רַחֲמֶיךָ הָרַבִּים סְלַח לָנוּ אָבִֽינוּ, כִּי בְרוֹב אִוַּלְתֵּנוּ שָׁגִֽינוּ: מְחֹל לָנוּ מַלְכֵּנוּ, כִּי רַבּוּ עֲוֹנֵֽינוּ: אֵל אֶרֶךְ אַפַּיִם אַתָּה, וְדֶרֶךְ תְּשׁוּבָה לָנוּ הוֹרֵיתָ: גְּדֻלַּת רַחֲמֶיךָ וַחֲסָדֶיךָ, תִּזְכּוֹר הַיּוֹם לְזֶרַע יְדִידֶיךָ: תֵּפֶן אֵלֵֽינוּ בְּרַחֲמִים, כִּי אַתָּה הוּא בַּעַל הָרַחֲמִים: בְּתַחֲנוּן וּבִתְפִלָּה נְקַדֵּם, כְּמוֹ שֶׁהוֹדַעְתָּ לֶעָנָו מִקֶּדֶם: וּמֵחֲרוֹן אַפְּךָ תָּשׁוּב, כְּמוֹ בְּתוֹרָֽתְךָ כָּתוּב: וּבְצֵל כְּנָפֶיךָ נֶחֱסֶה וְנִתְלוֹנָן, כְּיוֹם וַיֵּ֤רֶד יְהֹוָה֙ בֶּֽעָנָ֔ן: תַּעֲבֹר עַל פֶּשַׁע וְתִמְחֹל אָשָׁם, כְּיוֹם וַיִּתְיַצֵּ֥ב עִמּ֖וֹ שָׁ֑ם: תַּאֲזִין שֶׁוַע וְתָּקְשִׁיב בְּרָצוֹן מַאֲמָר, כְּיוֹם וַיִּקְרָ֥א בְשֵׁ֖ם יְהֹוָֽה: וְשָׁם נֶאֱמַר:</p>
+<p dir="rtl" lang="he"><b>וַיַּעֲבֹ֨ר</b> יְהֹוָ֥ה ׀ עַל־פָּנָיו֮ וַיִּקְרָא֒ יְהֹוָ֣ה ׀ יְהֹוָ֔ה אֵ֥ל רַח֖וּם וְחַנּ֑וּן אֶ֥רֶךְ אַפַּ֖יִם וְרַב־חֶ֥סֶד וֶאֱמֶֽת׃ נֹצֵ֥ר‏ חֶ֙סֶד֙ לָאֲלָפִ֔ים נֹשֵׂ֥א עָוֺ֛ן וָפֶ֖שַׁע וְחַטָּאָ֑ה וְנַקֵּה֙׃</p>
+<p dir="rtl" lang="he"><b>אָֽבְלָה</b> נַפְשִׁי וְחָשַׁךְ תָּאֳרִי, בֵּית תִּפְאַרְתִּי נִשְׂרַף בְּיַד הָאֲרִי, גַּם פְּלֵטִים אֲשֶׁר עָֽזְבוּ שְׁאֵרִי, דּוֹעֲכוּ הַיּוֹם בִּשְׁלֹשָׁה בְתִשְׁרִי: הַמַּיִם הַזֵּדוֹנִים שְׁטָפוּנוּ בְּדָלְקָם, וּבוֹסְסוּ צָרִים מִקְדָּשִׁי וּבָֽזְזוּ חֶלְקָם, זִקְנֵי שְׁאֵרִית אֲשֶׁר נִמְלְטוּ בְּיוֹם נָקָם, חֻבְּלוּ הַיּוֹם עִם גְּדַלְיָה בֶּן אֲחִיקָם: טוֹרְפוּ עֲנִיֵּי עַם הָאָרֶץ, יֶתֶר הַגָּזָם אָכַל הָאַרְבֶּה בְּמֶרֶץ, כּוֹרְמִים וְיוֹגְבִים אֲשֶׁר הִפְקִיד נְגִיד הָאָרֶץ, לֻקְּטוּ הַיּוֹם וְלֹא הָיָה בָהֶם גּוֹדֵר גָּדֵר וְעוֹמֵד בַּפֶּרֶץ: מָה אֲסַפֵּר וְאַנְחוֹתַי עֲצוּמוֹת, נָֽקְטָה נַפְשִׁי וּמִקְהֲלוֹתַי עֲגוּמוֹת, שְׂרִידַי אֲשֶׁר נִשְׁאֲרוּ מֵחֶרֶב וְחֵמוֹת, עוֹד הֵם לֹא נִתְקַיְּמוּ וְנוֹתְצוּ בַחוֹמוֹת: פָּנֶיךָ עַד אָנָה מִמֶּנּוּ תַסְתִּיר, צַוְחָתֵנוּ תִּשְׁמַע וְכַבְלֵנוּ תַתִּיר, קָדוֹשׁ הַבִּיטָה בְעֹנְיֵנוּ כִּי אֵין לָנוּ מַכְתִּיר, רְאֵה דַלּוּתֵנוּ וְשֶׁבַח לְפָנֶיךָ נַעְתִּיר: שֻׁדַּדְנוּ מִדּוֹר לְדוֹר וּמִקֵּץ לְקֵץ, שֹׁרֶשׁ צֶפַע אוֹתָנוּ עִקֵּץ, תַּקִּיף לְמִשְׁפָּטֶיךָ הָעִירָה וְהָקֵץ, וּתְכַפֵּר חַטֹּאתֵֽינוּ וְתֹאמַר לְקָרֵב קֵץ: יֶהֱמוּ רַחֲמֶיךָ עַל מְעוּטֵי עַמִּים, וְשַׂגְּבֵם בְּחַסְדֶּךָ לְעֵינֵי כָל לְאֻמִּים, פְּלָאֶיךָ הַרְאֵם שׁוֹכֵן מְרוֹמִים, אֵל מֶלֶךְ יוֹשֵׁב עַל כִּסֵּא רַחֲמִים:</p>
+<p dir="rtl" lang="he"><b>אֵל</b> מֶלֶךְ יוֹשֵׁב עַל כִּסֵּא רַחֲמִים וּמִתְנַהֵג בַּחֲסִידוּת, מוֹחֵל עֲוֹנוֹת עַמּוֹ, מַעֲבִיר רִאשׁוֹן רִאשׁוֹן. מַרְבֶּה מְחִילָה לַחַטָּאִים, וּסְלִיחָה לַפּוֹשְׁעִים. עֹשֶׂה צְדָקוֹת עִם כָּל־בָּשָׂר וְרוּחַ, לֹא כְרָעָתָם לָהֶם גּוֹמֵל. אֵל הוֹרֵתָנוּ לוֹמַר מִדּוֹת שְׁלֹשׁ עֶשְׂרֵה, זְכֹר לָנוּ הַיּוֹם בְּרִית שְׁלֹשׁ עֶשְׂרֵה, כְּמוֹ שֶׁהוֹדַעְתָּ לֶעָנָו מִקֶּדֶם, וְכֵן כָּתוּב בְּתוֹרָתָךְ: וַיֵּ֤רֶד יְהֹוָה֙ בֶּֽעָנָ֔ן וַיִּתְיַצֵּ֥ב עִמּ֖וֹ שָׁ֑ם וַיִּקְרָ֥א בְשֵׁ֖ם יְהֹוָֽה׃ וְשָׁם נֶאֱמַר:</p>
+<p dir="rtl" lang="he"><b>וַיַּעֲבֹ֨ר</b> יְהֹוָ֥ה ׀ עַל־פָּנָיו֮ וַיִּקְרָא֒ יְהֹוָ֣ה ׀ יְהֹוָ֔ה אֵ֥ל רַח֖וּם וְחַנּ֑וּן אֶ֥רֶךְ אַפַּ֖יִם וְרַב־חֶ֥סֶד וֶאֱמֶֽת׃ נֹצֵ֥ר‏ חֶ֙סֶד֙ לָאֲלָפִ֔ים נֹשֵׂ֥א עָוֺ֛ן וָפֶ֖שַׁע וְחַטָּאָ֑ה וְנַקֵּה֙׃</p>
+<p dir="rtl" lang="he"><small>על סדר א"ב</small></p>
+<p dir="rtl" lang="he"><b>אַנְשֵׁי</b> אֱמוּנָה אָבָדוּ, בָּאִים בְּכֹחַ מַעֲשֵׂיהֶם: גִּבּוֹרִים לַעֲמֹד בַּפֶּרֶץ, דּוֹחִים אֶת־הַגְּזֵרוֹת: הָיוּ לָנוּ לְחוֹמָה, וּלְמַחְסֶה בְּיוֹם זָעַם: זוֹעֲכִים אַף בְּלַחֲשָׁם, חֵמָה עָֽצְרוּ בְּשַׁוְּעָם: טֶרֶם קְרָאוּךָ עֲנִיתָם, יוֹדְעִים לַעֲתֹר וּלְרַצּוֹת: כְּאָב רִחַמְתָּ לְמַעֲנָם, לֹא הֱשִׁיבוֹתָ פְנֵיהֶם רֵיקָם: מֵרֹב עֲוֹנֵֽינוּ אֲבַדְנוּם, נֶאֶסְפוּ מֶנּוּ בַּחֲטָאֵֽינוּ: סָעוּ הֵמָּה לִמְנוּחוֹת, עָֽזְבוּ אוֹתָנוּ לַאֲנָחוֹת: פַּסּוּ גוֹדְרֵי גָדֵר, צֻמְּתוּ מְשִׁיבֵי חֵמָה: קָמִים בַּפֶּרֶץ אַיִן, רְאוּיִים לְרַצּוֹתְךָ אָפֵסוּ: שׁוֹטַטְנוּ בְּאַרְבַּע פִּנּוֹת, תְּרוּפָה לֹא מָצָאנוּ: שַׁבְנוּ אֵלֶיךָ בְּבֹשֶׁת פָּנֵֽינוּ, לְשַׁחֲרָךְ אֵל בְּעֵת צָרוֹתֵֽינוּ:</p>
+<p dir="rtl" lang="he"><b>אֵל</b> מֶלֶךְ יוֹשֵׁב עַל כִּסֵּא רַחֲמִים וּמִתְנַהֵג בַּחֲסִידוּת, מוֹחֵל עֲוֹנוֹת עַמּוֹ, מַעֲבִיר רִאשׁוֹן רִאשׁוֹן. מַרְבֶּה מְחִילָה לַחַטָּאִים, וּסְלִיחָה לַפּוֹשְׁעִים. עֹשֶׂה צְדָקוֹת עִם כָּל־בָּשָׂר וְרוּחַ, לֹא כְרָעָתָם לָהֶם גּוֹמֵל. אֵל הוֹרֵתָנוּ לוֹמַר מִדּוֹת שְׁלֹשׁ עֶשְׂרֵה, זְכֹר לָנוּ הַיּוֹם בְּרִית שְׁלֹשׁ עֶשְׂרֵה, כְּמוֹ שֶׁהוֹדַעְתָּ לֶעָנָו מִקֶּדֶם, וְכֵן כָּתוּב בְּתוֹרָתָךְ: וַיֵּ֤רֶד יְהֹוָה֙ בֶּֽעָנָ֔ן וַיִּתְיַצֵּ֥ב עִמּ֖וֹ שָׁ֑ם וַיִּקְרָ֥א בְשֵׁ֖ם יְהֹוָֽה׃ וְשָׁם נֶאֱמַר:</p>
+<p dir="rtl" lang="he"><b>וַיַּעֲבֹ֨ר</b> יְהֹוָ֥ה ׀ עַל־פָּנָיו֮ וַיִּקְרָא֒ יְהֹוָ֣ה ׀ יְהֹוָ֔ה אֵ֥ל רַח֖וּם וְחַנּ֑וּן אֶ֥רֶךְ אַפַּ֖יִם וְרַב־חֶ֥סֶד וֶאֱמֶֽת׃ נֹצֵ֥ר‏ חֶ֙סֶד֙ לָאֲלָפִ֔ים נֹשֵׂ֥א עָוֺ֛ן וָפֶ֖שַׁע וְחַטָּאָ֑ה וְנַקֵּה֙׃</p>
+<p dir="rtl" lang="he"><small>על סדר תשר"ק</small></p>
+<p dir="rtl" lang="he"><b>תָּמַהְנוּ</b> מֵרָעוֹת, תָּשַׁשׁ כֹּחֵנוּ מִצָּרוֹת. שַׁחְנוּ עַד לִמְאֹד, שָׁפַלְנוּ עַד עָפָר. רַחוּם כָּךְ הִיא מִדָּתֵנוּ, קְשֵׁי עֹרֶף וּמַמְרִים אֲנַחְנוּ. צָעַקְנוּ בְּפִֽינוּ חָטָאנוּ, פְּתַלְתּוֹל וְעִקֵּשׁ לִבֵּנוּ. עֶלְיוֹן רַחֲמֶיךָ מֵעוֹלָם, סְלִיחָה עִמְּךָ הִיא. נִחָם עַל הָרָעָה, מַטֵּה כְלַפֵּי חֶסֶד. לֹא תִתְעַלַּם בְּעִתּוֹת כָּאֵל, כִּי בְצָרָה גְדוֹלָה אֲנָחְנוּ. יִוָּדַע לְעֵינֵי הַכֹּל, טוּבְךָ וְחַסְדְּךָ עִמָּנוּ. חֲתֹם פֶּה־שָׂטָן, וְאַל יַשְׂטִין עָלֵֽינוּ, זְעֹם בּוֹ וְיִדֹּם. וְיַעֲמֹד מֵלִיץ טוֹב לְצַדְּקֵנוּ, הוּא יַגִּיד יָשְׁרֵנוּ. דְּרָכֶיךָ רַחוּם וְחַנּוּן גִּלִּיתָ לְנֶאֱמַן בָּיִת. בְּבַקְשׁוֹ אָז מִלְּפָנֶיךָ, אֱמוּנָֽתְךָ הוֹדַעְתָּ לּוֹ:</p>
+<p dir="rtl" lang="he"><b>אֵל</b> מֶלֶךְ יוֹשֵׁב עַל כִּסֵּא רַחֲמִים וּמִתְנַהֵג בַּחֲסִידוּת, מוֹחֵל עֲוֹנוֹת עַמּוֹ, מַעֲבִיר רִאשׁוֹן רִאשׁוֹן. מַרְבֶּה מְחִילָה לַחַטָּאִים, וּסְלִיחָה לַפּוֹשְׁעִים. עֹשֶׂה צְדָקוֹת עִם כָּל־בָּשָׂר וְרוּחַ, לֹא כְרָעָתָם לָהֶם גּוֹמֵל. אֵל הוֹרֵתָנוּ לוֹמַר מִדּוֹת שְׁלֹשׁ עֶשְׂרֵה, זְכֹר לָנוּ הַיּוֹם בְּרִית שְׁלֹשׁ עֶשְׂרֵה, כְּמוֹ שֶׁהוֹדַעְתָּ לֶעָנָו מִקֶּדֶם, וְכֵן כָּתוּב בְּתוֹרָתָךְ: וַיֵּ֤רֶד יְהֹוָה֙ בֶּֽעָנָ֔ן וַיִּתְיַצֵּ֥ב עִמּ֖וֹ שָׁ֑ם וַיִּקְרָ֥א בְשֵׁ֖ם יְהֹוָֽה׃ וְשָׁם נֶאֱמַר:</p>
+<p dir="rtl" lang="he"><b>וַיַּעֲבֹ֨ר</b> יְהֹוָ֥ה ׀ עַל־פָּנָיו֮ וַיִּקְרָא֒ יְהֹוָ֣ה ׀ יְהֹוָ֔ה אֵ֥ל רַח֖וּם וְחַנּ֑וּן אֶ֥רֶךְ אַפַּ֖יִם וְרַב־חֶ֥סֶד וֶאֱמֶֽת׃ נֹצֵ֥ר‏ חֶ֙סֶד֙ לָאֲלָפִ֔ים נֹשֵׂ֥א עָוֺ֛ן וָפֶ֖שַׁע וְחַטָּאָ֑ה וְנַקֵּה֙׃</p>
+<p dir="rtl" lang="he"><b>וּכְשֶׁחָֽטְאוּ</b> יִשְׂרָאֵל בַּמִּדְבָּר, עָמַד מֹשֶׁה בִּתְפִלָּה לְפָנֶיךָ, וּבִקֵּשׁ רַחֲמִים עַל עַמְּךָ יִשְׂרָאֵל וְכָךְ אָמַר בִּתְפִלָּתוֹ: סְלַֽח־נָ֗א לַעֲוֺ֛ן הָעָ֥ם הַזֶּ֖ה כְּגֹ֣דֶל חַסְדֶּ֑ךָ וְכַאֲשֶׁ֤ר נָשָׂ֙אתָה֙ לָעָ֣ם הַזֶּ֔ה מִמִּצְרַ֖יִם וְעַד־הֵֽנָּה׃ אַף אַתָּה הֱשִׁיבוֹתָ לוֹ כְּדַרְכֵי טוּבְךָ בִּשַּׂרְתּוֹ וַחֲנַנְתּוֹ וְאָמַרְתָּ לוֹ: סָלַחְתִּי כִּדְבָרֶךָ:</p>
+<p dir="rtl" lang="he"><b>דָּנִיֵּאל</b> אִישׁ חֲמוּדוֹת אָמַר לְפָנֶיךָ: הַטֵּ֨ה אֱלֹהַ֥י ׀ אׇזְנְךָ֮ וּֽשְׁמָע֒ פקחה [פְּקַ֣ח] עֵינֶ֗יךָ וּרְאֵה֙ שֹֽׁמְמֹתֵ֔ינוּ וְהָעִ֕יר אֲשֶׁר־נִקְרָ֥א שִׁמְךָ֖ עָלֶ֑יהָ כִּ֣י ׀ לֹ֣א עַל־צִדְקֹתֵ֗ינוּ אֲנַ֨חְנוּ מַפִּילִ֤ים תַּחֲנוּנֵ֙ינוּ֙ לְפָנֶ֔יךָ כִּ֖י עַל־רַחֲמֶ֥יךָ הָרַבִּֽים׃ אֲדֹנָ֤י ׀ שְׁמָ֙עָה֙ אֲדֹנָ֣י ׀ סְלָ֔חָה אֲדֹנָ֛י הַֽקְשִׁ֥יבָה וַעֲשֵׂ֖ה אַל־תְּאַחַ֑ר לְמַֽעַנְךָ֣ אֱלֹהַ֔י כִּֽי־שִׁמְךָ֣ נִקְרָ֔א עַל־עִירְךָ֖ וְעַל־עַמֶּֽךָ׃ וְלִירוּשָׁלַיִם עִירָךְ אָמַרְתָּ לָהּ: הִנְנִי֙ נִשְׁפָּ֣ט אוֹתָ֔ךְ עַל־אׇמְרֵ֖ךְ לֹ֥א חָטָֽאתִי׃ אֲנַחְנוּ בּוֹשְׁנוּ בְּמַעֲשֵֽׂינוּ וְנִכְלַמְנוּ בַּעֲוֹנוֹתֵֽינוּ, אֵין לָנוּ פֶּה לְהָשִׁיב וְלֹא מֵצַח לְהָרִים רֹאשׁ:</p>
+<p dir="rtl" lang="he"><small>על סדר א"ת ב"ש</small></p>
+<p dir="rtl" lang="he"><b>אֱלֹהֵינוּ</b> וֵאלֹהֵי אֲבוֹתֵינוּ אַל תַּעַשׂ עִמָּנוּ כָּלָה, תֹּאחֵז יָֽדְךָ בַּמִּשְׁפָּט. בְּבֹא תוֹכֵחָה נֶגְדֶּךָ, שְׁמֵנוּ מִסִּפְרְךָ אַל תֶּמַח. גִּשְׁתְּךָ לַחֲקֹר מוּסָר, רַחֲמֶיךָ יְקַדְּמוּ רָגְזֶךָ. דַּלּוּת מַעֲשִׂים בְּשׁוּרֶךָ, קָרֵב צֶדֶק מֵאֵלֶיךָ. הוֹרֵנוּ בְּזַעֲקֵנוּ לָךְ, צַו יְשׁוּעָתֵנוּ בְּמַפְגִּיעַ. וְתָשִׁיב שְׁבוּת אָהֳלֵי תָם, פְּתָחָיו רְאֵה כִּי שָׁמֵמוּ. זְכֹר נָאַמְתָּ, עֵדוּת לֹא תִשָּׁכַח מִפִּי זַרְעוֹ. חוֹתָם תְּעוּדָה תַּתִּיר, סוֹדְךָ שִׂים בְּלִמּוּדֶיךָ. טַבּוּר אַגַּן הַסַּהַר, נָא אַל יֶחְסַר הַמָּזֶג. יָהּ דַּע אֶת־יִשְׂרָאֵל אֲשֶׁר יְדָעוּךָ, מַגֵּר אֶת־הַגּוֹיִם אֲשֶׁר לֹא יְדָעוּךָ. כִּי תָשִׁיב לְבִצָּרוֹן, לְכוּדִים אֲסִירֵי הַתִּקְוָה:</p>
+<p dir="rtl" lang="he"><b>אָשַׁמְנוּ</b> מִכָּל־עָם, בֹּשְׁנוּ מִכָּל־גּוֹי. גָּלָה מִמֶּנּוּ מָשׂוֹשׂ, דָּוֶה לִבֵּנוּ בַּחֲטָאֵֽינוּ. הָחְבַּל אֶוְיֵֽינוּ, וְנִפְרָע פְּאֵרֵנוּ. זְבוּל מִקְדָּשֵׁנוּ, חָרֵב בַּעֲוֹנֵֽינוּ. טִירָתֵנוּ הָֽיְתָה לְשַׁמָּה, יְפִי אַדְמָתֵנוּ לְזָרִים, כֹּחֵנוּ לְנָכְרִים. לְעֵינֵינוּ עָֽשְׁקוּ עֲמָלֵנוּ, מְמֻשָּׁךְ וּמוֹרָט מִמֶּנּוּ. נָֽתְנוּ עֻלָּם עָלֵֽינוּ, סָבַלְנוּ עַל שִׁכְמֵנוּ. עֲבָדִים מָֽשְׁלוּ בָנוּ, פּוֹרֵק אֵין מִיָּדָם. צָרוֹת רַבּוֹת סְבָבוּנוּ, קְרָאנוּךָ יְהֹוָה אֱלֹהֵֽינוּ. רָחַקְתָּ מִמֶּנּוּ בַּעֲוֹנֵֽינוּ, שַׁבְנוּ מֵאַחֲרֶיךָ, תָּעִֽינוּ כַּצֹּאן וְאָבָֽדְנוּ. וַעֲדַיִן לֹא שַׁבְנוּ מִתְּעִיָּתֵנוּ, וְהֵיאַךְ נָעִיז פָּנֵֽינוּ, וְנַקְשֶׁה עָרְפֵּנוּ, לוֹמַר לְפָנֶיךָ יְהֹוָה אֱלֹהֵֽינוּ וֵאלֹהֵי אֲבוֹתֵֽינוּ צַדִּיקִים אֲנַחְנוּ וְלֹא־חָטָאנוּ:</p>
+<p dir="rtl" lang="he"><b>עֶזְרָא</b> הַסּוֹפֵר אָמַר לְפָנֶיךָ: אֱלֹהַי֙ בֹּ֣שְׁתִּי וְנִכְלַ֔מְתִּי לְהָרִ֧ים אֱלֹהַ֛י פָּנַ֖י אֵלֶ֑יךָ כִּ֣י עֲוֺנֹתֵ֤ינוּ רָבוּ֙ לְמַ֣עְלָה רֹּ֔אשׁ וְאַשְׁמָתֵ֥נוּ גָדְלָ֖ה עַ֥ד לַשָּׁמָֽיִם׃ וְאַתָּה אֱלוֹהַּ סְלִיחוֹת, חַנּוּן וְרַחוּם, אֶרֶךְ־אַפַּיִם וְרַב־חֶסֶד, וְלֹא עֲזַבְתָּם. אַל תַּעַזְבֵנוּ אָבִֽינוּ, אַל תִּטְּשֵׁנוּ מַלְכֵּנוּ, וְאַל תִּשְׁכָּחֵנוּ יוֹצְרֵנוּ, וְאַל תַּעַשׂ עִמָּנוּ כָלָה בְּגָלוּתֵנוּ, וְקַיֵּם לָנוּ יְהֹוָה אֱלֹהֵֽינוּ אֶת־הַדָּבָר שֶׁהִבְטַחְתָּנוּ, עַל יְדֵי יִרְמְיָה חוֹזָךְ, כָּאָמוּר: בַּיָּמִ֣ים הָהֵם֩ וּבָעֵ֨ת הַהִ֜יא נְאֻם־יְהֹוָ֗ה יְבֻקַּ֞שׁ אֶת־עֲוֺ֤ן יִשְׂרָאֵל֙ וְאֵינֶ֔נּוּ וְאֶת־חַטֹּ֥את יְהוּדָ֖ה וְלֹ֣א תִמָּצֶ֑אינָה כִּ֥י אֶסְלַ֖ח לַאֲשֶׁ֥ר אַשְׁאִֽיר׃ וְאַל יְעַכֵּב לְפָנֶיךָ כָּל־חֵטְא וְעוֹן אֶת תְּפִלָּתֵנוּ, וּמְחוֹל וּסְלַח לְכָל־עֲוֹנוֹתֵֽינוּ, כִּי אֵל טוֹב וְסַלָּח אָתָּה:</p>
+<p dir="rtl" lang="he"><b>מַה־נֹּאמַר</b> לְפָנֶיךָ יוֹשֵׁב מָרוֹם, וּמַה נְּסַפֵּר לְפָנֶיךָ שׁוֹכֵן שְׁחָקִים, הֲלֹא הַנִּסְתָּרוֹת וְהַנִּגְלוֹת אַתָּה יוֹדֵעַ, אַתָּה יוֹדֵעַ רָזֵי עוֹלָם, וְתַעֲלוּמוֹת סִתְרֵי כָל־חָי, אַתָּה חוֹפֵשׂ כָּל־חַדְרֵי בָטֶן, רֹאֶה כְלָיוֹת וָלֵב. אֵין דָּבָר נֶעְלָם מִמָּךְ, וְאֵין נִסְתָּר מִנֶּגֶד עֵינֶיךָ:</p>
+<p dir="rtl" lang="he"><b>יְהִי</b> רָצוֹן מִלְּפָנֶיךָ יְהֹוָה אֱלֹהֵינוּ וֵאלֹהֵי אֲבוֹתֵינוּ, שֶׁתִּמְחֹל לָנוּ אֶת־כָּל־חַטֹּאתֵינוּ, וּתְכַפֵּר לָנוּ אֶת־כָּל־עֲוֹנוֹתֵינוּ, וְתִמְחֹל וְתִסְלַח לְכָל־פְּשָׁעֵינוּ, וְסָלַחְתָּ לַעֲוֹנֵנוּ וּלְחַטָּאתֵנוּ וּנְחַלְתָּנוּ: סְלַח לָנוּ אָבִינוּ כִּי חָטָאנוּ, מְחֹל לָנוּ מַלְכֵּנוּ כִּי פָשָֽׁעְנוּ: כִּי אַתָּה אֲדֹנָי, טוֹב וְסַלָּח, וְרַב־חֶסֶד לְכָל־קֹרְאֶיךָ: לְמַֽעַן־שִׁמְךָ֥ יְהֹוָ֑ה וְֽסָלַחְתָּ֥ לַ֝עֲוֺנִ֗י כִּ֣י רַב־הֽוּא׃ לְמַעַן־שִׁמְךָ֣ יְהֹוָ֣ה תְּחַיֵּ֑נִי בְּצִדְקָתְךָ֓ ׀ תּוֹצִ֖יא מִצָּרָ֣ה נַפְשִֽׁי׃ יְהֹוָ֣ה צְבָא֣וֹת עִמָּ֑נוּ מִשְׂגָּֽב־לָ֨נוּ אֱלֹהֵ֖י יַֽעֲקֹ֣ב סֶֽלָה׃ יְהֹוָ֥ה צְבָא֑וֹת אַֽשְׁרֵ֥י אָ֝דָ֗ם בֹּטֵ֥חַ בָּֽךְ׃ יְהֹוָ֥ה הוֹשִׁ֑יעָה הַ֝מֶּ֗לֶךְ יַעֲנֵ֥נוּ בְיוֹם־קׇרְאֵֽנוּ׃ הֲשִׁיבֵ֨נוּ יְהֹוָ֤ה ׀ אֵלֶ֙יךָ֙ ונשוב [וְֽנָשׁ֔וּבָה] חַדֵּ֥שׁ יָמֵ֖ינוּ כְּקֶֽדֶם׃</p>
+<p dir="rtl" lang="he"><b>וְה֤וּא</b> רַח֨וּם ׀ יְכַפֵּ֥ר עָוֺן֮ וְֽלֹא־יַֽ֫שְׁחִ֥ית וְ֭הִרְבָּה לְהָשִׁ֣יב אַפּ֑וֹ וְלֹא־יָ֝עִ֗יר כׇּל־חֲמָתֽוֹ׃ אַתָּ֤ה יְהֹוָ֗ה לֹֽא־תִכְלָ֣א רַחֲמֶ֣יךָ מִמֶּ֑נִּי חַסְדְּךָ֥ וַ֝אֲמִתְּךָ֗ תָּמִ֥יד יִצְּרֽוּנִי׃ הוֹשִׁיעֵ֨נוּ ׀ יְהֹ֘וָ֤ה אֱלֹהֵ֗ינוּ וְקַבְּצֵנוּ֮ מִֽן־הַגּ֫וֹיִ֥ם לְ֭הֹדוֹת לְשֵׁ֣ם קׇדְשֶׁ֑ךָ לְ֝הִשְׁתַּבֵּ֗חַ בִּתְהִלָּתֶֽךָ: אִם־עֲוֺנ֥וֹת תִּשְׁמׇר־יָ֑הּ אֲ֝דֹנָ֗י מִ֣י יַעֲמֹֽד׃ כִּֽי־עִמְּךָ֥ הַסְּלִיחָ֑ה לְ֝מַ֗עַן תִּוָּרֵֽא׃ לֹ֣א כַ֭חֲטָאֵינוּ עָ֣שָׂה לָ֑נוּ וְלֹ֥א כַ֝עֲוֺנֹתֵ֗ינוּ גָּמַ֥ל עָלֵֽינוּ׃ אִם־עֲוֺנֵ֙ינוּ֙ עָ֣נוּ בָ֔נוּ יְהֹוָ֕ה עֲשֵׂ֖ה לְמַ֣עַן שְׁמֶ֑ךָ׃ זְכֹר־רַחֲמֶ֣יךָ יְ֭הֹוָה וַחֲסָדֶ֑יךָ כִּ֖י מֵעוֹלָ֣ם הֵֽמָּה׃ יַֽעַנְךָ֣ יְ֭הֹוָה בְּי֣וֹם צָרָ֑ה יְ֝שַׂגֶּבְךָ֗ שֵׁ֤ם ׀ אֱלֹהֵ֬י יַעֲקֹֽב׃ יְהֹוָ֥ה הוֹשִׁ֑יעָה הַ֝מֶּ֗לֶךְ יַעֲנֵ֥נוּ בְיוֹם־קׇרְאֵֽנוּ: אָבִינוּ מַלְכֵּנוּ, חָנֵּנוּ וַעֲנֵנוּ כִּי אֵין בָּנוּ מַעֲשִׂים. עֲשֵׂה עִמָּנוּ צְדָקָה כְּרֹב רַחֲמֶיךָ, וְהוֹשִׁיעֵנוּ לְמַעַן שְׁמֶךָ:</p>
+<p dir="rtl" lang="he"><b>וְעַתָּ֣ה ׀</b> <small>(דניאל ט טו)</small> אֲדֹנָ֣י אֱלֹהֵ֗ינוּ אֲשֶׁר֩ הוֹצֵ֨אתָ אֶֽת־עַמְּךָ֜ מֵאֶ֤רֶץ מִצְרַ֙יִם֙ בְּיָ֣ד חֲזָקָ֔ה וַתַּֽעַשׂ־לְךָ֥ שֵׁ֖ם כַּיּ֣וֹם הַזֶּ֑ה חָטָ֖אנוּ רָשָֽׁעְנוּ׃ אֲדֹנָ֗י כְּכׇל־צִדְקֹתֶ֙ךָ֙ יָֽשׇׁב־נָ֤א אַפְּךָ֙ וַחֲמָ֣תְךָ֔ מֵעִֽירְךָ֥ יְרוּשָׁלַ֖‍ִם הַר־קׇדְשֶׁ֑ךָ כִּ֤י בַחֲטָאֵ֙ינוּ֙ וּבַעֲוֺנ֣וֹת אֲבֹתֵ֔ינוּ יְרוּשָׁלַ֧‍ִם וְעַמְּךָ֛ לְחֶרְפָּ֖ה לְכָל־סְבִיבֹתֵֽינוּ׃ וְעַתָּ֣ה ׀ שְׁמַ֣ע אֱלֹהֵ֗ינוּ אֶל־תְּפִלַּ֤ת עַבְדְּךָ֙ וְאֶל־תַּ֣חֲנוּנָ֔יו וְהָאֵ֣ר פָּנֶ֔יךָ עַל־מִקְדָּשְׁךָ֖ הַשָּׁמֵ֑ם לְמַ֖עַן אֲדֹנָֽי׃ הַטֵּ֨ה אֱלֹהַ֥י ׀ אׇזְנְךָ֮ וּֽשְׁמָע֒ פקחה [פְּקַ֣ח] עֵינֶ֗יךָ וּרְאֵה֙ שֹֽׁמְמֹתֵ֔ינוּ וְהָעִ֕יר אֲשֶׁר־נִקְרָ֥א שִׁמְךָ֖ עָלֶ֑יהָ כִּ֣י ׀ לֹ֣א עַל־צִדְקֹתֵ֗ינוּ אֲנַ֨חְנוּ מַפִּילִ֤ים תַּחֲנוּנֵ֙ינוּ֙ לְפָנֶ֔יךָ כִּ֖י עַל־רַחֲמֶ֥יךָ הָרַבִּֽים׃ אֲדֹנָ֤י ׀ שְׁמָ֙עָה֙ אֲדֹנָ֣י ׀ סְלָ֔חָה אֲדֹנָ֛י הַֽקְשִׁ֥יבָה וַעֲשֵׂ֖ה אַל־תְּאַחַ֑ר לְמַֽעַנְךָ֣ אֱלֹהַ֔י כִּֽי־שִׁמְךָ֣ נִקְרָ֔א עַל־עִירְךָ֖ וְעַל־עַמֶּֽךָ׃ אָבִינוּ אָב הָרַחֲמָן, הַרְאֵנוּ אוֹת לְטוֹבָה וְקַבֵּץ נְפוּצוֹתֵינוּ מֵאַרְבַּע כַּנְפוֹת הָאָרֶץ. יַכִּירוּ וְיֵדְעוּ כָּל הַגּוֹיִם כִּי אַתָּה יְהֹוָה אָבִינוּ אָתָּה. אֲנַחְנוּ הַחֹמֶר וְאַתָּה יֹצְרֵנוּ וּמַעֲשֵׂה יָדְךָ כֻּלָּנוּ: אָבִינוּ מַלְכֵּנוּ, צוּרֵנוּ וְגוֹאֲלֵנוּ, ח֧וּסָה יְהֹוָ֣ה עַל־עַמֶּ֗ךָ וְאַל־תִּתֵּ֨ן נַחֲלָתְךָ֤ לְחֶרְפָּה֙ לִמְשׇׁל־בָּ֣ם גּוֹיִ֔ם לָ֚מָּה יֹאמְר֣וּ בָעַמִּ֔ים אַיֵּ֖ה אֱלֹהֵיהֶֽם׃ יָדַעְנוּ יְהֹוָה כִּי חָטָאנוּ. וְאֵין מִי יַעֲמוֹד בַּעֲדֵנוּ אֶלָּא שִׁמְךָ הַגָּדוֹל יַעֲמוֹד לָנוּ בְּעֵת צָרָה. וּכְרַחֵם אָב עַל בָּנִים רַחֵם עָלֵינוּ. חֲמֹל עַל עַמָּךְ וְרַחֵם עַל נַחֲלָתָךְ. חוּסָה נָּא כְּרֹב רַחֲמֶיךָ חָנֵּנוּ מַלְכֵּנוּ וַעֲנֵנוּ. לְךָ יְהֹוָה הַצְּדָקָה עוֹשֵׂה נִפְלָאוֹת בְּכָל עֵת וָעֵת. הַבֵּט נָא וְהוֹשִׁיעָה נָּא צֹאן מַרְעִיתֶךָ. אַל יִמְשָׁל בָּנוּ קֶצֶף כִּי לְךָ יְהֹוָה הַיְשׁוּעָה בְּךָ תוֹחַלְתֵּנוּ. אֱלוֹהַּ סְלִיחוֹת אָנָּא סְלַח נָא. כִּי אֵל טוֹב וְסַלָּח אָתָּה:</p>
+<p dir="rtl" lang="he"><b>אָנָּא</b> מֶלֶךְ רַחוּם וְחַנּוּן, זְכוֹר וְהַבֵּט לִבְרִית בֵּין הַבְּתָרִים. וְתֵרָאֶה לְפָנֶיךָ עֲקֵדַת יָחִיד. וּלְמַעַן יִשְׂרָאֵל אָבִינוּ. אַל תַּעַזְבֵנוּ אָבִינוּ. וְאַל תִּטְּשֵׁנוּ מַלְכֵּנוּ וְאַל תִּשְׁכָּחֵנוּ יוֹצְרֵנוּ. וְאַל תַּעַשׂ עִמָּנוּ כָלָה בְּגָלוּתֵינוּ. כִּי אֵל מֶלֶךְ חַנּוּן וְרַחוּם אָתָּה:</p>
+<p dir="rtl" lang="he"><b>אֵין</b> כָּמוֹךָ חַנּוּן וְרַחוּם אֱלֹהֵינוּ. אֵין כָּמוֹךָ אֵל אֶרֶךְ אַפַּיִם וְרַב חֶסֶד וֶאֱמֶת. הושִׁיעֵנוּ וְרַחֲמֵנוּ מֵרַעַשׁ וּמֵרֹגֶז הַצִּילֵנוּ: זְכֹר֙ לַעֲבָדֶ֔יךָ לְאַבְרָהָ֥ם לְיִצְחָ֖ק וּֽלְיַעֲקֹ֑ב אַל־תֵּ֗פֶן אֶל־קְשִׁי֙ הָעָ֣ם הַזֶּ֔ה וְאֶל־רִשְׁע֖וֹ וְאֶל־חַטָּאתֽוֹ׃ שׁ֚וּב מֵחֲר֣וֹן אַפֶּ֔ךָ וְהִנָּחֵ֥ם עַל־הָרָעָ֖ה לְעַמֶּֽךָ׃ וְהָסֵר מִמֶּנּוּ מַכַּת הַמָּוֶת כִּי רַחוּם אָתָּה. כִּי כֵן דַּרְכְּךָ לַעֲשׂוֹת חֶסֶד חִנָּם בְּכָל דּוֹר וָדוֹר: אָנָּ֣א יְ֭הֹוָה הוֹשִׁ֘יעָ֥ה נָּ֑א אָנָּ֥א יְ֝הֹוָ֗ה הַצְלִ֘יחָ֥ה נָּֽא׃ אָנָּא יְהֹוָה עֲנֵנוּ בְיוֹם קָרְאֵנוּ: לְךָ יְהֹוָה קִוִּינוּ. לְךָ יְהֹוָה חִכִּינוּ. לְךָ יְהֹוָה נְיַחֵל אַל תֶּחֱשֶׁה וּתְעַנֵּנוּ. כִּי נָאֲמוּ גוֹיִם אָבְדָה תִקְוָתָם. כָּל בֶּרֶךְ לְךָ תִכְרַע וְכָל קוֹמָה לְפָנֶיךָ תִשְׁתַּחֲוֶה:</p>
+<p dir="rtl" lang="he"><b>הַפּוֹתֵחַ</b> יָד בִּתְשׁוּבָה לְקַבֵּל פּוֹשְׁעִים וְחַטָּאִים. נִבְהֲלָה נַפְשֵׁנוּ מֵרוֹב עִצְּבוֹנֵנוּ. אַל תִּשְׁכָּחֵנוּ נֶצַח קוּמָה וְהוֹשִׁיעֵנוּ. אַל תִּשְׁפּוֹךְ חֲרוֹנְךָ עָלֵינוּ כִּי עַמְּךָ אֲנַחְנוּ בְּנֵי בְרִיתֶךָ. אֵל הַבִּיטָה. דַּל כְּבוֹדֵנוּ בַגּוֹיִם וְשִׁקְּצוּנוּ כְּטֻמְאַת הַנִּדָּה. עַד מָתַי עֻזְּךָ בַּשְּׁבִי וְתִפְאַרְתְּךָ בְּיַד צָר. הֵמָּה יִרְאוּ וְיֵבֹשׁוּ וְיֵחַתּוּ מִגְּבוּרָתָם. עוֹרְרָה גְבוּרָתְךָ וְהוֹשִׁיעֵנוּ לְמַעַן שְׁמֶךָ. אַל יִמְעֲטוּ לְפָנֶיךָ תְּלָאוֹתֵינוּ מַהֵר יְקַדְּמוּנוּ רַחֲמֶיךָ בְּעֵת צָרוֹתֵנוּ. לֹא לְמַעֲנֵנוּ אֶלָּא לְמַעֲנָךְ פְּעֹל וְאַל תַּשְׁחֵת אֶת זֵכֶר שְׁאֵרִיתֵנוּ. כִּי לְךָ מְיַחֲלוֹת עֵינֵינוּ כִּי אֵל מֶלֶךְ חַנּוּן וְרַחוּם אָתָּה. וּזְכוֹר עֵדוּתֵינוּ בְּכָל יוֹם תָּמִיד אוֹמְרִים פַּעֲמַיִם בְּאַהֲבָה: שְׁמַ֖ע יִשְׂרָאֵ֑ל יְהֹוָ֥ה אֱלֹהֵ֖ינוּ יְהֹוָ֥ה ׀ אֶחָֽד׃</p>
+<h3 class="section"><span>סליחות לעשרה בטבת</span></h3>
+<p dir="rtl" lang="he"><b>סליחות לעשרה בטבת</b></p>
+<p dir="rtl" lang="he"><small>אחר החזרה אומרים וידוי ונפילת אפים, ואחר כך אומרים</small></p>
+<p dir="rtl" lang="he"><b>וָאָרֶץ</b> שָׁפַל רוּמִי, וְגָדַל שִׁבְרִי, מְשׁוֹמֵם אֵשֵׁב, יוֹם סָמַךְ הָאֲרִי, עַל צְבִי הַר קֹדֶשׁ צִיּוֹן עִירִי, לָכֵן אֲקוֹנֵן וְאֶתְאַבֵּל בַּחֹדֶשׁ הָעֲשִׂירִי: בַּחֹדֶשׁ הָעֲשִׂירִי אַרְיֵה עָלָה בְחֵמָה, בֶּעָשׂוֹר לַחֹדֶשׁ בָּנָה עָלַי חוֹמָה, גָּשׁ הוּא וְכָל־עַמּוֹ לַעֲשׂוֹת בְּעַמִּי נְקָמָה, וַיַּעַרְכוּ אִתָּם מִלְחָמָה: מִלְחָמָה שִׁית מִשְׂגַּבִּי וּמוֹשִׁיעִי, בְּאוֹיְבִי וּמַכְנִיעִי, כּוֹס מָלֵא מֶסֶךְ הַשְׁקֵם יְהֹוָה רוֹעִי, מָגִּנִּי וְקֶרֶן יִשְׁעִי:</p>
+<p dir="rtl" lang="he"><b>בַּחֹדֶשׁ</b> הָעֲשִׂירִי דְּלָקַנִי אוֹיֵב בַּחֶרֶב, בֶּעָשׂוֹר לַחֹדֶשׁ הֵכִין עָלַי אוֹרֵב, וְעַל זֹאת אֲקוֹנֵן וְגִילִי עָרֵב, אוֹי לָנוּ כִּי פָנָה הַיּוֹם, כִּי יִנָּטוּ צִלְלֵי־עָרֶב: עֶרֶב יֵהָפֵךְ לְבֹקֶר וּבוֹגְדִים אַל יַעֲלוּ עָל, חֹן עַל עַמְּךָ וְלִכְאֵבָם הַעֲלֵה תַעַל, זְכֹר־לִי בְּרִית אָבוֹת, בְּפָּרְשִׂי לְךָ כַּף וְשַׁעַל, מֵמִית וּמְחַיֶּה, מוֹרִיד שְׁאוֹל וַיָּעַל:</p>
+<p dir="rtl" lang="he"><b>בַּחֹדֶשׁ</b> הָעֲשִׂירִי זְאֵב עֲרָבוֹת עַל עַמִּי נוֹהֵם, בֶּעָשׂוֹר לַחֹדֶשׁ, טָרֹף טֹרַף כָּל־הַיּוֹצֵא מֵהֶם, נָמֵר שֹׁקֵד עַל עָרֵיהֶם: עָרֵיהֶם שָֽׂרְפוּ בָאֵשׁ בִּרְבוֹת תְּלָאוֹת, רוּמָה יְהֹוָה בְּעֻזֶּךָ זֵדִים לְהַשְׁאוֹת, בּוֹשׁ יֵבוֹשׁוּ בַּעֲשׂוֹתְךָ עִמָּנוּ לְטוֹבָה אוֹת, קְדוֹשׁ יִשְׂרָאֵל יְהֹוָה צְבָאוֹת:</p>
+<p dir="rtl" lang="he"><b>בַּחֹדֶשׁ</b> הָעֲשִׂירִי יְדֵי צַר הֶחֱזִֽיקוּ מָגֵן וְצִנָּה, בֶּעָשׂוֹר לַחֹדֶשׁ כְּאִישׁ עָרוּךְ לַמִּלְחָמָה עַל קִרְיָה נֶאֱמָנָה, לְזֹאת חִגְרִי שַׂק עֵדָה עֲדִינָה, גָּזִּי נִזְרֵךְ וְהַשְׁלִיכִי, וּשְׂאִי עַל שְׁפָיִם קִינָה: קִינָה דוֹבֵר עַמְּךָ בְּיוֹם זֶה לְעֻמָּתֶךָ, וְעַפְעַפֵּֽינוּ יִזְּלוּ מַיִם עַל חָרְבָּן בֵּיתֶךָ, יוֹם נָקָם תָּעִיר לְצָּרִים הוֹמִים בְּבֵיתֶךָ, דְּרָכֶיךָ יְהֹוָה הוֹדִיעֵנִי וְלַמְּדֵנִי אוֹרְחוֹתֶיךָ:</p>
+<p dir="rtl" lang="he"><b>בַּחֹדֶשׁ</b> הָעֲשִׂירִי מֹנַי שָֽׁפְכוּ עַל עִירִי סוֹלְלָה, בֶּעָשׂוֹר לַחֹדֶשׁ נִזְרִי הַשְׁלַךְ וְתִפְאַרְתִּי נָֽפְלָה, סְבָבוּנִי הָעֹשִׂים מַכָּתִי נַחְלָה, מֵעַי מֵעַי אוֹחִילָה: אוֹחִילָה יוֹם זֶה לְנַעֲרָץ בְּסוֹד קְדוֹשִׁים רַבָּה, וַאֲחַלֶּה פָנָיו לַעֲבֹר עַל פֶּשַׁע וְחוֹבָה, אַל תֵּפֶן לְרִשְׁעֵנוּ וּמְחֵה חַטָּאת כְּתוּבָה, הֲשִׁיבֵנוּ יְהֹוָה אֵלֶיךָ וְנָשׁוּבָה:</p>
+<p dir="rtl" lang="he"><b>עַל</b> יְדֵי רַחֲמֶיךָ הָרַבִּים סְלַח לָנוּ אָבִֽינוּ, כִּי בְרֹב אִוַּלְתֵּנוּ שָׁגִֽינוּ: מְחֹל לָנוּ מַלְכֵּנוּ, כִּי רַבּוּ עֲוֹנֵֽינוּ: אֵל אֶרֶךְ אַפַּיִם אַתָּה, וְדֶרֶךְ תְּשׁוּבָה לָנוּ הוֹרֵיתָ: גְּדֻלַּת רַחֲמֶיךָ וַחֲסָדֶיךָ, תִּזְכֹּר הַיּוֹם לְזֶרַע יְדִידֶיךָ: תֵּפֶן אֵלֵֽינוּ בְּרַחֲמִים, כִּי אַתָּה הוּא בַּעַל הָרַחֲמִים: בְּתַחֲנוּן וּבִתְפִלָּה נְקַדֵּם, כְּמוֹ שֶׁהוֹדַעְתָּ לֶעָנָו מִקֶּדֶם: וּמֵחֲרוֹן אַפְּךָ תָּשׁוּב, כְּמוֹ בְּתוֹרָֽתְךָ כָּתוּב: וּבְצֵל כְּנָפֶיךָ נֶחֱסֶה וְנִתְלוֹנָן, כְּיוֹם וַיֵּ֤רֶד יְהֹוָה֙ בֶּֽעָנָ֔ן: תַּעֲבוֹר עַל פֶּשַׁע וְתִמְחֹל אָשָׁם, כְּיוֹם וַיִּתְיַצֵּ֥ב עִמּ֖וֹ שָׁ֑ם: תַּאֲזִין שֶׁוַע וְתַקְשִׁיב בְּרָצוֹן מַאֲמָר, כְּיוֹם וַיִּקְרָ֥א בְשֵׁ֖ם יְהֹוָֽה: וְשָׁם נֶאֱמַר:</p>
+<p dir="rtl" lang="he"><b>וַיַּעֲבֹ֨ר</b> יְהֹוָ֥ה ׀ עַל־פָּנָיו֮ וַיִּקְרָא֒ יְהֹוָ֣ה ׀ יְהֹוָ֔ה אֵ֥ל רַח֖וּם וְחַנּ֑וּן אֶ֥רֶךְ אַפַּ֖יִם וְרַב־חֶ֥סֶד וֶאֱמֶֽת׃ נֹצֵ֥ר‏ חֶ֙סֶד֙ לָאֲלָפִ֔ים נֹשֵׂ֥א עָוֺ֛ן וָפֶ֖שַׁע וְחַטָּאָ֑ה וְנַקֵּה֙׃</p></article>
+    <template data-nikud-alt><p dir="rtl" lang="he"><b>תפלת הדרך</b></p>
+<p dir="rtl" lang="he"><b>יהי</b> רצון מלפניך יהוה אלהינו ואלהי אבותינו, שתוליכנו לשלום, ותצעידנו לשלום, ותסמכנו לשלום, ותגיענו למחוז חפצנו לחיים טובים ולשמחה ולשלום, <small>(<small>אם חוזר בו ביום מוסיף</small> ותחזירנו לשלום),</small> ותצילנו מכף כלאויב ואורב בדרך, ומכלמיני פרעניות המתרגשות ובאות לעולם, ותשלח ברכה במעשה ידינו, ותתננו לחן ולחסד ולרחמים בעיניך ובעיני כלרואינו. ותשמע קול תחנונינו, כי אל שומע תפלה ותחנון אתה. ברוך (אתה יהוה) שומע תפלה:</p>
+<p dir="rtl" lang="he"><small>ויש מוסיפים פסוקים אלה לשמירה</small></p>
+<p dir="rtl" lang="he"><small><b>ויעקב</b> הלך לדרכו ויפגעובו מלאכי אלהים ויאמר יעקב כאשר ראם מחנה אלהים זה ויקרא שםהמקום ההוא מחנים</small></p>
+<p dir="rtl" lang="he"><small><b>ויסעו</b> ויהי  חתת אלהים עלהערים אשר סביבותיהם ולא רדפו אחרי בני יעקב לישועתך קויתי יהוה <small>ג' פעמים</small></small></p>
+<p dir="rtl" lang="he"><small><b>יברכך</b> יהוה וישמרך יאר יהוה  פניו אליך ויחנך ישא יהוה  פניו אליך וישם לך שלום <small>ג' פעמים</small></small></p>
+<p dir="rtl" lang="he"><small><b>הנה</b> אנכי שלח מלאך לפניך לשמרך בדרך ולהביאך אלהמקום אשר הכנתי <small>ג' פעמים</small></small></p>
+<p dir="rtl" lang="he"><small><b>המלאך</b> הגאל אתי מכלרע יברך אתהנערים ויקרא בהם שמי ושם אבתי אברהם ויצחק וידגו לרב בקרב הארץ <small>ג' פעמים</small></small></p>
+<h3 class="section"><span>תעניות ואבילות</span></h3>
+<h3 class="section"><span>סליחות לצום גדליה</span></h3>
+<p dir="rtl" lang="he"><b>תעניות ואבילות</b></p>
+<p dir="rtl" lang="he"><b>סליחות לצום גדליה</b></p>
+<p dir="rtl" lang="he"><small>אחר החזרה אומרים וידוי ונפילת אפים, ואחרכך אומרים:</small></p>
+<p dir="rtl" lang="he"><b>על</b> ידי רחמיך הרבים סלח לנו אבינו, כי ברוב אולתנו שגינו: מחל לנו מלכנו, כי רבו עונינו: אל ארך אפים אתה, ודרך תשובה לנו הורית: גדלת רחמיך וחסדיך, תזכור היום לזרע ידידיך: תפן אלינו ברחמים, כי אתה הוא בעל הרחמים: בתחנון ובתפלה נקדם, כמו שהודעת לענו מקדם: ומחרון אפך תשוב, כמו בתורתך כתוב: ובצל כנפיך נחסה ונתלונן, כיום וירד יהוה בענן: תעבר על פשע ותמחל אשם, כיום ויתיצב עמו שם: תאזין שוע ותקשיב ברצון מאמר, כיום ויקרא בשם יהוה: ושם נאמר:</p>
+<p dir="rtl" lang="he"><b>ויעבר</b> יהוה  עלפניו ויקרא יהוה  יהוה אל רחום וחנון ארך אפים ורבחסד ואמת נצר‏ חסד לאלפים נשא עון ופשע וחטאה ונקה</p>
+<p dir="rtl" lang="he"><b>אבלה</b> נפשי וחשך תארי, בית תפארתי נשרף ביד הארי, גם פלטים אשר עזבו שארי, דועכו היום בשלשה בתשרי: המים הזדונים שטפונו בדלקם, ובוססו צרים מקדשי ובזזו חלקם, זקני שארית אשר נמלטו ביום נקם, חבלו היום עם גדליה בן אחיקם: טורפו עניי עם הארץ, יתר הגזם אכל הארבה במרץ, כורמים ויוגבים אשר הפקיד נגיד הארץ, לקטו היום ולא היה בהם גודר גדר ועומד בפרץ: מה אספר ואנחותי עצומות, נקטה נפשי ומקהלותי עגומות, שרידי אשר נשארו מחרב וחמות, עוד הם לא נתקימו ונותצו בחומות: פניך עד אנה ממנו תסתיר, צוחתנו תשמע וכבלנו תתיר, קדוש הביטה בענינו כי אין לנו מכתיר, ראה דלותנו ושבח לפניך נעתיר: שדדנו מדור לדור ומקץ לקץ, שרש צפע אותנו עקץ, תקיף למשפטיך העירה והקץ, ותכפר חטאתינו ותאמר לקרב קץ: יהמו רחמיך על מעוטי עמים, ושגבם בחסדך לעיני כל לאמים, פלאיך הראם שוכן מרומים, אל מלך יושב על כסא רחמים:</p>
+<p dir="rtl" lang="he"><b>אל</b> מלך יושב על כסא רחמים ומתנהג בחסידות, מוחל עונות עמו, מעביר ראשון ראשון. מרבה מחילה לחטאים, וסליחה לפושעים. עשה צדקות עם כלבשר ורוח, לא כרעתם להם גומל. אל הורתנו לומר מדות שלש עשרה, זכר לנו היום ברית שלש עשרה, כמו שהודעת לענו מקדם, וכן כתוב בתורתך: וירד יהוה בענן ויתיצב עמו שם ויקרא בשם יהוה ושם נאמר:</p>
+<p dir="rtl" lang="he"><b>ויעבר</b> יהוה  עלפניו ויקרא יהוה  יהוה אל רחום וחנון ארך אפים ורבחסד ואמת נצר‏ חסד לאלפים נשא עון ופשע וחטאה ונקה</p>
+<p dir="rtl" lang="he"><small>על סדר א"ב</small></p>
+<p dir="rtl" lang="he"><b>אנשי</b> אמונה אבדו, באים בכח מעשיהם: גבורים לעמד בפרץ, דוחים אתהגזרות: היו לנו לחומה, ולמחסה ביום זעם: זועכים אף בלחשם, חמה עצרו בשועם: טרם קראוך עניתם, יודעים לעתר ולרצות: כאב רחמת למענם, לא השיבות פניהם ריקם: מרב עונינו אבדנום, נאספו מנו בחטאינו: סעו המה למנוחות, עזבו אותנו לאנחות: פסו גודרי גדר, צמתו משיבי חמה: קמים בפרץ אין, ראויים לרצותך אפסו: שוטטנו בארבע פנות, תרופה לא מצאנו: שבנו אליך בבשת פנינו, לשחרך אל בעת צרותינו:</p>
+<p dir="rtl" lang="he"><b>אל</b> מלך יושב על כסא רחמים ומתנהג בחסידות, מוחל עונות עמו, מעביר ראשון ראשון. מרבה מחילה לחטאים, וסליחה לפושעים. עשה צדקות עם כלבשר ורוח, לא כרעתם להם גומל. אל הורתנו לומר מדות שלש עשרה, זכר לנו היום ברית שלש עשרה, כמו שהודעת לענו מקדם, וכן כתוב בתורתך: וירד יהוה בענן ויתיצב עמו שם ויקרא בשם יהוה ושם נאמר:</p>
+<p dir="rtl" lang="he"><b>ויעבר</b> יהוה  עלפניו ויקרא יהוה  יהוה אל רחום וחנון ארך אפים ורבחסד ואמת נצר‏ חסד לאלפים נשא עון ופשע וחטאה ונקה</p>
+<p dir="rtl" lang="he"><small>על סדר תשר"ק</small></p>
+<p dir="rtl" lang="he"><b>תמהנו</b> מרעות, תשש כחנו מצרות. שחנו עד למאד, שפלנו עד עפר. רחום כך היא מדתנו, קשי ערף וממרים אנחנו. צעקנו בפינו חטאנו, פתלתול ועקש לבנו. עליון רחמיך מעולם, סליחה עמך היא. נחם על הרעה, מטה כלפי חסד. לא תתעלם בעתות כאל, כי בצרה גדולה אנחנו. יודע לעיני הכל, טובך וחסדך עמנו. חתם פהשטן, ואל ישטין עלינו, זעם בו וידם. ויעמד מליץ טוב לצדקנו, הוא יגיד ישרנו. דרכיך רחום וחנון גלית לנאמן בית. בבקשו אז מלפניך, אמונתך הודעת לו:</p>
+<p dir="rtl" lang="he"><b>אל</b> מלך יושב על כסא רחמים ומתנהג בחסידות, מוחל עונות עמו, מעביר ראשון ראשון. מרבה מחילה לחטאים, וסליחה לפושעים. עשה צדקות עם כלבשר ורוח, לא כרעתם להם גומל. אל הורתנו לומר מדות שלש עשרה, זכר לנו היום ברית שלש עשרה, כמו שהודעת לענו מקדם, וכן כתוב בתורתך: וירד יהוה בענן ויתיצב עמו שם ויקרא בשם יהוה ושם נאמר:</p>
+<p dir="rtl" lang="he"><b>ויעבר</b> יהוה  עלפניו ויקרא יהוה  יהוה אל רחום וחנון ארך אפים ורבחסד ואמת נצר‏ חסד לאלפים נשא עון ופשע וחטאה ונקה</p>
+<p dir="rtl" lang="he"><b>וכשחטאו</b> ישראל במדבר, עמד משה בתפלה לפניך, ובקש רחמים על עמך ישראל וכך אמר בתפלתו: סלחנא לעון העם הזה כגדל חסדך וכאשר נשאתה לעם הזה ממצרים ועדהנה אף אתה השיבות לו כדרכי טובך בשרתו וחננתו ואמרת לו: סלחתי כדברך:</p>
+<p dir="rtl" lang="he"><b>דניאל</b> איש חמודות אמר לפניך: הטה אלהי  אזנך ושמע פקחה [פקח] עיניך וראה שממתינו והעיר אשרנקרא שמך עליה כי  לא עלצדקתינו אנחנו מפילים תחנונינו לפניך כי עלרחמיך הרבים אדני  שמעה אדני  סלחה אדני הקשיבה ועשה אלתאחר למענך אלהי כישמך נקרא עלעירך ועלעמך ולירושלים עירך אמרת לה: הנני נשפט אותך עלאמרך לא חטאתי אנחנו בושנו במעשינו ונכלמנו בעונותינו, אין לנו פה להשיב ולא מצח להרים ראש:</p>
+<p dir="rtl" lang="he"><small>על סדר א"ת ב"ש</small></p>
+<p dir="rtl" lang="he"><b>אלהינו</b> ואלהי אבותינו אל תעש עמנו כלה, תאחז ידך במשפט. בבא תוכחה נגדך, שמנו מספרך אל תמח. גשתך לחקר מוסר, רחמיך יקדמו רגזך. דלות מעשים בשורך, קרב צדק מאליך. הורנו בזעקנו לך, צו ישועתנו במפגיע. ותשיב שבות אהלי תם, פתחיו ראה כי שממו. זכר נאמת, עדות לא תשכח מפי זרעו. חותם תעודה תתיר, סודך שים בלמודיך. טבור אגן הסהר, נא אל יחסר המזג. יה דע אתישראל אשר ידעוך, מגר אתהגוים אשר לא ידעוך. כי תשיב לבצרון, לכודים אסירי התקוה:</p>
+<p dir="rtl" lang="he"><b>אשמנו</b> מכלעם, בשנו מכלגוי. גלה ממנו משוש, דוה לבנו בחטאינו. החבל אויינו, ונפרע פארנו. זבול מקדשנו, חרב בעונינו. טירתנו היתה לשמה, יפי אדמתנו לזרים, כחנו לנכרים. לעינינו עשקו עמלנו, ממשך ומורט ממנו. נתנו עלם עלינו, סבלנו על שכמנו. עבדים משלו בנו, פורק אין מידם. צרות רבות סבבונו, קראנוך יהוה אלהינו. רחקת ממנו בעונינו, שבנו מאחריך, תעינו כצאן ואבדנו. ועדין לא שבנו מתעיתנו, והיאך נעיז פנינו, ונקשה ערפנו, לומר לפניך יהוה אלהינו ואלהי אבותינו צדיקים אנחנו ולאחטאנו:</p>
+<p dir="rtl" lang="he"><b>עזרא</b> הסופר אמר לפניך: אלהי בשתי ונכלמתי להרים אלהי פני אליך כי עונתינו רבו למעלה ראש ואשמתנו גדלה עד לשמים ואתה אלוה סליחות, חנון ורחום, ארךאפים ורבחסד, ולא עזבתם. אל תעזבנו אבינו, אל תטשנו מלכנו, ואל תשכחנו יוצרנו, ואל תעש עמנו כלה בגלותנו, וקים לנו יהוה אלהינו אתהדבר שהבטחתנו, על ידי ירמיה חוזך, כאמור: בימים ההם ובעת ההיא נאםיהוה יבקש אתעון ישראל ואיננו ואתחטאת יהודה ולא תמצאינה כי אסלח לאשר אשאיר ואל יעכב לפניך כלחטא ועון את תפלתנו, ומחול וסלח לכלעונותינו, כי אל טוב וסלח אתה:</p>
+<p dir="rtl" lang="he"><b>מהנאמר</b> לפניך יושב מרום, ומה נספר לפניך שוכן שחקים, הלא הנסתרות והנגלות אתה יודע, אתה יודע רזי עולם, ותעלומות סתרי כלחי, אתה חופש כלחדרי בטן, ראה כליות ולב. אין דבר נעלם ממך, ואין נסתר מנגד עיניך:</p>
+<p dir="rtl" lang="he"><b>יהי</b> רצון מלפניך יהוה אלהינו ואלהי אבותינו, שתמחל לנו אתכלחטאתינו, ותכפר לנו אתכלעונותינו, ותמחל ותסלח לכלפשעינו, וסלחת לעוננו ולחטאתנו ונחלתנו: סלח לנו אבינו כי חטאנו, מחל לנו מלכנו כי פשענו: כי אתה אדני, טוב וסלח, ורבחסד לכלקראיך: למעןשמך יהוה וסלחת לעוני כי רבהוא למעןשמך יהוה תחיני בצדקתך  תוציא מצרה נפשי יהוה צבאות עמנו משגבלנו אלהי יעקב סלה יהוה צבאות אשרי אדם בטח בך יהוה הושיעה המלך יעננו ביוםקראנו השיבנו יהוה  אליך ונשוב [ונשובה] חדש ימינו כקדם</p>
+<p dir="rtl" lang="he"><b>והוא</b> רחום  יכפר עון ולאישחית והרבה להשיב אפו ולאיעיר כלחמתו אתה יהוה לאתכלא רחמיך ממני חסדך ואמתך תמיד יצרוני הושיענו  יהוה אלהינו וקבצנו מןהגוים להדות לשם קדשך להשתבח בתהלתך: אםעונות תשמריה אדני מי יעמד כיעמך הסליחה למען תורא לא כחטאינו עשה לנו ולא כעונתינו גמל עלינו אםעונינו ענו בנו יהוה עשה למען שמך זכררחמיך יהוה וחסדיך כי מעולם המה יענך יהוה ביום צרה ישגבך שם  אלהי יעקב יהוה הושיעה המלך יעננו ביוםקראנו: אבינו מלכנו, חננו ועננו כי אין בנו מעשים. עשה עמנו צדקה כרב רחמיך, והושיענו למען שמך:</p>
+<p dir="rtl" lang="he"><b>ועתה </b> <small>(דניאל ט טו)</small> אדני אלהינו אשר הוצאת אתעמך מארץ מצרים ביד חזקה ותעשלך שם כיום הזה חטאנו רשענו אדני ככלצדקתך ישבנא אפך וחמתך מעירך ירושל‍ם הרקדשך כי בחטאינו ובעונות אבתינו ירושל‍ם ועמך לחרפה לכלסביבתינו ועתה  שמע אלהינו אלתפלת עבדך ואלתחנוניו והאר פניך עלמקדשך השמם למען אדני הטה אלהי  אזנך ושמע פקחה [פקח] עיניך וראה שממתינו והעיר אשרנקרא שמך עליה כי  לא עלצדקתינו אנחנו מפילים תחנונינו לפניך כי עלרחמיך הרבים אדני  שמעה אדני  סלחה אדני הקשיבה ועשה אלתאחר למענך אלהי כישמך נקרא עלעירך ועלעמך אבינו אב הרחמן, הראנו אות לטובה וקבץ נפוצותינו מארבע כנפות הארץ. יכירו וידעו כל הגוים כי אתה יהוה אבינו אתה. אנחנו החמר ואתה יצרנו ומעשה ידך כלנו: אבינו מלכנו, צורנו וגואלנו, חוסה יהוה עלעמך ואלתתן נחלתך לחרפה למשלבם גוים למה יאמרו בעמים איה אלהיהם ידענו יהוה כי חטאנו. ואין מי יעמוד בעדנו אלא שמך הגדול יעמוד לנו בעת צרה. וכרחם אב על בנים רחם עלינו. חמל על עמך ורחם על נחלתך. חוסה נא כרב רחמיך חננו מלכנו ועננו. לך יהוה הצדקה עושה נפלאות בכל עת ועת. הבט נא והושיעה נא צאן מרעיתך. אל ימשל בנו קצף כי לך יהוה הישועה בך תוחלתנו. אלוה סליחות אנא סלח נא. כי אל טוב וסלח אתה:</p>
+<p dir="rtl" lang="he"><b>אנא</b> מלך רחום וחנון, זכור והבט לברית בין הבתרים. ותראה לפניך עקדת יחיד. ולמען ישראל אבינו. אל תעזבנו אבינו. ואל תטשנו מלכנו ואל תשכחנו יוצרנו. ואל תעש עמנו כלה בגלותינו. כי אל מלך חנון ורחום אתה:</p>
+<p dir="rtl" lang="he"><b>אין</b> כמוך חנון ורחום אלהינו. אין כמוך אל ארך אפים ורב חסד ואמת. הושיענו ורחמנו מרעש ומרגז הצילנו: זכר לעבדיך לאברהם ליצחק וליעקב אלתפן אלקשי העם הזה ואלרשעו ואלחטאתו שוב מחרון אפך והנחם עלהרעה לעמך והסר ממנו מכת המות כי רחום אתה. כי כן דרכך לעשות חסד חנם בכל דור ודור: אנא יהוה הושיעה נא אנא יהוה הצליחה נא אנא יהוה עננו ביום קראנו: לך יהוה קוינו. לך יהוה חכינו. לך יהוה ניחל אל תחשה ותעננו. כי נאמו גוים אבדה תקותם. כל ברך לך תכרע וכל קומה לפניך תשתחוה:</p>
+<p dir="rtl" lang="he"><b>הפותח</b> יד בתשובה לקבל פושעים וחטאים. נבהלה נפשנו מרוב עצבוננו. אל תשכחנו נצח קומה והושיענו. אל תשפוך חרונך עלינו כי עמך אנחנו בני בריתך. אל הביטה. דל כבודנו בגוים ושקצונו כטמאת הנדה. עד מתי עזך בשבי ותפארתך ביד צר. המה יראו ויבשו ויחתו מגבורתם. עוררה גבורתך והושיענו למען שמך. אל ימעטו לפניך תלאותינו מהר יקדמונו רחמיך בעת צרותנו. לא למעננו אלא למענך פעל ואל תשחת את זכר שאריתנו. כי לך מיחלות עינינו כי אל מלך חנון ורחום אתה. וזכור עדותינו בכל יום תמיד אומרים פעמים באהבה: שמע ישראל יהוה אלהינו יהוה  אחד</p>
+<h3 class="section"><span>סליחות לעשרה בטבת</span></h3>
+<p dir="rtl" lang="he"><b>סליחות לעשרה בטבת</b></p>
+<p dir="rtl" lang="he"><small>אחר החזרה אומרים וידוי ונפילת אפים, ואחר כך אומרים</small></p>
+<p dir="rtl" lang="he"><b>וארץ</b> שפל רומי, וגדל שברי, משומם אשב, יום סמך הארי, על צבי הר קדש ציון עירי, לכן אקונן ואתאבל בחדש העשירי: בחדש העשירי אריה עלה בחמה, בעשור לחדש בנה עלי חומה, גש הוא וכלעמו לעשות בעמי נקמה, ויערכו אתם מלחמה: מלחמה שית משגבי ומושיעי, באויבי ומכניעי, כוס מלא מסך השקם יהוה רועי, מגני וקרן ישעי:</p>
+<p dir="rtl" lang="he"><b>בחדש</b> העשירי דלקני אויב בחרב, בעשור לחדש הכין עלי אורב, ועל זאת אקונן וגילי ערב, אוי לנו כי פנה היום, כי ינטו צלליערב: ערב יהפך לבקר ובוגדים אל יעלו על, חן על עמך ולכאבם העלה תעל, זכרלי ברית אבות, בפרשי לך כף ושעל, ממית ומחיה, מוריד שאול ויעל:</p>
+<p dir="rtl" lang="he"><b>בחדש</b> העשירי זאב ערבות על עמי נוהם, בעשור לחדש, טרף טרף כלהיוצא מהם, נמר שקד על עריהם: עריהם שרפו באש ברבות תלאות, רומה יהוה בעזך זדים להשאות, בוש יבושו בעשותך עמנו לטובה אות, קדוש ישראל יהוה צבאות:</p>
+<p dir="rtl" lang="he"><b>בחדש</b> העשירי ידי צר החזיקו מגן וצנה, בעשור לחדש כאיש ערוך למלחמה על קריה נאמנה, לזאת חגרי שק עדה עדינה, גזי נזרך והשליכי, ושאי על שפים קינה: קינה דובר עמך ביום זה לעמתך, ועפעפינו יזלו מים על חרבן ביתך, יום נקם תעיר לצרים הומים בביתך, דרכיך יהוה הודיעני ולמדני אורחותיך:</p>
+<p dir="rtl" lang="he"><b>בחדש</b> העשירי מני שפכו על עירי סוללה, בעשור לחדש נזרי השלך ותפארתי נפלה, סבבוני העשים מכתי נחלה, מעי מעי אוחילה: אוחילה יום זה לנערץ בסוד קדושים רבה, ואחלה פניו לעבר על פשע וחובה, אל תפן לרשענו ומחה חטאת כתובה, השיבנו יהוה אליך ונשובה:</p>
+<p dir="rtl" lang="he"><b>על</b> ידי רחמיך הרבים סלח לנו אבינו, כי ברב אולתנו שגינו: מחל לנו מלכנו, כי רבו עונינו: אל ארך אפים אתה, ודרך תשובה לנו הורית: גדלת רחמיך וחסדיך, תזכר היום לזרע ידידיך: תפן אלינו ברחמים, כי אתה הוא בעל הרחמים: בתחנון ובתפלה נקדם, כמו שהודעת לענו מקדם: ומחרון אפך תשוב, כמו בתורתך כתוב: ובצל כנפיך נחסה ונתלונן, כיום וירד יהוה בענן: תעבור על פשע ותמחל אשם, כיום ויתיצב עמו שם: תאזין שוע ותקשיב ברצון מאמר, כיום ויקרא בשם יהוה: ושם נאמר:</p>
+<p dir="rtl" lang="he"><b>ויעבר</b> יהוה  עלפניו ויקרא יהוה  יהוה אל רחום וחנון ארך אפים ורבחסד ואמת נצר‏ חסד לאלפים נשא עון ופשע וחטאה ונקה</p></template>
+    <div class="end-orn">✦</div>
+    <div class="dedication" lang="he" dir="rtl" aria-label="In memory">
+      <p>לעילוי נשמת</p>
+      <p>מנחם מנדל בן אהרן הלוי</p>
+      <p>פייגא שיינדל בת ברוך</p>
+    </div>
+    <footer class="other-nusachim">
+    <span data-lang-en>Same prayer in other nusachim:</span><span data-lang-he lang="he">תפילה זו בנוסחים אחרים:</span>
+    <div>
+      <a href="../../derech/ashkenaz/"><span data-lang-en>Ashkenaz</span><span data-lang-he lang="he">אשכנז</span></a>
+      <a href="../../derech/sefard/"><span data-lang-en>Sefard</span><span data-lang-he lang="he">ספרד</span></a>
+      <a href="../../derech/ari/"><span data-lang-en>Ari (Chabad)</span><span data-lang-he lang="he">האר״י</span></a>
+    </div>
+  </footer>
+  
+  </main>
+  <script src="../../app.js" defer></script>
+  <script defer src="https://stats.piliavin.com/script.js" data-website-id="05f57ffb-fd83-4049-8964-89d4a3335924"></script>
+</body>
+</html>
