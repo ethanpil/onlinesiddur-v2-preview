@@ -47,7 +47,10 @@
     root.dataset.theme = t;
     set(SK.theme, t);
     document.querySelectorAll('[data-act="theme"]').forEach(function (b) {
-      b.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+      // The Today panel's "Dark mode" row is a switch (checkmark styling
+      // keys on aria-checked); the section-bar button is a pressed pill.
+      var attr = b.getAttribute('role') === 'switch' ? 'aria-checked' : 'aria-pressed';
+      b.setAttribute(attr, t === 'dark' ? 'true' : 'false');
     });
     // Keep the installed window's status bar in step with the page. The theme
     // is resolved from localStorage, NOT from prefers-color-scheme, so a
@@ -849,12 +852,11 @@
     // paint; this only syncs the picker's checked row. applyFont, not setFont —
     // there is nothing to wait for and no preference to re-write.
     applyFont(root.dataset.font || DEFAULT_FONT);
-    if (document.body.classList.contains('page-reading') ||
-        document.body.classList.contains('page-bracha')) {
-      var awakePref = get(SK.awake);
-      if (awakePref === 'on') acquireWake();
-      setAwakeUI(awakePref === 'on');
-    }
+    // The Awake button is in the header on every page, so the saved
+    // preference is restored everywhere too.
+    var awakePref = get(SK.awake);
+    if (awakePref === 'on') acquireWake();
+    setAwakeUI(awakePref === 'on');
     applyFilter(get(SK.filter) === 'off' ? 'off' : 'on');
     setLocationUi(get(SK.location) || 'auto');
     syncNightUi();
