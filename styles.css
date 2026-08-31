@@ -121,16 +121,9 @@ button:focus-visible, a:focus-visible {
 }
 .site-head nav .icon-btn:hover { background: var(--soft); }
 /* Awake (wake-lock) toggle in site-head, reading pages only.
-   Inherits .nav-link sizing; adds a small dot that turns green when active. */
-.site-head nav .awake-toggle {
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.site-head nav .awake-toggle .dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--muted); display: inline-block;
-}
-.site-head nav .awake-toggle[aria-pressed='true'] .dot { background: #34c759; }
-.site-head nav .awake-toggle[aria-pressed='true'] { color: var(--fg); }
+   Icon-only eye; the whole icon turns green while the lock is held. */
+.site-head nav .awake-toggle { color: var(--muted); }
+.site-head nav .awake-toggle[aria-pressed='true'] { color: #34c759; }
 
 /* ── Today (Hebrew date pill + panel) ── */
 .today-toggle { position: relative; display: inline-flex; }
@@ -142,7 +135,7 @@ button:focus-visible, a:focus-visible {
 .site-head nav .date-pill:hover { background: var(--soft); border-color: var(--muted); }
 /* The display rule above outranks the UA's [hidden] — restore it. */
 .site-head nav .date-pill[hidden] { display: none; }
-.date-pill-icon { display: none; }
+.date-pill-icon { flex-shrink: 0; }
 /* A faint border tells readers the header controls are clickable. */
 .site-head nav .icon-btn,
 .site-head nav .nav-link { border: 1px solid transparent; }
@@ -192,13 +185,19 @@ html[data-theme='dark'] .today-menu { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45)
 /* A checked switch/radio row gets a trailing mark. */
 .today-row[aria-checked='true']::after { content: '✓'; color: var(--fg); }
 .today-row[aria-checked='false']::after { content: ''; }
+/* The date input reloads the page with ?date= (today = clean URL). */
+.today-datepick input {
+  font-family: var(--ui); font-size: 12.5px; color: var(--fg);
+  background: none; border: 1px solid var(--rule); border-radius: 6px;
+  padding: 3px 6px; color-scheme: light;
+}
+html[data-theme='dark'] .today-datepick input { color-scheme: dark; }
 @media (max-width: 640px) {
   /* The nav has no room for a text pill (it sits at its 320px overflow
      limit) — collapse to the calendar icon; the panel's date row shows
      the full date. The .nav-link.date-pill selector outranks the later
      `.site-head nav .nav-link` mobile rule. */
   .site-head nav .nav-link.date-pill { padding: 6px 5px; }
-  .date-pill-icon { display: inline; }
   .date-pill .date-pill-text { display: none; }
   /* Anchored to the pill the panel clips off-viewport on a phone. Fixed
      positioning resolves against the sticky header (its backdrop-filter
@@ -218,7 +217,6 @@ html[data-theme='dark'] .today-menu { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45)
   .site-head nav .nav-link { padding: 6px 7px; font-size: 12px; }
   .site-head nav .divider { display: none; }
   .site-head nav .lang-toggle { padding: 6px 7px; font-size: 12px; }
-  .site-head nav .awake-toggle { padding: 6px 6px; font-size: 12px; }
   /* Two more 32px controls landed in the nav; at 320px the row overflowed
      and gave every reading page horizontal scroll. */
   .site-head nav .icon-btn { width: 28px; height: 28px; }
@@ -705,7 +703,8 @@ html[data-theme='dark'] .type-menu { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 
 /* Download icon-only button + popover (HTML/Markdown links). */
 .download-toggle { position: relative; display: inline-flex; }
-.section-bar-controls .pill.download-btn {
+.section-bar-controls .pill.download-btn,
+.section-bar-controls .pill.theme-btn {
   padding: 0 8px; gap: 0;
 }
 .download-menu {

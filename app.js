@@ -673,6 +673,31 @@
     } catch (_) {}
   }
 
+  // The Today panel's date input starts on today (or the active ?date=
+  // override). Picking a day reloads the page with ?date=YYYY-MM-DD so
+  // the whole compute path runs for that date; picking today again
+  // returns to the clean URL. Local date parts, not toISOString — UTC
+  // would shift the date for anyone west of Greenwich in the evening.
+  function localYmd(d) {
+    var m = String(d.getMonth() + 1), day = String(d.getDate());
+    return d.getFullYear() + '-' + (m.length < 2 ? '0' + m : m) + '-' + (day.length < 2 ? '0' + day : day);
+  }
+  function initDateInput() {
+    var val = localYmd(debugDate() || new Date());
+    document.querySelectorAll('[data-date-input]').forEach(function (inp) {
+      inp.value = val;
+      inp.addEventListener('change', function () {
+        if (!inp.value || inp.value === val) return;
+        var params = new URLSearchParams(location.search);
+        if (inp.value === localYmd(new Date())) params.delete('date');
+        else params.set('date', inp.value);
+        track('date-pick', { date: inp.value });
+        var q = params.toString();
+        location.href = location.pathname + (q ? '?' + q : '');
+      });
+    });
+  }
+
   function loadCalendarEngine() {
     if (!daykind()) { fillPillFromIntl(); return; }
     engineWanted = true;
@@ -833,6 +858,7 @@
     applyFilter(get(SK.filter) === 'off' ? 'off' : 'on');
     setLocationUi(get(SK.location) || 'auto');
     syncNightUi();
+    initDateInput();
     // Instant date pill on repeat visits: fill from the cache pre-paint
     // already validated; the engine refreshes it after load.
     try {
