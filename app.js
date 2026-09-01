@@ -710,14 +710,24 @@
     if (delay > 0 && delay < 24 * 3600 * 1000) todayTimer = setTimeout(refreshToday, delay + 1000);
   }
 
+  // Intl's Hebrew locale writes the month with a ב prefix ("באלול");
+  // the pill shows the month name alone. Assemble from parts.
+  function intlHebrewDate(d, locale) {
+    var parts = new Intl.DateTimeFormat(locale + '-u-ca-hebrew', { day: 'numeric', month: 'long', year: 'numeric' }).formatToParts(d);
+    var out = {};
+    parts.forEach(function (p) { out[p.type] = p.value; });
+    var month = (out.month || '').replace(/^ב/, '');
+    return out.day + ' ' + month + ' ' + out.year;
+  }
+
   // Chrome pages only need the date string — Intl's Hebrew calendar
   // covers that without the 55 KB engine. Prayer pages load the engine.
   function fillPillFromIntl() {
     try {
       var now = debugDate() || new Date();
-      var he = new Intl.DateTimeFormat('he-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(now);
-      var en = new Intl.DateTimeFormat('en-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(now);
-      fillDatePill(he, en);
+      var wdHe = new Intl.DateTimeFormat('he', { weekday: 'long' }).format(now);
+      var wdEn = new Intl.DateTimeFormat('en', { weekday: 'long' }).format(now);
+      fillDatePill(wdHe + ' · ' + intlHebrewDate(now, 'he'), wdEn + ' · ' + intlHebrewDate(now, 'en'));
     } catch (_) {}
   }
 
@@ -793,8 +803,8 @@
         if (d.getHours() >= 12) d.setDate(d.getDate() + 1);
       }
       if (kind === 'meal' && nightFlipActive()) { night = true; d.setDate(d.getDate() + 1); }
-      var dateHe = new Intl.DateTimeFormat('he-u-ca-hebrew', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
-      var dateEn = new Intl.DateTimeFormat('en-u-ca-hebrew', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+      var dateHe = intlHebrewDate(d, 'he');
+      var dateEn = intlHebrewDate(d, 'en');
       var he, en;
       if (night) {
         // Hebrew names the night after the day it opens (ליל שישי);
@@ -807,8 +817,8 @@
         he = 'ליל ' + wdHe + ' · ' + dateHe;
         en = wdEn + ' night · ' + dateEn;
       } else {
-        he = new Intl.DateTimeFormat('he-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
-        en = new Intl.DateTimeFormat('en-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+        he = new Intl.DateTimeFormat('he', { weekday: 'long' }).format(d) + ' · ' + dateHe;
+        en = new Intl.DateTimeFormat('en', { weekday: 'long' }).format(d) + ' · ' + dateEn;
       }
       fillDatePill(he, en);
     } catch (_) {}

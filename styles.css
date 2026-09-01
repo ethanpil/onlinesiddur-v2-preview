@@ -780,6 +780,9 @@ html[data-theme='dark'] .type-menu { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
   list-style: none; padding: 6px 0; margin: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  /* The section names are Hebrew — the list reads right-to-left and
+     right-aligned in the English UI too. */
+  direction: rtl;
 }
 .section-panel-item {
   display: block; width: 100%; box-sizing: border-box;
