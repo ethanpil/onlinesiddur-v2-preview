@@ -14,7 +14,7 @@ Y'hei sh'mei rabo m'vorach l'olam ul'olmei olmayo.
 
 Yisborach v'yishtabach v'yispo'ar v'yisromam v'yisnasei v'yis'hadar v'yis'aleh v'yis'halol sh'mei d'kudsho, b'rich hu.
 
-לְעֵֽלָּא (<small>בעשי"ת</small> וּלְעֵֽלָּא מִכָּל)  מִן כָּל בִּרְכָתָא וְשִׁירָתָא,  תֻּשְׁבְּחָתָא וְנֶחֱמָתָא,  דַּאֲמִירָן בְּעָלְ֒מָא, וְאִמְרוּ אָמֵן: (<small>אמן</small>)
+לְעֵֽלָּא (<small>בעשי"ת</small> וּלְעֵֽלָּא מִכָּל) מִן כָּל בִּרְכָתָא וְשִׁירָתָא,  תֻּשְׁבְּחָתָא וְנֶחֱמָתָא,  דַּאֲמִירָן בְּעָלְ֒מָא, וְאִמְרוּ אָמֵן: (<small>אמן</small>)
 
 L'eilo (ul'eilo mikol) min kol birchoso v'shiroso, tushb'choso v'nechemoso, da'amiron b'olmo, v'imru Omein.
 

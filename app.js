@@ -583,6 +583,7 @@
     }
     syncNightUi();
     if (todayResult) applyToday(todayResult, true);
+    initTehilimCycle();
     track('nightfall', { state: nightFlipActive() ? 'on' : 'off' });
   }
   function syncNightUi() {
@@ -609,6 +610,8 @@
         // Visibility changed under the scroll-spy: rebuild its passed
         // set, or the label can snap back to a now-hidden section.
         attachSectionObserver();
+        // A restore that waited for the filter can run now.
+        if (posDeferred) { posDeferred = false; restorePos(); }
       }
     }
     reseedSectionLabel();
@@ -739,16 +742,20 @@
           return;
         }
         var params = new URLSearchParams(location.search);
+        params.delete('fresh');
         params.set('date', inp.value);
         location.href = location.pathname + '?' + params.toString();
       });
     });
   }
 
-  // Returns the current URL without one query parameter.
+  // Returns the current URL without one query parameter. `fresh` is
+  // always dropped too: a refused offline reset must not ride along
+  // into the next navigation and fire later.
   function urlWithout(param) {
     var p = new URLSearchParams(location.search);
     p.delete(param);
+    p.delete('fresh');
     var q = p.toString();
     return location.pathname + (q ? '?' + q : '');
   }
@@ -765,6 +772,9 @@
     b.innerHTML = '<span data-lang-en>Showing another day · <a href="' + href + '">Return to today</a></span>'
       + '<span data-lang-he lang="he">מוצג יום אחר · <a href="' + href + '">חזרה להיום</a></span>';
     document.body.appendChild(b);
+    // Reserve room so the strip never covers the last lines of the
+    // prayer or the footer.
+    document.body.classList.add('has-date-banner');
   }
 
   // Fills the date line from Intl before the engine loads, with the
@@ -784,29 +794,17 @@
     } catch (_) {}
   }
 
-  // Print through the filter: with filtering on and no computed token
-  // set, a print now would put every variant on one sheet. Compute
-  // first, then print; after 4 seconds print the complete text anyway.
-  var printWaiting = false;
+  // Print stays inside the user gesture — an async print() is dropped
+  // by browsers that gate the dialog on activation. With the engine
+  // loaded but not applied, compute synchronously first; without the
+  // engine, print the complete text (a full sheet is safe — it is what
+  // a printed siddur shows) while the date line already carries the
+  // fallback date.
   function printPage() {
     closeAllPopovers();
     track('print', {});
-    var needsConds = daykind() && root.dataset.filter !== 'off' && root.dataset.conds == null;
-    if (needsConds && window.OSCal) { refreshToday(true); needsConds = false; }
-    if (needsConds) {
-      if (printWaiting) return;
-      printWaiting = true;
-      loadCalendarEngine();
-      var waited = 0;
-      var t = setInterval(function () {
-        waited += 250;
-        if (root.dataset.conds != null || waited >= 4000) {
-          clearInterval(t);
-          printWaiting = false;
-          window.print();
-        }
-      }, 250);
-      return;
+    if (daykind() && root.dataset.filter !== 'off' && root.dataset.conds == null && window.OSCal) {
+      refreshToday(true);
     }
     window.print();
   }
@@ -822,6 +820,12 @@
   var POS_TTL = 2 * 3600 * 1000;
   var posRestoreTime = 0;
   var posUserMoved = false;
+  // The reader reached deep into the page this session — only then may
+  // a return to the top delete the memory (a failed restore must not).
+  var posSeenDeep = false;
+  // restorePos declined because the filter had not run yet; retry once
+  // after the first condition set lands.
+  var posDeferred = false;
   function readPos() {
     try { return JSON.parse(get(SK.pos) || 'null'); } catch (_) { return null; }
   }
@@ -829,6 +833,9 @@
     var secs = document.querySelectorAll('.reading-body .section[id^="sec-"]');
     var best = null;
     for (var i = 0; i < secs.length; i++) {
+      // A calendar-hidden section reports rect.top 0 and would always
+      // win the comparison — skip it.
+      if (secs[i].offsetParent === null) continue;
       var top = secs[i].getBoundingClientRect().top + window.scrollY;
       if (top <= y + 10) best = { id: secs[i].id, dy: Math.round(y - top) };
       else break;
@@ -842,6 +849,7 @@
     var y = window.scrollY;
     var cur = readPos();
     if (y > POS_MIN) {
+      posSeenDeep = true;
       // Keep the old timestamp when the position did not really move,
       // so re-opening the page does not renew the two-hour window.
       var t = (cur && cur.p === location.pathname && Math.abs((cur.y || 0) - y) < 150) ? cur.t : Date.now();
@@ -850,14 +858,18 @@
         p: location.pathname, y: Math.round(y),
         sec: a ? a.id : undefined, dy: a ? a.dy : undefined, t: t,
       }));
-    } else if (cur && cur.p === location.pathname) {
+    } else if (posSeenDeep && cur && cur.p === location.pathname) {
       del(SK.pos);
     }
   }
   function posTarget(cur) {
     if (cur.sec) {
       var el = document.getElementById(cur.sec);
-      if (el) return el.getBoundingClientRect().top + window.scrollY + (cur.dy || 0);
+      // A hidden anchor resolves but measures at 0 — fall back to the
+      // raw offset instead of restoring to the top of the page.
+      if (el && el.offsetParent !== null) {
+        return el.getBoundingClientRect().top + window.scrollY + (cur.dy || 0);
+      }
     }
     return cur.y;
   }
@@ -868,9 +880,13 @@
     // A page whose filter has not run yet changes height when it does —
     // do not restore into text that is about to move. Pages with no
     // conditional text (no when-rules style) keep a stable height and
-    // always restore.
+    // always restore. applyToday retries once when the first condition
+    // set lands.
     if (daykind() && root.dataset.filter !== 'off' && root.dataset.conds == null
-        && document.querySelector('style[data-when-rules]')) return;
+        && document.querySelector('style[data-when-rules]')) {
+      posDeferred = true;
+      return;
+    }
     var cur = readPos();
     if (!cur || cur.p !== location.pathname || Date.now() - cur.t > POS_TTL || !(cur.y > POS_MIN)) return;
     posRestoreTime = Date.now();
@@ -888,6 +904,9 @@
   function initPosMemory() {
     if (!document.body.classList.contains('page-reading') &&
         !document.body.classList.contains('page-bracha')) return;
+    // A ?date= preview neither restores nor writes the memory — its
+    // offsets belong to a different rendering of the page.
+    if (debugDate()) return;
     restorePos();
     var posT;
     var flush = function () { clearTimeout(posT); savePos(); };
@@ -915,6 +934,9 @@
   function initTehilimCycle() {
     if (!/\/tehilim\/$/.test(location.pathname)) return;
     var now = debugDate() || new Date();
+    // The traditional cycle advances at nightfall; the panel's
+    // After-nightfall switch moves the portion to the next day.
+    if (!debugDate() && nightFlipActive()) now = new Date(now.getTime() + 24 * 3600 * 1000);
     var day, nextDay;
     try {
       var fmt = new Intl.DateTimeFormat('en-u-ca-hebrew', { day: 'numeric' });
@@ -936,8 +958,11 @@
     var rEn = range, rHe = range;
     if (day === 25) { rEn = '119 (first half)'; rHe = '119 (חלק ראשון)'; }
     if (day === 26) { rEn = '119 (second half)'; rHe = '119 (חלק שני)'; }
+    var old = document.querySelector('[data-tehilim-note]');
+    if (old) old.parentNode.removeChild(old);
     var note = document.createElement('p');
     note.className = 'omer-note';
+    note.setAttribute('data-tehilim-note', '');
     note.innerHTML = '<button type="button" class="tehilim-jump" data-act="jump" data-jump="' + secId + '">'
       + '<span data-lang-en>Daily portion · day ' + day + ': Psalms ' + rEn + '</span>'
       + '<span data-lang-he lang="he">השיעור היומי · יום ' + day + ' לחודש: פרקים ' + rHe + '</span>'
@@ -1130,8 +1155,6 @@
     syncNightUi();
     initDateInput();
     showDateBanner();
-    initPosMemory();
-    initTehilimCycle();
     // Instant date pill on repeat visits: fill from the cache pre-paint
     // already validated; the engine refreshes it after load. Never on a
     // ?date= override — the cache describes the live date, not the
@@ -1144,6 +1167,10 @@
       }
     } catch (_) {}
     fillDateFallback();
+    // The two lines above can un-hide the reading-head date line and
+    // change the page height — restore the position only after that.
+    initPosMemory();
+    initTehilimCycle();
     syncHomeNusachPill();
     syncInstallUi();
     attachSectionObserver();
@@ -1220,11 +1247,19 @@
 
   // Ask the worker to cache the whole siddur (~1 MB). Only for readers who
   // installed — a first-time visitor reading one prayer over metered cellular
-  // should not silently pay for 64 pages they never asked for.
+  // should not silently pay for 64 pages they never asked for. The worker's
+  // fill uses cache:'reload' (a real network fetch per page), so at most one
+  // refresh per day: an installed reader must not re-download the siddur on
+  // every launch.
   function precacheWholeSiddur() {
     if (!('serviceWorker' in navigator)) return;
+    var last = Number(get('ssd:precached')) || 0;
+    if (Date.now() - last < 24 * 3600 * 1000) return;
     navigator.serviceWorker.ready.then(function (reg) {
-      if (reg.active) reg.active.postMessage({ type: 'precache-all' });
+      if (reg.active) {
+        reg.active.postMessage({ type: 'precache-all' });
+        set('ssd:precached', String(Date.now()));
+      }
     }).catch(function () {});
   }
 

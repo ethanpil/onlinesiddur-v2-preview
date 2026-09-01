@@ -14,7 +14,7 @@ Y'hei sh'mei rabo m'vorach l'olam ul'olmei olmayo.
 
 Yisboreich, v'yishtabach, v'yispo'eir, v'yisromom, v'yisnasei, v'yis'hador, v'yis'aleh, v'yis'halol, sh'mei d'kudsho b'rich hu. (Omein)
 
-לְעֵֽלָּא (<small>בעשי"ת</small> וּלְעֵֽלָּא מִכָּל) מִן כָּל־ בִּרְכָתָא וְשִׁירָתָא, תֻּשְׁבְּחָתָא וְנֶחֱמָתָא, דַּאֲמִירָן בְּעָלְמָֽא, וְאִמְרוּ אָמֵן:
+לְעֵֽלָּא (<small>בעשי"ת</small> וּלְעֵֽלָּא מִכָּל ) מִן כָּל־בִּרְכָתָא וְשִׁירָתָא, תֻּשְׁבְּחָתָא וְנֶחֱמָתָא, דַּאֲמִירָן בְּעָלְמָֽא, וְאִמְרוּ אָמֵן:
 
 L'eilo (ul'eilo mikol) min kol birchoso v'shiroso, tushb'choso v'nechemoso, da'amiron b'olmo, v'imru Omein.
 

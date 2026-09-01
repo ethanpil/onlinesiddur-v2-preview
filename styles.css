@@ -146,7 +146,9 @@ button:focus-visible, a:focus-visible {
    strip must stay visible for the whole session, so the reader always
    knows the page shows another day. */
 .date-banner {
-  position: fixed; inset-inline: 0; bottom: 0; z-index: 40;
+  /* Below the popovers (30) and the section panel (20): an open sheet
+     may cover the strip, but the strip must never cover a control. */
+  position: fixed; inset-inline: 0; bottom: 0; z-index: 15;
   padding: 9px 16px calc(9px + env(safe-area-inset-bottom, 0px));
   text-align: center;
   font-family: var(--ui); font-size: 13px; font-weight: 600;
@@ -154,6 +156,9 @@ button:focus-visible, a:focus-visible {
   border-top: 1px solid var(--rule);
 }
 .date-banner a { color: inherit; text-decoration: underline; }
+/* Room for the fixed strip, so it never covers the prayer's last
+   lines or the footer links. */
+body.has-date-banner { padding-bottom: 52px; }
 /* Prayer-title date line — the phone header has no room for the text
    pill, so the date shows under the title there. */
 .reading-date {
