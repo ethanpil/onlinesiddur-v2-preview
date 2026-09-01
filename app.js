@@ -1220,7 +1220,7 @@
 
   // Ask the worker to cache the whole siddur (~1 MB). Only for readers who
   // installed — a first-time visitor reading one prayer over metered cellular
-  // should not silently pay for 52 pages they never asked for.
+  // should not silently pay for 64 pages they never asked for.
   function precacheWholeSiddur() {
     if (!('serviceWorker' in navigator)) return;
     navigator.serviceWorker.ready.then(function (reg) {
@@ -1228,7 +1228,7 @@
     }).catch(function () {});
   }
 
-  // The worker reports how many of the 52 pages failed to land. Nothing else
+  // The worker reports how many of the 64 pages failed to land. Nothing else
   // surfaces that number — a reader whose precache half-failed finds out in a
   // tunnel, which is the one place this all has to work. Registered at module
   // scope so the reply is never missed.

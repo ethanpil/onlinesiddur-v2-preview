@@ -223,6 +223,9 @@ var Hebcal=(()=>{var fs=Object.defineProperty;var fg=Object.getOwnPropertyDescri
 
     var yomTov = events.some(isYomTovEvent);
     if (yomTov) t.push('yom-tov');
+    // Any festival day (Yom Tov or Chol HaMoed) in one token, for
+    // "not on a festival" rules — the OR grammar cannot negate a pair.
+    if (yomTov || cholHamoed) t.push('festival');
     if (descStarts('Pesach')) t.push('pesach');
     if (descStarts('Sukkot')) t.push('sukkot');
     if (descStarts('Shavuot')) t.push('shavuot');

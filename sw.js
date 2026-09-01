@@ -18,16 +18,16 @@
 //            asks via postMessage, which app.js does when the site is running
 //            installed or the reader has just installed it. A first-time
 //            visitor reading one prayer over metered cellular must not silently
-//            pay for 56 pages they did not ask for.
+//            pay for 64 pages they did not ask for.
 //
 // Every path is relative with NO leading slash. sw.js is served from the
 // deploy root, so relative paths resolve correctly whether the site is at
 // onlinesiddur.com/ or at a GitHub Pages project subpath. Same contract as
 // static/fonts.css and the web manifest; see CLAUDE.md.
 
-var CACHE = 'siddur-c9f31e33529b';
+var CACHE = 'siddur-402eb53b746c';
 var SHELL = ["./","offline.html","styles.css","fonts.css","app.js","calendar.js","favicon.svg","manifest.webmanifest","apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/maskable-512.png","fonts/inter-400.woff2","fonts/inter-500.woff2","fonts/eb-garamond-400.woff2","fonts/he-ruehl-400.woff2","fonts/he-ruehl-700.woff2"];
-var PAGES = ["nusach/","about/","install/","shacharit/ashkenaz/","shacharit/sefard/","shacharit/ari/","shacharit/edut/","mincha/ashkenaz/","mincha/sefard/","mincha/ari/","mincha/edut/","maariv/ashkenaz/","maariv/sefard/","maariv/ari/","maariv/edut/","birkat/ashkenaz/","birkat/sefard/","birkat/ari/","birkat/edut/","bracha/ashkenaz/","bracha/sefard/","bracha/ari/","bracha/edut/","kadish/ashkenaz/","kadish/sefard/","kadish/ari/","kadish/edut/","derech/ashkenaz/","derech/sefard/","derech/ari/","derech/edut/","ksham/ashkenaz/","ksham/sefard/","ksham/ari/","ksham/edut/","levana/ashkenaz/","levana/sefard/","levana/ari/","levana/edut/","omer/ashkenaz/","omer/sefard/","omer/ari/","omer/edut/","chatzot/ashkenaz/","chatzot/sefard/","chatzot/ari/","chatzot/edut/","nerot/ashkenaz/","nerot/sefard/","nerot/ari/","nerot/edut/","klali/ashkenaz/","klali/sefard/","klali/ari/","klali/edut/","tehilim/"];
+var PAGES = ["nusach/","about/","install/","shacharit/ashkenaz/","shacharit/sefard/","shacharit/ari/","shacharit/edut/","mincha/ashkenaz/","mincha/sefard/","mincha/ari/","mincha/edut/","maariv/ashkenaz/","maariv/sefard/","maariv/ari/","maariv/edut/","musaf/ashkenaz/","musaf/sefard/","musaf/ari/","musaf/edut/","kabbalat/ashkenaz/","kabbalat/sefard/","kabbalat/ari/","kabbalat/edut/","birkat/ashkenaz/","birkat/sefard/","birkat/ari/","birkat/edut/","bracha/ashkenaz/","bracha/sefard/","bracha/ari/","bracha/edut/","kadish/ashkenaz/","kadish/sefard/","kadish/ari/","kadish/edut/","derech/ashkenaz/","derech/sefard/","derech/ari/","derech/edut/","ksham/ashkenaz/","ksham/sefard/","ksham/ari/","ksham/edut/","levana/ashkenaz/","levana/sefard/","levana/ari/","levana/edut/","omer/ashkenaz/","omer/sefard/","omer/ari/","omer/edut/","chatzot/ashkenaz/","chatzot/sefard/","chatzot/ari/","chatzot/edut/","nerot/ashkenaz/","nerot/sefard/","nerot/ari/","nerot/edut/","klali/ashkenaz/","klali/sefard/","klali/ari/","klali/edut/","tehilim/"];
 var HOME = './';
 var OFFLINE = 'offline.html';
 
