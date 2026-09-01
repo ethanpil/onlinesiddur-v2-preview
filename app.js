@@ -20,6 +20,7 @@
     conds: 'ssd:conds',
     night: 'ssd:night',
     location: 'ssd:location',
+    pos: 'ssd:pos',
   };
   // Hebrew face roster, injected per page by build/build.mjs::relocate from
   // manifest.mjs::FONT_IDS — the single source of truth, so adding a font
@@ -31,6 +32,47 @@
   // ── Persistence helpers ──
   function set(k, v) { try { ls.setItem(k, v); } catch (_) {} }
   function get(k) { try { return ls.getItem(k); } catch (_) { return null; } }
+  function del(k) { try { ls.removeItem(k); } catch (_) {} }
+
+  // ── Force refresh (?fresh) ──
+  // Any page + `?fresh` removes this site's service-worker registration
+  // and caches, then reloads the clean URL from the network. Saved
+  // preferences stay; the computed-conditions cache and the reading
+  // position do not. The reload removes the parameter, so no loop is
+  // possible. Scoped tightly: github.io serves many projects from one
+  // origin, so only `siddur-` caches and this scope's registration go.
+  // Offline, the reset is refused — it would delete the cached siddur
+  // and leave nothing to reload.
+  var freshPending = /[?&]fresh(=|&|$)/.test(location.search);
+  if (freshPending && navigator.onLine === false) freshPending = false;
+  if (freshPending) {
+    (function () {
+      var done = function () {
+        del(SK.conds);
+        del(SK.pos);
+        var p = new URLSearchParams(location.search);
+        p.delete('fresh');
+        var q = p.toString();
+        location.replace(location.pathname + (q ? '?' + q : '') + location.hash);
+      };
+      var jobs = [];
+      try {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.getRegistration) {
+          jobs.push(navigator.serviceWorker.getRegistration(window.__BASE__ || '/').then(function (r) {
+            return r && r.unregister();
+          }));
+        }
+        if (window.caches) {
+          jobs.push(caches.keys().then(function (ks) {
+            return Promise.all(ks.map(function (k) {
+              return k.indexOf('siddur-') === 0 ? caches.delete(k) : null;
+            }));
+          }));
+        }
+      } catch (_) {}
+      Promise.all(jobs).then(done, done);
+    })();
+  }
 
   // ── Analytics ──
   // Which chrome controls readers actually reach for. Every call site is a
@@ -691,13 +733,173 @@
       inp.value = val;
       inp.addEventListener('change', function () {
         if (!inp.value || inp.value === val) return;
-        var params = new URLSearchParams(location.search);
-        if (inp.value === localYmd(new Date())) params.delete('date');
-        else params.set('date', inp.value);
         track('date-pick', { date: inp.value });
-        var q = params.toString();
-        location.href = location.pathname + (q ? '?' + q : '');
+        if (inp.value === localYmd(new Date())) {
+          location.href = urlWithout('date');
+          return;
+        }
+        var params = new URLSearchParams(location.search);
+        params.set('date', inp.value);
+        location.href = location.pathname + '?' + params.toString();
       });
+    });
+  }
+
+  // Returns the current URL without one query parameter.
+  function urlWithout(param) {
+    var p = new URLSearchParams(location.search);
+    p.delete(param);
+    var q = p.toString();
+    return location.pathname + (q ? '?' + q : '');
+  }
+
+  // A fixed strip at the bottom of the viewport whenever ?date= is
+  // present (valid or not), so the reader always sees that the page
+  // shows another day. Fixed-bottom, because the sticky header stack
+  // already owns the top and would cover a strip there on scroll.
+  function showDateBanner() {
+    if (!/[?&]date(=|&|$)/.test(location.search)) return;
+    var href = escapeText(urlWithout('date'));
+    var b = document.createElement('div');
+    b.className = 'date-banner';
+    b.innerHTML = '<span data-lang-en>Showing another day · <a href="' + href + '">Return to today</a></span>'
+      + '<span data-lang-he lang="he">מוצג יום אחר · <a href="' + href + '">חזרה להיום</a></span>';
+    document.body.appendChild(b);
+  }
+
+  // Fills the date line from Intl before the engine loads, with the
+  // page-kind wall-clock rule, so an early print carries the date. The
+  // engine replaces it with the authoritative value after load.
+  function fillDateFallback() {
+    var pill = document.querySelector('[data-act="open-today"]');
+    if (!pill || !pill.hidden) return; // already filled from the cache
+    try {
+      var d = new Date((debugDate() || new Date()).getTime());
+      var kind = daykind();
+      if (kind === 'night' && d.getHours() >= 12) d.setDate(d.getDate() + 1);
+      if (kind === 'meal' && nightFlipActive()) d.setDate(d.getDate() + 1);
+      var he = new Intl.DateTimeFormat('he-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+      var en = new Intl.DateTimeFormat('en-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+      fillDatePill(he, en);
+    } catch (_) {}
+  }
+
+  // Print through the filter: with filtering on and no computed token
+  // set, a print now would put every variant on one sheet. Compute
+  // first, then print; after 4 seconds print the complete text anyway.
+  var printWaiting = false;
+  function printPage() {
+    closeAllPopovers();
+    track('print', {});
+    var needsConds = daykind() && root.dataset.filter !== 'off' && root.dataset.conds == null;
+    if (needsConds && window.OSCal) { refreshToday(true); needsConds = false; }
+    if (needsConds) {
+      if (printWaiting) return;
+      printWaiting = true;
+      loadCalendarEngine();
+      var waited = 0;
+      var t = setInterval(function () {
+        waited += 250;
+        if (root.dataset.conds != null || waited >= 4000) {
+          clearInterval(t);
+          printWaiting = false;
+          window.print();
+        }
+      }, 250);
+      return;
+    }
+    window.print();
+  }
+
+  // ── Reading-position memory ──
+  // A reader who returns to the same prayer within two hours lands
+  // where they left off. One key, last reading page only; a return to
+  // the top clears it. The position is anchored to the nearest section
+  // id, so a font swap or a text-size change cannot move the reader to
+  // a different prayer; the raw offset is the fallback for pages that
+  // have no sections.
+  var POS_MIN = 400;
+  var POS_TTL = 2 * 3600 * 1000;
+  var posRestoreTime = 0;
+  var posUserMoved = false;
+  function readPos() {
+    try { return JSON.parse(get(SK.pos) || 'null'); } catch (_) { return null; }
+  }
+  function anchorFor(y) {
+    var secs = document.querySelectorAll('.reading-body .section[id^="sec-"]');
+    var best = null;
+    for (var i = 0; i < secs.length; i++) {
+      var top = secs[i].getBoundingClientRect().top + window.scrollY;
+      if (top <= y + 10) best = { id: secs[i].id, dy: Math.round(y - top) };
+      else break;
+    }
+    return best;
+  }
+  function savePos() {
+    // A restore scrolls the page itself; give the layout two seconds
+    // to settle so a clamped restore cannot overwrite the memory.
+    if (Date.now() - posRestoreTime < 2000) return;
+    var y = window.scrollY;
+    var cur = readPos();
+    if (y > POS_MIN) {
+      // Keep the old timestamp when the position did not really move,
+      // so re-opening the page does not renew the two-hour window.
+      var t = (cur && cur.p === location.pathname && Math.abs((cur.y || 0) - y) < 150) ? cur.t : Date.now();
+      var a = anchorFor(y);
+      set(SK.pos, JSON.stringify({
+        p: location.pathname, y: Math.round(y),
+        sec: a ? a.id : undefined, dy: a ? a.dy : undefined, t: t,
+      }));
+    } else if (cur && cur.p === location.pathname) {
+      del(SK.pos);
+    }
+  }
+  function posTarget(cur) {
+    if (cur.sec) {
+      var el = document.getElementById(cur.sec);
+      if (el) return el.getBoundingClientRect().top + window.scrollY + (cur.dy || 0);
+    }
+    return cur.y;
+  }
+  function restorePos() {
+    if (location.hash) return;
+    // A ?date= preview always starts at the top.
+    if (debugDate()) return;
+    // A page whose filter has not run yet changes height when it does —
+    // do not restore into text that is about to move.
+    if (daykind() && root.dataset.filter !== 'off' && root.dataset.conds == null) return;
+    var cur = readPos();
+    if (!cur || cur.p !== location.pathname || Date.now() - cur.t > POS_TTL || !(cur.y > POS_MIN)) return;
+    posRestoreTime = Date.now();
+    window.scrollTo(0, posTarget(cur));
+    // The Hebrew face swaps in after first layout and reflows the page.
+    // Re-anchor once, unless the reader has scrolled on their own.
+    if (cur.sec && document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        if (posUserMoved || Date.now() - posRestoreTime > 4000) return;
+        posRestoreTime = Date.now();
+        window.scrollTo(0, posTarget(cur));
+      });
+    }
+  }
+  function initPosMemory() {
+    if (!document.body.classList.contains('page-reading') &&
+        !document.body.classList.contains('page-bracha')) return;
+    restorePos();
+    var posT;
+    var flush = function () { clearTimeout(posT); savePos(); };
+    window.addEventListener('scroll', function () {
+      clearTimeout(posT);
+      posT = setTimeout(savePos, 400);
+    }, { passive: true });
+    // The interruption this feature exists for arrives faster than the
+    // debounce — write on the way out too.
+    window.addEventListener('pagehide', flush);
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') flush();
+    });
+    ['wheel', 'touchstart', 'keydown'].forEach(function (ev) {
+      window.addEventListener(ev, function () { posUserMoved = true; }, { passive: true });
     });
   }
 
@@ -776,6 +978,7 @@
       else if (act === 'night') { toggleNight(); }
       else if (act === 'pick-location') { e.preventDefault(); setLocationPref(t.dataset.location); track('location', { location: t.dataset.location }); }
       else if (act === 'awake') { toggleAwake(); }
+      else if (act === 'print') { printPage(); }
       else if (act === 'install') { doInstall(); }
       else if (act === 'open-sections') { e.preventDefault(); if (isPanelOpen()) closeSections(); else openSections(); }
       else if (act === 'close-sections') { e.preventDefault(); closeSections(); }
@@ -861,15 +1064,20 @@
     setLocationUi(get(SK.location) || 'auto');
     syncNightUi();
     initDateInput();
+    showDateBanner();
+    initPosMemory();
     // Instant date pill on repeat visits: fill from the cache pre-paint
-    // already validated; the engine refreshes it after load.
+    // already validated; the engine refreshes it after load. Never on a
+    // ?date= override — the cache describes the live date, not the
+    // override (pre-paint skips it for the same reason).
     try {
       var cached = JSON.parse(get(SK.conds) || 'null');
-      if (cached && cached.v === 1 && cached.exp > Date.now() && daykind()) {
+      if (cached && cached.v === 1 && cached.exp > Date.now() && daykind() && !debugDate()) {
         todayResult = cached;
         applyToday(cached, false);
       }
     } catch (_) {}
+    fillDateFallback();
     syncHomeNusachPill();
     syncInstallUi();
     attachSectionObserver();
@@ -965,21 +1173,25 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else { init(); }
+  // A ?fresh page is about to replace itself — do not boot the app,
+  // take a wake lock, or fetch the calendar engine on it.
+  if (!freshPending) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else { init(); }
 
-  // Calendar engine: after load, off the critical path. Every page shows
-  // the Hebrew date; prayer pages also apply the condition tokens.
-  if (document.readyState === 'complete') { loadCalendarEngine(); }
-  else { window.addEventListener('load', loadCalendarEngine); }
+    // Calendar engine: after load, off the critical path. Every page shows
+    // the Hebrew date; prayer pages also apply the condition tokens.
+    if (document.readyState === 'complete') { loadCalendarEngine(); }
+    else { window.addEventListener('load', loadCalendarEngine); }
+  }
 
   // Offline support. Registered after load so it never competes with the
   // first paint. __BASE__ (injected by build.mjs::relocate) keeps this working
   // at any deploy depth — sw.js lives at the deploy root and its scope is that
   // root, so a page nested at /shacharit/ashkenaz/ is still covered.
   // Failure is silent and non-fatal: no worker just means no offline.
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator && !freshPending) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register((window.__BASE__ || '/') + 'sw.js').then(function () {
         // Running installed: make sure the whole siddur is on disk. Cheap to

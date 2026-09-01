@@ -141,6 +141,19 @@ button:focus-visible, a:focus-visible {
 .site-head nav .nav-link { border: 1px solid transparent; }
 .site-head nav .icon-btn:hover,
 .site-head nav .nav-link:hover { border-color: var(--rule); }
+/* ?date= override strip. Fixed to the bottom of the viewport: the
+   sticky header stack owns the top and would cover it on scroll. The
+   strip must stay visible for the whole session, so the reader always
+   knows the page shows another day. */
+.date-banner {
+  position: fixed; inset-inline: 0; bottom: 0; z-index: 40;
+  padding: 9px 16px calc(9px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+  font-family: var(--ui); font-size: 13px; font-weight: 600;
+  background: var(--bg); color: var(--fg);
+  border-top: 1px solid var(--rule);
+}
+.date-banner a { color: inherit; text-decoration: underline; }
 /* Prayer-title date line — the phone header has no room for the text
    pill, so the date shows under the title there. */
 .reading-date {
@@ -715,11 +728,14 @@ html[data-theme='dark'] .type-menu { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
   padding: 4px 0;
 }
 .download-menu[hidden] { display: none; }
-.download-menu a {
+.download-menu a,
+.download-menu button {
   font-family: var(--ui); font-size: 13px; padding: 6px 14px;
   color: var(--fg); text-decoration: none;
+  background: none; border: none; cursor: pointer; text-align: start;
 }
-.download-menu a:hover, .download-menu a:focus { background: var(--rule-soft, #eee); }
+.download-menu a:hover, .download-menu a:focus,
+.download-menu button:hover, .download-menu button:focus { background: var(--soft); }
 
 /* Anchor offset so jumped-to chapter heading clears site-head + section-bar. */
 .reading-body .section[id^="sec-"] { scroll-margin-top: 110px; }
@@ -969,4 +985,28 @@ html[data-theme='dark'] .install-guide img { filter: brightness(0.86); }
 @media (max-width: 640px) {
   .install-anim { margin-top: 30px; }
   .install-page .install-lede { font-size: 16px; }
+}
+
+/* ── Print: the prayer text alone, black on white ─────────────────────────
+   The reader can select a date, then print the page for a time when a
+   screen is not available. The navigation and the footers are hidden.
+   The filter's attribute-driven hide rules also apply in print, so a
+   filtered page prints filtered. The date line above the title prints
+   (app.js fills it at load), so the sheet shows which day it is for.
+   The theme tokens are reset here: an explicit `color: var(--fg)` on
+   the text outranks a body color, so without the reset a dark-theme
+   reader would print near-white text and white borders on white
+   paper. The .omer-note stays — it says which night the printed count
+   belongs to. */
+@media print {
+  :root, html[data-theme='dark'] {
+    --bg: #fff; --fg: #000; --muted: #444;
+    --rule: #bbb; --soft: transparent;
+  }
+  .site-head, .section-bar, .section-panel, .date-banner,
+  .other-nusachim, .today-menu, .download-menu, .type-menu,
+  .end-orn { display: none !important; }
+  html, body { background: #fff; color: #000; }
+  .reading-date:not([hidden]) { display: block; color: #000; }
+  a { color: inherit; text-decoration: none; }
 }
