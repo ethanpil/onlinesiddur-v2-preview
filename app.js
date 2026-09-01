@@ -866,8 +866,11 @@
     // A ?date= preview always starts at the top.
     if (debugDate()) return;
     // A page whose filter has not run yet changes height when it does —
-    // do not restore into text that is about to move.
-    if (daykind() && root.dataset.filter !== 'off' && root.dataset.conds == null) return;
+    // do not restore into text that is about to move. Pages with no
+    // conditional text (no when-rules style) keep a stable height and
+    // always restore.
+    if (daykind() && root.dataset.filter !== 'off' && root.dataset.conds == null
+        && document.querySelector('style[data-when-rules]')) return;
     var cur = readPos();
     if (!cur || cur.p !== location.pathname || Date.now() - cur.t > POS_TTL || !(cur.y > POS_MIN)) return;
     posRestoreTime = Date.now();
@@ -901,6 +904,62 @@
     ['wheel', 'touchstart', 'keydown'].forEach(function (ev) {
       window.addEventListener(ev, function () { posUserMoved = true; }, { passive: true });
     });
+  }
+
+  // ── Daily Tehilim cycle ──
+  // The traditional 30-day division of the book. The page keeps every
+  // psalm visible; a note under the title names today's portion and
+  // jumps to it, and a fresh visit opens at the portion. Days 25 and
+  // 26 both start at Psalm 119, which the cycle splits between them.
+  var TEHILIM_START = [1, 10, 18, 23, 29, 35, 39, 44, 49, 55, 60, 66, 69, 72, 77, 79, 83, 88, 90, 97, 104, 106, 108, 113, 119, 119, 120, 135, 140, 145];
+  function initTehilimCycle() {
+    if (!/\/tehilim\/$/.test(location.pathname)) return;
+    var now = debugDate() || new Date();
+    var day, nextDay;
+    try {
+      var fmt = new Intl.DateTimeFormat('en-u-ca-hebrew', { day: 'numeric' });
+      day = Number(fmt.format(now));
+      nextDay = Number(fmt.format(new Date(now.getTime() + 24 * 3600 * 1000)));
+    } catch (_) { return; }
+    if (!(day >= 1 && day <= 30)) return;
+    var start = TEHILIM_START[day - 1];
+    var end = day < 30 ? TEHILIM_START[day] - 1 : 150;
+    if (end < start) end = start;
+    // In a 29-day month, day 29 also covers day 30's portion.
+    if (day === 29 && nextDay === 1) end = 150;
+    var secId = 'sec-' + (start - 1);
+    var target = document.getElementById(secId);
+    var head = document.querySelector('.reading-head');
+    if (!target || !head) return;
+    var range = start === end ? String(start) : start + '–' + end;
+    // Days 25 and 26 split Psalm 119 between them.
+    var rEn = range, rHe = range;
+    if (day === 25) { rEn = '119 (first half)'; rHe = '119 (חלק ראשון)'; }
+    if (day === 26) { rEn = '119 (second half)'; rHe = '119 (חלק שני)'; }
+    var note = document.createElement('p');
+    note.className = 'omer-note';
+    note.innerHTML = '<button type="button" class="tehilim-jump" data-act="jump" data-jump="' + secId + '">'
+      + '<span data-lang-en>Daily portion · day ' + day + ': Psalms ' + rEn + '</span>'
+      + '<span data-lang-he lang="he">השיעור היומי · יום ' + day + ' לחודש: פרקים ' + rHe + '</span>'
+      + '</button>';
+    head.appendChild(note);
+    // Open at the portion — but never move a reader who arrived at an
+    // anchor or was put back at a remembered position. The scroll waits
+    // two frames so the note's reflow settles (same reason as
+    // jumpToSection), marks itself as a program scroll so savePos does
+    // not store it, and re-anchors once after the Hebrew face loads.
+    if (location.hash || posRestoreTime !== 0) return;
+    var toPortion = function () {
+      if (posUserMoved) return;
+      posRestoreTime = Date.now();
+      target.scrollIntoView();
+    };
+    requestAnimationFrame(function () { requestAnimationFrame(toPortion); });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        if (Date.now() - posRestoreTime < 4000) toPortion();
+      });
+    }
   }
 
   function loadCalendarEngine() {
@@ -985,7 +1044,13 @@
       // The section NAME, not its sec-N id: the id means nothing in a report,
       // and the name aggregates across prayers — where readers enter a long
       // service is the question worth answering.
-      else if (act === 'jump') { e.preventDefault(); jumpToSection(t.dataset.jump); track('section-jump', { section: t.textContent.trim() }); }
+      else if (act === 'jump') {
+        e.preventDefault();
+        jumpToSection(t.dataset.jump);
+        // Bilingual buttons hold two spans; report one language only.
+        var enSpan = t.querySelector('[data-lang-en]');
+        track('section-jump', { section: (enSpan ? enSpan.textContent : t.textContent).trim() });
+      }
       // Popover triggers (download, type). The dismiss pass above already
       // closed every open panel, so this only has to re-open when the click
       // was on a CLOSED trigger.
@@ -1066,6 +1131,7 @@
     initDateInput();
     showDateBanner();
     initPosMemory();
+    initTehilimCycle();
     // Instant date pill on repeat visits: fill from the cache pre-paint
     // already validated; the engine refreshes it after load. Never on a
     // ?date= override — the cache describes the live date, not the
