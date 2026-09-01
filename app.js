@@ -784,12 +784,32 @@
     var pill = document.querySelector('[data-act="open-today"]');
     if (!pill || !pill.hidden) return; // already filled from the cache
     try {
-      var d = new Date((debugDate() || new Date()).getTime());
+      var now = debugDate() || new Date();
+      var d = new Date(now.getTime());
       var kind = daykind();
-      if (kind === 'night' && d.getHours() >= 12) d.setDate(d.getDate() + 1);
-      if (kind === 'meal' && nightFlipActive()) d.setDate(d.getDate() + 1);
-      var he = new Intl.DateTimeFormat('he-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
-      var en = new Intl.DateTimeFormat('en-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+      var night = false;
+      if (kind === 'night') {
+        night = true;
+        if (d.getHours() >= 12) d.setDate(d.getDate() + 1);
+      }
+      if (kind === 'meal' && nightFlipActive()) { night = true; d.setDate(d.getDate() + 1); }
+      var dateHe = new Intl.DateTimeFormat('he-u-ca-hebrew', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+      var dateEn = new Intl.DateTimeFormat('en-u-ca-hebrew', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+      var he, en;
+      if (night) {
+        // Hebrew names the night after the day it opens (ליל שישי);
+        // English names it after the civil evening (Thursday night) —
+        // the same rule the engine's labels use.
+        var start = new Date(d.getTime());
+        start.setDate(start.getDate() - 1);
+        var wdHe = new Intl.DateTimeFormat('he', { weekday: 'long' }).format(d).replace(/^יום /, '');
+        var wdEn = new Intl.DateTimeFormat('en', { weekday: 'long' }).format(start);
+        he = 'ליל ' + wdHe + ' · ' + dateHe;
+        en = wdEn + ' night · ' + dateEn;
+      } else {
+        he = new Intl.DateTimeFormat('he-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+        en = new Intl.DateTimeFormat('en-u-ca-hebrew', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+      }
       fillDatePill(he, en);
     } catch (_) {}
   }
@@ -927,10 +947,12 @@
 
   // ── Daily Tehilim cycle ──
   // The traditional 30-day division of the book. The page keeps every
-  // psalm visible; a note under the title names today's portion and
-  // jumps to it, and a fresh visit opens at the portion. Days 25 and
-  // 26 both start at Psalm 119, which the cycle splits between them.
-  var TEHILIM_START = [1, 10, 18, 23, 29, 35, 39, 44, 49, 55, 60, 66, 69, 72, 77, 79, 83, 88, 90, 97, 104, 106, 108, 113, 119, 119, 120, 135, 140, 145];
+  // psalm visible and never scrolls on its own; a note under the title
+  // names today's portion and jumps to it on tap, and the build prints
+  // a divider where each day's portion begins. Days 25 and 26 both
+  // start at Psalm 119, which the cycle splits between them. The table
+  // is injected from manifest.mjs (window.__TEHILIM_DAYS__).
+  var TEHILIM_START = window.__TEHILIM_DAYS__ || [1, 10, 18, 23, 29, 35, 39, 44, 49, 55, 60, 66, 69, 72, 77, 79, 83, 88, 90, 97, 104, 106, 108, 113, 119, 119, 120, 135, 140, 145];
   function initTehilimCycle() {
     if (!/\/tehilim\/$/.test(location.pathname)) return;
     var now = debugDate() || new Date();
@@ -968,23 +990,8 @@
       + '<span data-lang-he lang="he">השיעור היומי · יום ' + day + ' לחודש: פרקים ' + rHe + '</span>'
       + '</button>';
     head.appendChild(note);
-    // Open at the portion — but never move a reader who arrived at an
-    // anchor or was put back at a remembered position. The scroll waits
-    // two frames so the note's reflow settles (same reason as
-    // jumpToSection), marks itself as a program scroll so savePos does
-    // not store it, and re-anchors once after the Hebrew face loads.
-    if (location.hash || posRestoreTime !== 0) return;
-    var toPortion = function () {
-      if (posUserMoved) return;
-      posRestoreTime = Date.now();
-      target.scrollIntoView();
-    };
-    requestAnimationFrame(function () { requestAnimationFrame(toPortion); });
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function () {
-        if (Date.now() - posRestoreTime < 4000) toPortion();
-      });
-    }
+    // No automatic scroll: the reader stays where the page opened and
+    // the note is a one-tap jump to the portion.
   }
 
   function loadCalendarEngine() {

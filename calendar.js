@@ -279,9 +279,15 @@ var Hebcal=(()=>{var fs=Object.defineProperty;var fg=Object.getOwnPropertyDescri
   function labels(set, nightSet) {
     var g = set.hd.renderGematriya();
     var en = set.hd.getDate() + ' ' + set.hd.getMonthName() + ' ' + set.hd.getFullYear();
+    // Hebrew names a night after the day it opens: ליל שישי is the
+    // night between Thursday and Friday, and that is the convention
+    // readers of the Hebrew label expect. English speakers name the
+    // same night after the CIVIL day it starts on — "Thursday night"
+    // — so the English label uses the evening's civil weekday.
+    var enDow = nightSet ? DAY_EN[(set.dow + 6) % 7] + ' night' : DAY_EN[set.dow];
     return {
       he: (nightSet ? 'ליל ' : 'יום ') + DAY_HE[set.dow] + ' · ' + g,
-      en: (nightSet ? 'Night of ' : '') + DAY_EN[set.dow] + ' · ' + en,
+      en: enDow + ' · ' + en,
     };
   }
 

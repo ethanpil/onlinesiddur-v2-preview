@@ -179,10 +179,20 @@ body.has-date-banner { padding-bottom: 52px; }
   color: var(--muted);
 }
 .omer-note[hidden] { display: none; }
-/* Daily-portion jump on the Tehilim page — a link-styled button. */
+/* Daily-portion jump on the Tehilim page — a link-styled button,
+   bold so it reads as the page's primary action. */
 .tehilim-jump {
   background: none; border: none; cursor: pointer; padding: 0;
-  font: inherit; color: inherit; text-decoration: underline;
+  font: inherit; font-weight: 700; color: var(--fg);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+/* Day-of-month divider in the Tehilim body: a quiet ruled label where
+   each day's portion of the 30-day cycle begins. */
+.reading-body .tehilim-day {
+  margin: 46px 0 8px; padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--ui); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.06em; color: var(--muted);
 }
 /* Transliteration line under its Hebrew line (Kaddish page). The top
    pull-up is a fixed 12px: the Hebrew paragraph's bottom margin is a
@@ -196,7 +206,9 @@ body.has-date-banner { padding-bottom: 52px; }
   margin: -12px 0 calc(var(--size) * 1.1);
 }
 .today-menu {
-  position: absolute; top: calc(100% + 4px); inset-inline-start: 0;
+  /* The date pill is the header's last item, so the panel hangs from
+     its END edge — anchored to the start it runs past the viewport. */
+  position: absolute; top: calc(100% + 4px); inset-inline-end: 0;
   width: 218px;
   background: var(--bg); border: 1px solid var(--rule); border-radius: 10px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
