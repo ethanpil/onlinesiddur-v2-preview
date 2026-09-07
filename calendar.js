@@ -272,12 +272,14 @@ var Hebcal=(()=>{var fs=Object.defineProperty;var fg=Object.getOwnPropertyDescri
     // below, and leave every fence on that page hidden - a blank
     // prayer page with no note to explain it.
     if (ARI_SETS.indexOf(slichot) === -1) t.push('slichot-none-ari');
-    // Edot HaMizrach say Selichot daily from Rosh Chodesh Elul through
-    // erev Yom Kippur - Shulchan Aruch OC 581:1, "מראש חודש אלול
-    // ואילך עד יום הכיפורים". That is 1 Elul, which never falls on
-    // Shabbat. Rosh Hashana itself is excluded, and most communities do
-    // not say Selichot on Shabbat.
-    if (dow !== 6 && ((m === M.ELUL && d >= 1) || (m === M.TISHREI && d >= 3 && d <= 9))) {
+    // Edot HaMizrach say one text daily from 2 Elul through erev Yom
+    // Kippur. Shulchan Aruch OC 581:1 names the month - "מראש חודש
+    // אלול ואילך עד יום הכיפורים" - but the practice starts the day
+    // after, because Rosh Chodesh has no tachanun. Both sources the
+    // site owner supplied agree; see the note on slichot-edut in
+    // conditions.mjs. Rosh Hashana itself is excluded, and most
+    // communities do not say Selichot on Shabbat.
+    if (dow !== 6 && ((m === M.ELUL && d >= 2) || (m === M.TISHREI && d >= 3 && d <= 9))) {
       t.push('slichot-edut');
     }
     if (m === M.ELUL || (m === M.AV && d === 30) || (m === M.TISHREI && d <= 21)) t.push('ledavid-season');
