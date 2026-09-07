@@ -1275,6 +1275,45 @@
   // a new cache both leave the siddur short, and both must self-heal on the
   // next launch instead of waiting for a timer to expire.
   var precacheAsked = false; // at most one automatic fill per page load
+  var persisted = false;
+
+  // Ask the browser to keep this data. Without it the saved siddur is
+  // evictable: WebKit clears all script-writable storage after about a
+  // week of not opening the site, and Chromium evicts under storage
+  // pressure — either one empties the cache the reader is relying on.
+  // Chromium grants this automatically to an installed app, WebKit to a
+  // site the reader keeps using. A refusal costs nothing.
+  function requestPersistence() {
+    try {
+      if (!navigator.storage || !navigator.storage.persist) return;
+      navigator.storage.persisted().then(function (already) {
+        if (already) { persisted = true; return; }
+        navigator.storage.persist().then(function (ok) {
+          persisted = !!ok;
+          if (ok) track('persist', { granted: 1 });
+        }, function () {});
+      }, function () {});
+    } catch (_) {}
+  }
+
+  // A reader who comes back is not a passer-by: the siddur saves itself
+  // on the second visit, so the prayers are on the device before they
+  // ever open the install page or lose signal. Save-Data and a 2g link
+  // still opt out — the first-visit rule stands, this only covers the
+  // reader who returned.
+  var VISITS_KEY = 'ssd:visits';
+  function countVisit() {
+    var n = (Number(get(VISITS_KEY)) || 0) + 1;
+    if (n <= 3) set(VISITS_KEY, String(n)); // stop counting once it stops mattering
+    return n;
+  }
+  function lowDataMode() {
+    var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (!c) return false; // no API (Safari): treat as a normal connection
+    if (c.saveData === true) return true;
+    var t = c.effectiveType || '';
+    return t === '2g' || t === 'slow-2g';
+  }
 
   function swSend(msg) {
     if (!('serviceWorker' in navigator)) return;
@@ -1308,8 +1347,10 @@
       en = 'Saving the whole siddur to this device…';
       he = 'שומר את כל הסידור במכשיר…';
     } else if (state === 'ready') {
-      en = 'Saved. All ' + total + ' pages are on this device and work with no network.';
-      he = 'נשמר. כל ' + total + ' העמודים נמצאים במכשיר ופועלים בלי רשת.';
+      en = 'Saved. All ' + total + ' pages are on this device and work with no network.'
+        + (persisted ? ' They are protected from automatic cleanup.' : '');
+      he = 'נשמר. כל ' + total + ' העמודים נמצאים במכשיר ופועלים בלי רשת.'
+        + (persisted ? ' הם מוגנים מפני מחיקה אוטומטית.' : '');
     } else if (state === 'offline') {
       en = 'No network now. Connect once, and the siddur saves itself to this device.';
       he = 'אין חיבור כעת. התחברו פעם אחת, והסידור יישמר במכשיר.';
@@ -1361,10 +1402,17 @@
   if ('serviceWorker' in navigator && !freshPending) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register((window.__BASE__ || '/') + 'sw.js').then(function () {
-        // Running installed, or standing on the install page: confirm the
-        // whole siddur is on disk and fill the gap if it is not. The check
-        // is 64 cache lookups and no network, so it is safe on every load.
-        if (isStandalone() || document.querySelector('.install-page')) ensureOfflineReady();
+        // Who gets the whole siddur on disk: the installed app, anyone on
+        // the install page, and any reader who came back. The check itself
+        // is 64 cache lookups and no network, so it runs on every load and
+        // repairs a cache the browser cleared or a deploy replaced.
+        var visit = countVisit(); // counted on every load, not just this branch
+        var wanted = isStandalone()
+          || !!document.querySelector('.install-page')
+          || (visit >= 2 && !lowDataMode());
+        if (!wanted) return;
+        requestPersistence();
+        ensureOfflineReady();
       }).catch(function () {});
     });
   }
