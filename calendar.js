@@ -91,6 +91,15 @@ var Hebcal=(()=>{var fs=Object.defineProperty;var fg=Object.getOwnPropertyDescri
   var HebrewCalendar = window.Hebcal.HebrewCalendar;
   var FLAGS = window.Hebcal.flags;
   var M = window.Hebcal.months;
+
+  // The nine day-sets content/prayers/slichot-ari.md carries, in the
+  // order it carries them. Keep in step with SLICHOT_ARI_DAYS in
+  // build/lib/verify.mjs, which fails the build if the page and this
+  // list disagree.
+  var ARI_SETS = [
+    'slichot-1', 'slichot-2', 'slichot-3', 'slichot-4', 'slichot-5',
+    'slichot-6', 'slichot-7', 'slichot-erev-rh', 'slichot-gedaliah',
+  ];
   var DESC = window.Hebcal.holidayDesc;
 
   var DAY_HE = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
@@ -254,6 +263,15 @@ var Hebcal=(()=>{var fs=Object.defineProperty;var fg=Object.getOwnPropertyDescri
     // Every day fence also carries slichot-none, so a day with no
     // Selichot in these rites shows the whole text for reference.
     else t.push('slichot-none');
+    // Nusach Ari says the same nine sets the season opens with, then
+    // nothing in the Ten Days of Repentance except the Fast of
+    // Gedaliah. ARI_SETS names those nine, and it must stay equal to
+    // the nine fences in content/prayers/slichot-ari.md - verify.mjs
+    // asserts that. It is an allow-list on purpose: a deny-list would
+    // treat any NEW day token as one the Ari says, suppress the marker
+    // below, and leave every fence on that page hidden - a blank
+    // prayer page with no note to explain it.
+    if (ARI_SETS.indexOf(slichot) === -1) t.push('slichot-none-ari');
     // Edot HaMizrach say one text daily from 2 Elul through erev Yom
     // Kippur. Rosh Hashana itself is excluded; most communities do not
     // say Selichot on Shabbat.
@@ -372,7 +390,12 @@ var Hebcal=(()=>{var fs=Object.defineProperty;var fg=Object.getOwnPropertyDescri
     var dayLabels = labels(day, false);
     var nightLabels = labels(night, true);
     return {
-      v: 1,
+      // Bump this whenever the token vocabulary grows. A page fence can
+      // name a token no earlier engine emitted, and a cached set from
+      // before that deploy then matches nothing - which hides the fence
+      // instead of showing it. Selichot for Nusach Ari took the version
+      // from 1 to 2 for exactly that reason.
+      v: 2,
       day: { conds: day.conds, he: dayLabels.he, en: dayLabels.en },
       night: { conds: night.conds, he: nightLabels.he, en: nightLabels.en },
       exp: exp.getTime(),

@@ -320,19 +320,27 @@
   var BASE = window.__BASE__ || '/';
   // Bilingual labels for the home-page nusach pill. Must stay in sync with
   // build/lib/manifest.mjs::NUSACHIM (4 ids, fixed by tradition — rare churn).
+  function has(obj, key) {
+    return Object.prototype.hasOwnProperty.call(obj, key);
+  }
+
   var NUSACH_LABELS = {
     ashkenaz: { en: 'Ashkenaz',        he: 'אשכנז' },
     sefard:   { en: 'Sefard',          he: 'ספרד' },
     ari:      { en: 'Ari',             he: 'האר״י' },
     edut:     { en: 'Edut HaMizrach',  he: 'עדות המזרח' },
   };
-  // Which nusachim a prayer was actually built in. Most have all four;
-  // the build injects the exceptions (Selichot has no Nusach Ari text).
+  // Which nusachim a prayer was actually built in. Every prayer has all
+  // four today, so the build injects an empty table - but it injects one
+  // for the day a prayer ships in a subset again.
   // Routing to a page that was never built is a hard 404 — and offline,
   // the offline page — so every navigation checks first.
   function nusachimFor(prayerId) {
     var ex = window.__NUSACH_EXCEPTIONS__ || {};
-    return ex[prayerId] || null; // null = all of them
+    // prayerId comes from the ?from= query string. A bare read would
+    // return Object for "constructor", and the array call below would
+    // throw and abort the rest of init.
+    return has(ex, prayerId) ? ex[prayerId] : null; // null = all of them
   }
   function offersNusach(prayerId, nusachId) {
     var list = nusachimFor(prayerId);
@@ -681,16 +689,25 @@
   }
 
   // Selichot: the Ashkenazi rites say them only in the days before Rosh
-  // Hashana and during the Ten Days of Repentance, while Edot HaMizrach
-  // say them right through the season. On a day this nusach does not say
-  // them the page shows every set anyway and says why, rather than
-  // filtering itself down to nothing.
+  // Hashana and during the Ten Days of Repentance, Nusach Ari stops
+  // after the Fast of Gedaliah, and Edot HaMizrach say them right
+  // through the season. Each nusach therefore has its own "not today"
+  // token. On a day this nusach does not say them the page shows every
+  // set anyway and says why, rather than filtering itself down to
+  // nothing.
+  var SLICHOT_SAID = {
+    edut: function (c) { return c.indexOf('slichot-edut') !== -1; },
+    ari: function (c) { return c.indexOf('slichot-none-ari') === -1; },
+  };
   function updateSlichotNote(pick) {
-    if (!/\/slichot\//.test(location.pathname)) return;
+    var m = location.pathname.match(/\/slichot\/([a-z]+)\//);
+    if (!m) return;
     var head = document.querySelector('.reading-head');
     if (!head) return;
-    var said = /\/slichot\/edut\//.test(location.pathname)
-      ? pick.conds.indexOf('slichot-edut') !== -1
+    // hasOwnProperty, not a bare read: the path segment comes from the
+    // URL, and "constructor" would otherwise resolve to Object.
+    var test = has(SLICHOT_SAID, m[1]) ? SLICHOT_SAID[m[1]] : null;
+    var said = test ? test(pick.conds)
       : pick.conds.indexOf('slichot-none') === -1;
     var note = document.querySelector('[data-slichot-note]');
     if (said || root.dataset.filter === 'off') {
@@ -1246,7 +1263,7 @@
     // override (pre-paint skips it for the same reason).
     try {
       var cached = JSON.parse(get(SK.conds) || 'null');
-      if (cached && cached.v === 1 && cached.exp > Date.now() && daykind() && !debugDate()) {
+      if (cached && cached.v === 2 && cached.exp > Date.now() && daykind() && !debugDate()) {
         todayResult = cached;
         applyToday(cached, false);
       }
@@ -1332,7 +1349,7 @@
   }
 
   // ── Offline readiness ──
-  // The whole siddur (~1 MB) is fetched when the reader shows intent: they
+  // The whole siddur (~1.75 MB) is fetched when the reader shows intent: they
   // opened the install page, or they are running the installed app. It is
   // never fetched for a first-time visitor reading one prayer over metered
   // cellular.

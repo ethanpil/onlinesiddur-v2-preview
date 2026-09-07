@@ -14,11 +14,11 @@
 // Two tiers, deliberately:
 //   SHELL  — small, precached for everyone on install. Enough to render any
 //            page that is already cached.
-//   PAGES  — the whole siddur, ~1 MB over the wire. Fetched ONLY when a client
+//   PAGES  — the whole siddur, ~1.75 MB over the wire. Fetched ONLY when a client
 //            asks via postMessage, which app.js does for the installed app,
 //            the install page, and any reader on their second visit. A
 //            FIRST-time visitor reading one prayer over metered cellular must
-//            not silently pay for 64 pages they did not ask for, so that one
+//            not silently pay for 67 pages they did not ask for, so that one
 //            visit stays on the shell alone.
 //
 // `precache-status` answers with how many of PAGES are really on disk. That
@@ -30,9 +30,9 @@
 // onlinesiddur.com/ or at a GitHub Pages project subpath. Same contract as
 // static/fonts.css and the web manifest; see CLAUDE.md.
 
-var CACHE = 'siddur-4a2aba709da5';
+var CACHE = 'siddur-904e60dce399';
 var SHELL = ["./","offline.html","styles.css","fonts.css","app.js","calendar.js","favicon.svg","manifest.webmanifest","apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/maskable-512.png","fonts/inter-400.woff2","fonts/inter-500.woff2","fonts/eb-garamond-400.woff2","fonts/he-ruehl-400.woff2","fonts/he-ruehl-700.woff2"];
-var PAGES = ["nusach/","about/","install/","shacharit/ashkenaz/","shacharit/sefard/","shacharit/ari/","shacharit/edut/","mincha/ashkenaz/","mincha/sefard/","mincha/ari/","mincha/edut/","maariv/ashkenaz/","maariv/sefard/","maariv/ari/","maariv/edut/","birkat/ashkenaz/","birkat/sefard/","birkat/ari/","birkat/edut/","bracha/ashkenaz/","bracha/sefard/","bracha/ari/","bracha/edut/","musaf/ashkenaz/","musaf/sefard/","musaf/ari/","musaf/edut/","kabbalat/ashkenaz/","kabbalat/sefard/","kabbalat/ari/","kabbalat/edut/","slichot/ashkenaz/","slichot/sefard/","slichot/edut/","kadish/ashkenaz/","kadish/sefard/","kadish/ari/","kadish/edut/","derech/ashkenaz/","derech/sefard/","derech/ari/","derech/edut/","ksham/ashkenaz/","ksham/sefard/","ksham/ari/","ksham/edut/","levana/ashkenaz/","levana/sefard/","levana/ari/","levana/edut/","omer/ashkenaz/","omer/sefard/","omer/ari/","omer/edut/","chatzot/ashkenaz/","chatzot/sefard/","chatzot/ari/","chatzot/edut/","nerot/ashkenaz/","nerot/sefard/","nerot/ari/","nerot/edut/","klali/ashkenaz/","klali/sefard/","klali/ari/","klali/edut/","tehilim/"];
+var PAGES = ["nusach/","about/","install/","shacharit/ashkenaz/","shacharit/sefard/","shacharit/ari/","shacharit/edut/","mincha/ashkenaz/","mincha/sefard/","mincha/ari/","mincha/edut/","maariv/ashkenaz/","maariv/sefard/","maariv/ari/","maariv/edut/","birkat/ashkenaz/","birkat/sefard/","birkat/ari/","birkat/edut/","bracha/ashkenaz/","bracha/sefard/","bracha/ari/","bracha/edut/","musaf/ashkenaz/","musaf/sefard/","musaf/ari/","musaf/edut/","kabbalat/ashkenaz/","kabbalat/sefard/","kabbalat/ari/","kabbalat/edut/","slichot/ashkenaz/","slichot/sefard/","slichot/ari/","slichot/edut/","kadish/ashkenaz/","kadish/sefard/","kadish/ari/","kadish/edut/","derech/ashkenaz/","derech/sefard/","derech/ari/","derech/edut/","ksham/ashkenaz/","ksham/sefard/","ksham/ari/","ksham/edut/","levana/ashkenaz/","levana/sefard/","levana/ari/","levana/edut/","omer/ashkenaz/","omer/sefard/","omer/ari/","omer/edut/","chatzot/ashkenaz/","chatzot/sefard/","chatzot/ari/","chatzot/edut/","nerot/ashkenaz/","nerot/sefard/","nerot/ari/","nerot/edut/","klali/ashkenaz/","klali/sefard/","klali/ari/","klali/edut/","tehilim/"];
 var HOME = './';
 var OFFLINE = 'offline.html';
 
@@ -109,7 +109,7 @@ function reply(event, msg) {
 }
 
 // Full-siddur precache, on request. app.js posts this when the reader has
-// shown intent (the install page) or is running installed, so the ~1 MB is
+// shown intent (the install page) or is running installed, so the ~1.75 MB is
 // charged to readers who opted in.
 self.addEventListener('message', function (event) {
   var type = event.data && event.data.type;

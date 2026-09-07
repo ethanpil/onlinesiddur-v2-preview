@@ -179,8 +179,9 @@ body.has-date-banner { padding-bottom: 52px; }
   color: var(--muted);
 }
 .omer-note[hidden] { display: none; }
-/* Selichot ships all fourteen day-sets on one page so the calendar can
-   show tonight's without a second request. On a first-ever visit the
+/* Selichot ships every day-set of its rite on one page - fourteen for
+   Ashkenaz and Sefard, nine for Nusach Ari - so the calendar can show
+   tonight's without a second request. On a first-ever visit the
    hide rules are inert (they need data-conds, which the engine writes
    after load), so the browser would lay out and shape ~595,000 Hebrew
    glyphs before first paint. content-visibility lets it skip layout and

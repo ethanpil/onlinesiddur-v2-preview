@@ -37,7 +37,7 @@
       // below.
       try {
         var c = JSON.parse(s.getItem('ssd:conds') || 'null');
-        if (c && c.v === 1 && c.exp > Date.now() && c.day && c.night) {
+        if (c && c.v === 2 && c.exp > Date.now() && c.day && c.night) {
           var night = dk === 'night'
             || (dk === 'meal' && Number(s.getItem('ssd:night')) > Date.now());
           var pick = night ? c.night : c.day;
