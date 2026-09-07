@@ -917,6 +917,24 @@ html[data-lang='he'] .install-page .install-lede { font-family: var(--serif-he);
   margin-top: 24px; font-family: var(--ui); font-size: 14.5px;
   line-height: 1.6; color: var(--muted);
 }
+/* Offline readiness: the one place a reader can confirm the siddur is
+   really on the device before they lose signal. */
+.offline-box { margin-top: 24px; }
+.offline-status {
+  margin: 0; font-family: var(--ui); font-size: 14.5px; line-height: 1.6;
+  color: var(--muted);
+}
+.offline-status[hidden] { display: none; }
+.offline-status[data-state='ready'] { color: #2f8f4e; font-weight: 600; }
+html[data-theme='dark'] .offline-status[data-state='ready'] { color: #5fcf85; }
+.offline-btn {
+  margin-top: 12px; padding: 9px 18px;
+  font-family: var(--ui); font-size: 14px;
+  color: var(--fg); background: none;
+  border: 1px solid var(--rule); border-radius: 8px; cursor: pointer;
+}
+.offline-btn:hover { background: var(--soft); border-color: var(--muted); }
+.offline-btn[hidden] { display: none; }
 .install-manual p { margin: 0; }
 .install-page .back { display: inline-block; }
 

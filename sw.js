@@ -25,7 +25,7 @@
 // onlinesiddur.com/ or at a GitHub Pages project subpath. Same contract as
 // static/fonts.css and the web manifest; see CLAUDE.md.
 
-var CACHE = 'siddur-ac98474f1410';
+var CACHE = 'siddur-974c0d690fb4';
 var SHELL = ["./","offline.html","styles.css","fonts.css","app.js","calendar.js","favicon.svg","manifest.webmanifest","apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/maskable-512.png","fonts/inter-400.woff2","fonts/inter-500.woff2","fonts/eb-garamond-400.woff2","fonts/he-ruehl-400.woff2","fonts/he-ruehl-700.woff2"];
 var PAGES = ["nusach/","about/","install/","shacharit/ashkenaz/","shacharit/sefard/","shacharit/ari/","shacharit/edut/","mincha/ashkenaz/","mincha/sefard/","mincha/ari/","mincha/edut/","maariv/ashkenaz/","maariv/sefard/","maariv/ari/","maariv/edut/","birkat/ashkenaz/","birkat/sefard/","birkat/ari/","birkat/edut/","bracha/ashkenaz/","bracha/sefard/","bracha/ari/","bracha/edut/","musaf/ashkenaz/","musaf/sefard/","musaf/ari/","musaf/edut/","kabbalat/ashkenaz/","kabbalat/sefard/","kabbalat/ari/","kabbalat/edut/","kadish/ashkenaz/","kadish/sefard/","kadish/ari/","kadish/edut/","derech/ashkenaz/","derech/sefard/","derech/ari/","derech/edut/","ksham/ashkenaz/","ksham/sefard/","ksham/ari/","ksham/edut/","levana/ashkenaz/","levana/sefard/","levana/ari/","levana/edut/","omer/ashkenaz/","omer/sefard/","omer/ari/","omer/edut/","chatzot/ashkenaz/","chatzot/sefard/","chatzot/ari/","chatzot/edut/","nerot/ashkenaz/","nerot/sefard/","nerot/ari/","nerot/edut/","klali/ashkenaz/","klali/sefard/","klali/ari/","klali/edut/","tehilim/"];
 var HOME = './';
@@ -89,17 +89,43 @@ self.addEventListener('activate', function (event) {
   );
 });
 
-// Full-siddur precache, on request. app.js posts this when the site is running
-// installed, so the ~1 MB is charged to readers who opted in.
+// How many of PAGES are actually on disk. This is what lets the install
+// page tell a reader whether the siddur is genuinely saved, instead of
+// promising offline support and hoping.
+function countCached(cache, urls) {
+  var have = 0;
+  return Promise.all(urls.map(function (u) {
+    return cache.match(u, { ignoreSearch: true }).then(function (hit) { if (hit) have++; });
+  })).then(function () { return have; });
+}
+
+function reply(event, msg) {
+  if (event.source) event.source.postMessage(msg);
+}
+
+// Full-siddur precache, on request. app.js posts this when the reader has
+// shown intent (the install page) or is running installed, so the ~1 MB is
+// charged to readers who opted in.
 self.addEventListener('message', function (event) {
-  if (!event.data || event.data.type !== 'precache-all') return;
+  var type = event.data && event.data.type;
+  if (type !== 'precache-all' && type !== 'precache-status') return;
   event.waitUntil(
     caches.open(CACHE).then(function (cache) {
-      return fill(cache, PAGES);
-    }).then(function (failed) {
-      // Best-effort: a page that failed is simply refetched next time the
-      // reader opens it online. Report back so the client can retry later.
-      if (event.source) event.source.postMessage({ type: 'precache-done', failed: failed });
+      if (type === 'precache-status') {
+        return countCached(cache, PAGES).then(function (have) {
+          reply(event, { type: 'precache-status', cached: have, total: PAGES.length });
+        });
+      }
+      return fill(cache, PAGES).then(function (failed) {
+        // Report the real count, not just the failure tally: a worker the
+        // browser killed mid-fill leaves a partial cache that a later
+        // status check must be able to see.
+        return countCached(cache, PAGES).then(function (have) {
+          reply(event, {
+            type: 'precache-done', failed: failed, cached: have, total: PAGES.length,
+          });
+        });
+      });
     }),
   );
 });

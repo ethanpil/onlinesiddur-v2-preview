@@ -1081,6 +1081,7 @@
       else if (act === 'awake') { toggleAwake(); }
       else if (act === 'print') { printPage(); }
       else if (act === 'install') { doInstall(); }
+      else if (act === 'save-offline') { precacheWholeSiddur(); track('save-offline', {}); }
       else if (act === 'open-sections') { e.preventDefault(); if (isPanelOpen()) closeSections(); else openSections(); }
       else if (act === 'close-sections') { e.preventDefault(); closeSections(); }
       // The section NAME, not its sec-N id: the id means nothing in a report,
@@ -1262,32 +1263,80 @@
     });
   }
 
-  // Ask the worker to cache the whole siddur (~1 MB). Only for readers who
-  // installed — a first-time visitor reading one prayer over metered cellular
-  // should not silently pay for 64 pages they never asked for. The worker's
-  // fill uses cache:'reload' (a real network fetch per page), so at most one
-  // refresh per day: an installed reader must not re-download the siddur on
-  // every launch.
-  function precacheWholeSiddur() {
+  // ── Offline readiness ──
+  // The whole siddur (~1 MB) is fetched when the reader shows intent: they
+  // opened the install page, or they are running the installed app. It is
+  // never fetched for a first-time visitor reading one prayer over metered
+  // cellular.
+  //
+  // Readiness is decided by asking the worker what is ACTUALLY on disk, not
+  // by a stored "we sent the request once" flag. A fill the browser killed
+  // half way (iOS terminates workers aggressively) and a deploy that starts
+  // a new cache both leave the siddur short, and both must self-heal on the
+  // next launch instead of waiting for a timer to expire.
+  var precacheAsked = false; // at most one automatic fill per page load
+
+  function swSend(msg) {
     if (!('serviceWorker' in navigator)) return;
-    var last = Number(get('ssd:precached')) || 0;
-    if (Date.now() - last < 24 * 3600 * 1000) return;
     navigator.serviceWorker.ready.then(function (reg) {
-      if (reg.active) {
-        reg.active.postMessage({ type: 'precache-all' });
-        set('ssd:precached', String(Date.now()));
-      }
+      if (reg.active) reg.active.postMessage(msg);
     }).catch(function () {});
   }
 
-  // The worker reports how many of the 64 pages failed to land. Nothing else
-  // surfaces that number — a reader whose precache half-failed finds out in a
-  // tunnel, which is the one place this all has to work. Registered at module
-  // scope so the reply is never missed.
+  function precacheWholeSiddur() {
+    if (navigator.onLine === false) { setOfflineUi('offline'); return; }
+    precacheAsked = true;
+    setOfflineUi('working');
+    swSend({ type: 'precache-all' });
+  }
+
+  // Ask what is on disk; the reply fills the gap when there is one.
+  function ensureOfflineReady() {
+    if (!('serviceWorker' in navigator)) return;
+    if (navigator.onLine === false) { setOfflineUi('offline'); return; }
+    swSend({ type: 'precache-status' });
+  }
+
+  // The install page's readiness line: the one place a reader can confirm
+  // the siddur is really saved before they lose signal.
+  function setOfflineUi(state, d) {
+    var box = document.querySelector('[data-offline-status]');
+    if (!box) return;
+    var total = (d && d.total) || 0;
+    var en, he;
+    if (state === 'working') {
+      en = 'Saving the whole siddur to this device…';
+      he = 'שומר את כל הסידור במכשיר…';
+    } else if (state === 'ready') {
+      en = 'Saved. All ' + total + ' pages are on this device and work with no network.';
+      he = 'נשמר. כל ' + total + ' העמודים נמצאים במכשיר ופועלים בלי רשת.';
+    } else if (state === 'offline') {
+      en = 'No network now. Connect once, and the siddur saves itself to this device.';
+      he = 'אין חיבור כעת. התחברו פעם אחת, והסידור יישמר במכשיר.';
+    } else {
+      en = 'Saved ' + ((d && d.cached) || 0) + ' of ' + total + ' pages.';
+      he = 'נשמרו ' + ((d && d.cached) || 0) + ' מתוך ' + total + ' עמודים.';
+    }
+    box.innerHTML = '<span data-lang-en>' + escapeText(en) + '</span>'
+      + '<span data-lang-he lang="he">' + escapeText(he) + '</span>';
+    box.setAttribute('data-state', state);
+    box.hidden = false;
+    var btn = document.querySelector('[data-act="save-offline"]');
+    if (btn) btn.hidden = (state === 'ready' || state === 'working');
+  }
+
+  // The worker reports what landed. A short cache triggers one fill per
+  // page load; nothing else surfaces this, and a reader whose save half
+  // failed would otherwise find out in a tunnel.
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('message', function (e) {
-      if (!e.data || e.data.type !== 'precache-done') return;
-      track('precache', { failed: e.data.failed });
+      var d = e.data;
+      if (!d) return;
+      if (d.type !== 'precache-done' && d.type !== 'precache-status') return;
+      var ready = d.total > 0 && d.cached >= d.total;
+      if (d.type === 'precache-done') track('precache', { failed: d.failed });
+      setOfflineUi(ready ? 'ready' : 'partial', d);
+      if (!ready && !precacheAsked && navigator.onLine !== false) precacheWholeSiddur();
     });
   }
 
@@ -1312,9 +1361,10 @@
   if ('serviceWorker' in navigator && !freshPending) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register((window.__BASE__ || '/') + 'sw.js').then(function () {
-        // Running installed: make sure the whole siddur is on disk. Cheap to
-        // repeat — cache.add is a no-op once an entry is present and fresh.
-        if (isStandalone()) precacheWholeSiddur();
+        // Running installed, or standing on the install page: confirm the
+        // whole siddur is on disk and fill the gap if it is not. The check
+        // is 64 cache lookups and no network, so it is safe on every load.
+        if (isStandalone() || document.querySelector('.install-page')) ensureOfflineReady();
       }).catch(function () {});
     });
   }
