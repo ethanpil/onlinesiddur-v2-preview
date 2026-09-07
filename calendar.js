@@ -200,6 +200,66 @@ var Hebcal=(()=>{var fs=Object.defineProperty;var fg=Object.getOwnPropertyDescri
     if (m === M.TISHREI && d === 11) t.push('after-yk');
 
     if (m === M.TISHREI && d <= 10) t.push('ayt');
+
+    // ── Selichot ──
+    // The Ashkenazi rites say a different set each day. They begin on the
+    // Sunday (said late on motzaei Shabbat) before Rosh Hashana, moved a
+    // week earlier when that Sunday would leave fewer than four days, and
+    // are never said on Shabbat. After Rosh Hashana they resume for the
+    // Fast of Gedaliah, the four remaining days of the Ten Days of
+    // Repentance, and erev Yom Kippur. Rosh Hashana can fall only on Mon,
+    // Tue, Thu or Shabbat, which is why the numbered sets never exceed the
+    // seven the rites print.
+    var abs = hd.abs();
+    // dow of any absolute day, derived from today's rather than by
+    // constructing another HDate.
+    function dowOf(a) { return ((dow + (a - abs)) % 7 + 7) % 7; }
+    // The Rosh Hashana this season points at: from Elul it is the coming
+    // year's, through 9 Tishrei the one just past.
+    var rhAbs = new HDate(1, M.TISHREI, m === M.ELUL ? hd.getFullYear() + 1 : hd.getFullYear()).abs();
+    var erevRhAbs = rhAbs - 1;
+    var startAbs = erevRhAbs - dowOf(erevRhAbs); // Sunday of erev RH's week
+    if (erevRhAbs - startAbs < 3) startAbs -= 7; // keep at least four days
+    var slichot = null;
+    if (dow !== 6) { // never on Shabbat
+      if (abs === erevRhAbs) {
+        slichot = 'slichot-erev-rh';
+      } else if (abs >= startAbs && abs < erevRhAbs) {
+        // Counter named apart from dowOf's parameter: both would be `a`
+        // in this one function scope, and inlining the call — the obvious
+        // optimisation — would then silently compare the wrong day.
+        var n = 0;
+        for (var cursor = startAbs; cursor <= abs; cursor++) if (dowOf(cursor) !== 6) n++;
+        if (n >= 1 && n <= 7) slichot = 'slichot-' + n;
+      } else if (m === M.TISHREI && d >= 3 && d <= 9) {
+        // 3 Tishrei is the Fast of Gedaliah, pushed to the 4th when the
+        // 3rd is Shabbat. The four remaining non-Shabbat days up to the
+        // 8th carry the Ten Days sets, and the 9th is erev Yom Kippur.
+        var gedaliah = dowOf(rhAbs + 2) === 6 ? 4 : 3;
+        if (d === gedaliah) {
+          slichot = 'slichot-gedaliah';
+        } else if (d === 9) {
+          slichot = 'slichot-erev-yk';
+        } else {
+          var k = 0;
+          for (var day = 3; day <= 8; day++) {
+            if (day === gedaliah || dowOf(rhAbs + day - 1) === 6) continue;
+            k++;
+            if (day === d) { slichot = 'slichot-ayt-' + (k + 1); break; }
+          }
+        }
+      }
+    }
+    if (slichot) t.push(slichot);
+    // Every day fence also carries slichot-none, so a day with no
+    // Selichot in these rites shows the whole text for reference.
+    else t.push('slichot-none');
+    // Edot HaMizrach say one text daily from 2 Elul through erev Yom
+    // Kippur. Rosh Hashana itself is excluded; most communities do not
+    // say Selichot on Shabbat.
+    if (dow !== 6 && ((m === M.ELUL && d >= 2) || (m === M.TISHREI && d >= 3 && d <= 9))) {
+      t.push('slichot-edut');
+    }
     if (m === M.ELUL || (m === M.AV && d === 30) || (m === M.TISHREI && d <= 21)) t.push('ledavid-season');
     if ((m === M.TAMUZ && d >= 17) || (m === M.AV && d <= 9)) t.push('bein-hametzarim');
     if (m === M.NISAN) t.push('nissan');

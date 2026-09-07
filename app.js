@@ -326,6 +326,18 @@
     ari:      { en: 'Ari',             he: 'האר״י' },
     edut:     { en: 'Edut HaMizrach',  he: 'עדות המזרח' },
   };
+  // Which nusachim a prayer was actually built in. Most have all four;
+  // the build injects the exceptions (Selichot has no Nusach Ari text).
+  // Routing to a page that was never built is a hard 404 — and offline,
+  // the offline page — so every navigation checks first.
+  function nusachimFor(prayerId) {
+    var ex = window.__NUSACH_EXCEPTIONS__ || {};
+    return ex[prayerId] || null; // null = all of them
+  }
+  function offersNusach(prayerId, nusachId) {
+    var list = nusachimFor(prayerId);
+    return !list || list.indexOf(nusachId) !== -1;
+  }
   function pickNusach(nusachId, fromPrayerId) {
     set(SK.nusach, nusachId);
     // Separates an active choice from arriving at a nusach page with a saved
@@ -333,13 +345,27 @@
     // cannot tell those apart. Safe to fire immediately before navigating:
     // umami sends with fetch keepalive, which outlives the unload.
     track('nusach', { nusach: nusachId });
-    var dest = fromPrayerId ? BASE + fromPrayerId + '/' + nusachId + '/' : BASE;
+    var dest = fromPrayerId && offersNusach(fromPrayerId, nusachId)
+      ? BASE + fromPrayerId + '/' + nusachId + '/'
+      : BASE;
     location.href = dest;
   }
   function openPrayer(prayerId) {
     var n = get(SK.nusach);
-    if (n) location.href = BASE + prayerId + '/' + n + '/';
+    if (n && offersNusach(prayerId, n)) location.href = BASE + prayerId + '/' + n + '/';
     else location.href = BASE + 'nusach/?from=' + prayerId;
+  }
+  // The picker is one static page shared by every prayer, so it lists all
+  // four nusachim. When it was opened for a prayer that ships in fewer,
+  // drop the options that would lead nowhere.
+  function trimPickerOptions() {
+    var from = new URLSearchParams(location.search).get('from');
+    if (!from) return;
+    var list = nusachimFor(from);
+    if (!list) return;
+    document.querySelectorAll('[data-act="pick-nusach"]').forEach(function (b) {
+      if (list.indexOf(b.dataset.nusach) === -1) b.hidden = true;
+    });
   }
   // Home-page only: reflect the saved nusach in the .nusach-pill so the user
   // sees that their pick was retained. Server renders the pill with
@@ -552,6 +578,11 @@
   function toggleFilter() {
     setFilter(root.dataset.filter === 'off' ? 'on' : 'off');
     reseedSectionLabel();
+    // The omer and Selichot notes both describe the FILTERED state, so
+    // they have to be re-evaluated here — turning filtering off used to
+    // leave "the full text is shown for your reference" on screen when
+    // it no longer meant anything.
+    if (todayResult) { var p = pickSet(todayResult); updateOmerNote(p); updateSlichotNote(p); }
     track('filter', { state: root.dataset.filter });
   }
 
@@ -617,6 +648,7 @@
     reseedSectionLabel();
     syncNightUi();
     updateOmerNote(pick);
+    updateSlichotNote(pick);
     fillDatePill(pick.he, pick.en);
   }
 
@@ -646,6 +678,41 @@
   }
   function escapeText(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Selichot: the Ashkenazi rites say them only in the days before Rosh
+  // Hashana and during the Ten Days of Repentance, while Edot HaMizrach
+  // say them right through the season. On a day this nusach does not say
+  // them the page shows every set anyway and says why, rather than
+  // filtering itself down to nothing.
+  function updateSlichotNote(pick) {
+    if (!/\/slichot\//.test(location.pathname)) return;
+    var head = document.querySelector('.reading-head');
+    if (!head) return;
+    var said = /\/slichot\/edut\//.test(location.pathname)
+      ? pick.conds.indexOf('slichot-edut') !== -1
+      : pick.conds.indexOf('slichot-none') === -1;
+    var note = document.querySelector('[data-slichot-note]');
+    if (said || root.dataset.filter === 'off') {
+      if (note) note.hidden = true;
+      return;
+    }
+    if (!note) {
+      note = document.createElement('p');
+      note.setAttribute('data-slichot-note', '');
+      note.className = 'omer-note';
+      head.appendChild(note);
+    }
+    var label = document.querySelector('.nusach-label');
+    var en = label && label.querySelector('[data-lang-en]');
+    var he = label && label.querySelector('[data-lang-he]');
+    note.hidden = false;
+    note.innerHTML = '<span data-lang-en>According to '
+      + escapeText(en ? en.textContent.trim() : 'this nusach')
+      + ', Selichot are not said today. The full text is shown for your reference.</span>'
+      + '<span data-lang-he lang="he">לפי '
+      + escapeText(he ? he.textContent.trim() : 'נוסח זה')
+      + ' אין אומרים סליחות היום. הטקסט המלא מוצג לעיון.</span>';
   }
 
   // Fills the pill, the panel's date row, and the reading-head date line
@@ -1190,6 +1257,7 @@
     initPosMemory();
     initTehilimCycle();
     syncHomeNusachPill();
+    trimPickerOptions();
     syncInstallUi();
     attachSectionObserver();
     // Bar height changes when the viewport crosses the mobile/desktop
